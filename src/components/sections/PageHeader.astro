@@ -1,0 +1,63 @@
+---
+/** Interior page header: optional breadcrumb, eyebrow, h1, subtitle and a decorative Japanese accent. */
+import Container from '@/components/ui/Container.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { useTranslations } from '@/i18n';
+import type { Locale } from '@/i18n/config';
+
+interface Props {
+  lang: Locale;
+  title: string;
+  eyebrow?: string;
+  subtitle?: string;
+  /** Decorative Japanese word shown large in the background (aria-hidden). */
+  accent?: string;
+  breadcrumbs?: { label: string; href?: string }[];
+  size?: 'narrow' | 'default' | 'wide';
+}
+const { lang, title, eyebrow, subtitle, accent, breadcrumbs, size = 'default' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<header class="relative isolate overflow-hidden border-b border-line bg-surface-sunken">
+  <div class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.045]" aria-hidden="true"></div>
+  {
+    accent && (
+      <span
+        lang="ja"
+        aria-hidden="true"
+        class="font-jp pointer-events-none absolute -bottom-6 end-[-1rem] -z-10 text-[7rem] leading-none text-stone-200/80 select-none sm:text-[10rem]"
+      >
+        {accent}
+      </span>
+    )
+  }
+  <Container size={size} class="py-12 sm:py-16">
+    {
+      breadcrumbs && breadcrumbs.length > 0 && (
+        <nav aria-label={t('common.breadcrumb')} class="mb-6 text-sm">
+          <ol class="flex flex-wrap items-center gap-1.5 text-fg-muted">
+            {breadcrumbs.map((crumb, i) => (
+              <li class="flex items-center gap-1.5">
+                {i > 0 && <Icon name="chevron-right" size={14} class="text-stone-500" />}
+                {crumb.href ? (
+                  <a href={crumb.href} class="hover:text-fg hover:underline">
+                    {crumb.label}
+                  </a>
+                ) : (
+                  <span aria-current="page" class="font-medium text-fg">
+                    {crumb.label}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+    {eyebrow && <p class="mb-3 text-sm font-semibold tracking-wide text-primary">{eyebrow}</p>}
+    <h1 class="max-w-3xl text-4xl font-bold sm:text-5xl">{title}</h1>
+    {subtitle && <p class="mt-4 max-w-2xl text-lg text-fg-muted">{subtitle}</p>}
+    <slot />
+  </Container>
+</header>

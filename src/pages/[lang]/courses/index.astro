@@ -1,0 +1,68 @@
+---
+/** Courses catalog: search + level + category filters (React island), URL-synced. */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/sections/PageHeader.astro';
+import Container from '@/components/ui/Container.astro';
+import FinalCta from '@/components/sections/FinalCta.astro';
+import CourseExplorer from '@/components/islands/CourseExplorer';
+import { getDictionary, localeStaticPaths, resolveLocale, useTranslations } from '@/i18n';
+import { CATEGORY_IDS, LEVEL_IDS } from '@/lib/domain/types';
+import { getCourseCards } from '@/lib/repositories/courses';
+import { breadcrumbLd } from '@/lib/seo/jsonld';
+import { routes } from '@/lib/routes';
+
+export const getStaticPaths = localeStaticPaths;
+const lang = resolveLocale(Astro.params.lang);
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+const courses = await getCourseCards(lang);
+const siteUrl = Astro.site ?? Astro.url.origin;
+const labels = {
+  ...dict.coursesPage,
+  viewCourse: dict.common.viewCourse,
+  level: dict.courseDetail.level,
+  category: dict.courseDetail.category,
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('coursesPage.meta.title')}
+  description={t('coursesPage.meta.description')}
+  jsonLd={[
+    breadcrumbLd(
+      [
+        { name: t('nav.home'), path: routes.home(lang) },
+        { name: t('nav.courses'), path: routes.courses(lang) },
+      ],
+      siteUrl,
+    ),
+  ]}
+>
+  <PageHeader
+    lang={lang}
+    eyebrow={t('coursesPage.eyebrow')}
+    title={t('coursesPage.title')}
+    subtitle={t('coursesPage.subtitle')}
+    accent="講座"
+    size="wide"
+  />
+  <Container size="wide" class="py-10 sm:py-14">
+    <CourseExplorer
+      client:load
+      locale={lang}
+      courses={courses}
+      levels={LEVEL_IDS.map((value) => ({ value, label: dict.levels[value] }))}
+      categories={CATEGORY_IDS.map((value) => ({ value, label: dict.categories[value] }))}
+      labels={labels}
+    />
+    <aside class="mt-14 flex flex-col items-start gap-4 rounded-card bg-sakura-soft p-6 ring-1 ring-sakura sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div>
+        <h2 class="text-xl font-semibold">{t('coursesPage.notSureTitle')}</h2>
+        <p class="mt-1 text-fg-muted">{t('coursesPage.notSureBody')}</p>
+      </div>
+      <a href={routes.contact(lang)} class="shrink-0 font-semibold text-primary underline-offset-4 hover:underline">{t('common.contactUs')}</a>
+    </aside>
+  </Container>
+  <FinalCta lang={lang} />
+</BaseLayout>

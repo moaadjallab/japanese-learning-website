@@ -6,6 +6,7 @@
  * - Use logical utilities (ms-/me-/ps-/pe-/start-/end-/text-start) so RTL works automatically.
  */
 @import 'tailwindcss';
+@source '../';
 
 @theme {
   /* Raw palette */
