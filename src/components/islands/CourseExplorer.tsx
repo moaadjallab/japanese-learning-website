@@ -194,9 +194,12 @@ export default function CourseExplorer({ locale, courses, levels, categories, la
         </ul>
       ) : (
         <div className="mt-4 rounded-card bg-surface-raised px-6 py-14 text-center ring-1 ring-line" data-testid="course-empty">
-          <span lang="ja" aria-hidden="true" className="font-jp block text-5xl text-stone-300">
-            無
-          </span>
+          <span
+            lang="ja"
+            aria-hidden="true"
+            data-glyph="無"
+            className="font-jp block text-5xl text-stone-300 before:content-[attr(data-glyph)]"
+          />
           <h2 className="mt-4 text-xl font-semibold">{labels.emptyTitle}</h2>
           <p className="mx-auto mt-2 max-w-md text-fg-muted">{labels.emptyBody}</p>
           <button type="button" onClick={() => setFilters(EMPTY_FILTERS)} className={buttonClass('secondary', 'md', 'mt-6')}>

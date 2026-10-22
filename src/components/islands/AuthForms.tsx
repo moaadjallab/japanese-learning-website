@@ -4,7 +4,7 @@
  * toggle and loading states. Submissions go through `authService` (src/lib/auth/AuthService.ts),
  * which in V1 reports "not available" — the UI then shows a friendly notice. No fake sessions.
  */
-import { useRef, useState, type FormEvent } from 'react';
+import { useRef, useState, type SyntheticEvent } from 'react';
 import { buttonClass } from '@/components/ui/styles';
 import { authService, AuthNotAvailableError } from '@/lib/auth/AuthService';
 import type { JapaneseLevel, PreferredLanguage } from '@/lib/auth/types';
@@ -138,7 +138,7 @@ export function LoginForm({
     setValues(next);
     revalidate(next);
   };
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     void submit(values, (data) => authService.login(data));
   };
@@ -222,7 +222,7 @@ export function RegisterForm({
     setValues(next);
     revalidate(next);
   };
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     void submit(values, ({ confirmPassword: _confirm, ...data }) => authService.register(data));
   };
@@ -319,7 +319,7 @@ export function ForgotPasswordForm({
 }) {
   const [email, setEmail] = useState('');
   const { errors, status, formRef, submit, revalidate } = useAuthForm(forgotPasswordSchema, validation);
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     void submit({ email }, (data) => authService.requestPasswordReset(data.email));
   };

@@ -29,4 +29,7 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea/
-screenshots/dev/
+# Visual QA output (regenerate with: pnpm build && pnpm screenshots)
+screenshots/*
+!screenshots/README.md
+.wrangler-dev.log

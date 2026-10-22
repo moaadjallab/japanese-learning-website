@@ -1,18 +1,18 @@
-import { PaymentsNotAvailableError, type PaymentProvider } from '../types';
+import { PaymentsNotAvailableError, type CheckoutSessionRequest, type PaymentProvider } from '../types';
 
 /** Default V1 adapter: every operation reports that payments are not available. */
 export class NotImplementedPaymentProvider implements PaymentProvider {
   readonly id = 'not-implemented';
-  async createCheckoutSession(): Promise<never> {
+  async createCheckoutSession(_request: CheckoutSessionRequest): Promise<never> {
     throw new PaymentsNotAvailableError('createCheckoutSession');
   }
-  async handleWebhook(): Promise<never> {
+  async handleWebhook(_request: Request): Promise<never> {
     throw new PaymentsNotAvailableError('handleWebhook');
   }
-  async getSubscriptionStatus(): Promise<never> {
+  async getSubscriptionStatus(_reference: string): Promise<never> {
     throw new PaymentsNotAvailableError('getSubscriptionStatus');
   }
-  async cancelSubscription(): Promise<never> {
+  async cancelSubscription(_reference: string): Promise<never> {
     throw new PaymentsNotAvailableError('cancelSubscription');
   }
 }

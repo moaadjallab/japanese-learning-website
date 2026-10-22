@@ -3,7 +3,7 @@
  * accessible errors (aria-invalid + aria-describedby, focus on first error),
  * honeypot field, optional Cloudflare Turnstile widget, loading & result states.
  */
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { buttonClass } from '@/components/ui/styles';
 import { contactSchema, validate, validationMessage, type ValidationMessages } from '@/lib/validation/schemas';
 import { FormAlert, TextField, TextareaField } from './forms/fields';
@@ -103,7 +103,7 @@ export default function ContactForm({ locale, labels, validation, turnstileSiteK
     if (submitted.current) setErrors(runValidation(next));
   };
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     submitted.current = true;
     const found = runValidation(values);

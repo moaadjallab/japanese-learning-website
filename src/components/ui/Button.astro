@@ -10,6 +10,8 @@ type Props = {
   type?: 'button' | 'submit' | 'reset';
   class?: string;
   fullWidth?: boolean;
+  /** Only meaningful for <button>. */
+  disabled?: boolean;
 } & Omit<HTMLAttributes<'a'>, 'type' | 'class'>;
 
 const {

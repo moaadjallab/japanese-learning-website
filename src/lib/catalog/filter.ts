@@ -27,8 +27,8 @@ export const normalizeSearch = (value: string): string =>
   value
     .toLowerCase()
     .normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[ً-ٰٟـ]/g, '')
+    .replace(/[\u0300-\u036F]/g, '')
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
     .replace(/[إأآٱ]/g, 'ا')
     .replace(/ى/g, 'ي')
     .replace(/ة/g, 'ه')

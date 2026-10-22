@@ -41,13 +41,13 @@ const decor: { icon: IconName; ja: string }[] = [
             i < 3 ? 'lg:col-span-2' : 'lg:col-span-3',
           ]}
         >
+          {/* Decorative glyph rendered via ::before so it is not exposed as text. */}
           <span
             lang="ja"
             aria-hidden="true"
-            class="font-jp pointer-events-none absolute -end-1 -top-2 text-6xl text-stone-100 transition-colors group-hover:text-sakura"
-          >
-            {decor[i]?.ja}
-          </span>
+            data-glyph={decor[i]?.ja}
+            class="font-jp pointer-events-none absolute -end-1 -top-2 text-6xl text-stone-100 transition-colors group-hover:text-sakura before:content-[attr(data-glyph)]"
+          />
           <span class="relative inline-flex size-12 items-center justify-center rounded-2xl bg-sakura-soft text-primary ring-1 ring-sakura">
             <Icon name={decor[i]?.icon ?? 'sparkle'} size={24} />
           </span>

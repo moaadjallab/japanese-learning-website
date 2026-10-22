@@ -7,6 +7,7 @@ import '@/styles/fonts.css';
 import '@/styles/global.css';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import plexArabic from '@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2?url';
+import plexArabicBold from '@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-700-normal.woff2?url';
 import Seo from '@/components/layout/Seo.astro';
 import Header from '@/components/sections/Header.astro';
 import Footer from '@/components/sections/Footer.astro';
@@ -24,8 +25,9 @@ interface Props extends Omit<SeoProps, 'lang'> {
 const { lang, bodyClass = '', ...seo } = Astro.props;
 const t = useTranslations(lang);
 const meta = LOCALE_META[lang];
-// Preload only the one critical text font for this locale.
-const criticalFont = lang === 'ar' ? plexArabic : interLatin;
+// Preload only the critical text fonts for this locale: Inter is one variable file for all
+// weights; Arabic needs regular (body) + bold (headings, usually the LCP element).
+const criticalFonts = lang === 'ar' ? [plexArabic, plexArabicBold] : [interLatin];
 ---
 
 <!doctype html>
@@ -36,7 +38,7 @@ const criticalFont = lang === 'ar' ? plexArabic : interLatin;
     <meta name="theme-color" content="#FAF8F5" />
     <meta name="color-scheme" content="light" />
     <meta name="format-detection" content="telephone=no" />
-    <link rel="preload" href={criticalFont} as="font" type="font/woff2" crossorigin />
+    {criticalFonts.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />

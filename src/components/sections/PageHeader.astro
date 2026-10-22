@@ -26,10 +26,9 @@ const t = useTranslations(lang);
       <span
         lang="ja"
         aria-hidden="true"
-        class="font-jp pointer-events-none absolute -bottom-6 end-[-1rem] -z-10 text-[7rem] leading-none text-stone-200/80 select-none sm:text-[10rem]"
-      >
-        {accent}
-      </span>
+        data-glyph={accent}
+        class="font-jp pointer-events-none absolute -bottom-6 end-[-1rem] -z-10 text-[7rem] leading-none text-stone-200/80 select-none before:content-[attr(data-glyph)] sm:text-[10rem]"
+      />
     )
   }
   <Container size={size} class="py-12 sm:py-16">

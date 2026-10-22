@@ -16,7 +16,6 @@ const { lang, tone = 'default', class: className = '' } = Astro.props;
 <a
   href={routes.home(lang)}
   class:list={['group inline-flex items-center gap-2.5 rounded-lg', className]}
-  aria-label={site.name[lang]}
 >
   <LogoMark size={34} class="transition-transform duration-500 group-hover:rotate-[72deg]" />
   <span class="flex flex-col leading-none">
@@ -25,6 +24,7 @@ const { lang, tone = 'default', class: className = '' } = Astro.props;
     </span>
     <span
       lang="ja"
+      aria-hidden="true"
       class:list={['font-jp mt-1 text-[0.7rem] tracking-[0.35em]', tone === 'inverse' ? 'text-sakura' : 'text-primary']}
     >
       {site.japaneseAccent}

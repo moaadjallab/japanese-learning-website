@@ -23,7 +23,7 @@ const dict = getDictionary(lang);
 <Section id="about-us" tone="raised">
   <div class="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
     <figure class="relative mx-auto w-full max-w-sm lg:max-w-none">
-      <div class="absolute -inset-3 -z-10 rotate-2 rounded-[2rem] bg-sakura/60" aria-hidden="true"></div>
+      <div class="absolute inset-x-1 -inset-y-3 -z-10 rotate-2 rounded-[2rem] bg-sakura/60 sm:-inset-3" aria-hidden="true"></div>
       <img
         src="/images/placeholders/teacher.svg"
         alt={t('home.teacher.imageAlt')}
@@ -62,6 +62,7 @@ const dict = getDictionary(lang);
       </ul>
       <Button href={routes.about(lang)} variant="secondary" size="lg" class="mt-9">
         {t('common.learnMore')}
+        <span class="sr-only">— {t('nav.about')}</span>
         <Icon name="arrow-right" size={18} />
       </Button>
     </div>

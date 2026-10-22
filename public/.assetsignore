@@ -1,0 +1,3 @@
+# Never serve server code or Pages routing files as static assets.
+_worker.js
+_routes.json

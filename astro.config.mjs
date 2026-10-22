@@ -61,7 +61,7 @@ export default defineConfig({
     },
   },
   build: {
-    // Inline small stylesheets to avoid a render-blocking request for critical CSS.
+    // Inline small stylesheets; the shared ~12 KB (gzipped) stylesheet stays external and cacheable.
     inlineStylesheets: 'auto',
   },
   vite: {
