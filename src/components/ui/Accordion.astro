@@ -1,0 +1,44 @@
+---
+/**
+ * Accessible accordion built on native <details>/<summary> — works without JavaScript,
+ * is keyboard-operable and announced correctly by screen readers.
+ * Items sharing `name` behave exclusively (one open at a time) in supporting browsers.
+ */
+import Icon from '@/components/icons/Icon.astro';
+
+export interface AccordionItem {
+  id: string;
+  title: string;
+  /** Plain text; paragraphs separated by blank lines. */
+  content: string;
+}
+interface Props {
+  items: AccordionItem[];
+  name?: string;
+  /** Heading level wrapping each summary label, for a correct outline. */
+  headingLevel?: 'h3' | 'h4';
+  openFirst?: boolean;
+  class?: string;
+}
+const { items, name, headingLevel: Heading = 'h3', openFirst = false, class: className = '' } = Astro.props;
+---
+
+<div class:list={['divide-y divide-line rounded-card bg-surface-raised ring-1 ring-line', className]}>
+  {
+    items.map((item, index) => (
+      <details id={item.id} name={name} open={openFirst && index === 0} class="group">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-start sm:px-6 sm:py-5 [&::-webkit-details-marker]:hidden">
+          <Heading class="text-base font-semibold text-fg sm:text-lg">{item.title}</Heading>
+          <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-stone-100 text-fg transition-transform duration-300 group-open:rotate-180 group-open:bg-sakura">
+            <Icon name="chevron-down" size={18} />
+          </span>
+        </summary>
+        <div class="px-5 pb-5 text-fg-muted sm:px-6 sm:pb-6">
+          {item.content.split(/\n{2,}/).map((p) => (
+            <p class="mt-2 first:mt-0">{p}</p>
+          ))}
+        </div>
+      </details>
+    ))
+  }
+</div>

@@ -1,0 +1,89 @@
+---
+/**
+ * WAI-ARIA tabs (automatic activation). Without JavaScript all panels are visible.
+ * Arrow keys follow the reading direction (mirrored in RTL); Home/End jump to the ends.
+ * Panel content goes in named slots: <div slot="panel-0">…</div>.
+ */
+interface Props {
+  id: string;
+  label: string;
+  tabs: string[];
+  class?: string;
+}
+const { id, label, tabs, class: className = '' } = Astro.props;
+// Slot names must be static in templates, so render the dynamic ones up front.
+const panels = await Promise.all(tabs.map((_, i) => Astro.slots.render(`panel-${i}`)));
+---
+
+<div class={className} data-tabs>
+  <div
+    role="tablist"
+    aria-label={label}
+    class="inline-flex flex-wrap gap-1 rounded-full bg-stone-100 p-1"
+    hidden
+    data-tablist
+  >
+    {
+      tabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`${id}-tab-${i}`}
+          aria-controls={`${id}-panel-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          class="rounded-full px-4 py-2 text-sm font-semibold text-fg-muted transition-colors hover:text-fg aria-selected:bg-surface-raised aria-selected:text-fg aria-selected:shadow-soft"
+        >
+          {tab}
+        </button>
+      ))
+    }
+  </div>
+  {
+    tabs.map((_tab, i) => (
+      <div role="tabpanel" id={`${id}-panel-${i}`} aria-labelledby={`${id}-tab-${i}`} tabindex="0" class="mt-6" data-panel>
+        <Fragment set:html={panels[i]} />
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tablist = root.querySelector<HTMLElement>('[data-tablist]');
+    if (!tablist) return;
+    const tabs = [...tablist.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    tablist.hidden = false;
+
+    const select = (index: number, focus = true) => {
+      tabs.forEach((tab, i) => {
+        const active = i === index;
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+        const panel = panels[i];
+        if (panel) panel.hidden = !active;
+        if (active && focus) tab.focus();
+      });
+    };
+    select(0, false);
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (event) => {
+        const rtl = getComputedStyle(root).direction === 'rtl';
+        const next = rtl ? 'ArrowLeft' : 'ArrowRight';
+        const prev = rtl ? 'ArrowRight' : 'ArrowLeft';
+        let target: number | null = null;
+        if (event.key === next) target = (i + 1) % tabs.length;
+        else if (event.key === prev) target = (i - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') target = 0;
+        else if (event.key === 'End') target = tabs.length - 1;
+        if (target !== null) {
+          event.preventDefault();
+          select(target);
+        }
+      });
+    });
+  });
+</script>

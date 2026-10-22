@@ -1,0 +1,24 @@
+---
+/** Native <select> with a custom chevron positioned with logical properties (RTL-safe). */
+import type { HTMLAttributes } from 'astro/types';
+import Icon from '@/components/icons/Icon.astro';
+import { inputClass } from './styles';
+
+type Props = HTMLAttributes<'select'> & {
+  options: { value: string; label: string }[];
+  placeholder?: string;
+};
+const { class: className = '', options, placeholder, ...rest } = Astro.props;
+---
+
+<div class="relative">
+  <select class:list={[inputClass, 'appearance-none pe-11', className]} {...rest}>
+    {placeholder && <option value="">{placeholder}</option>}
+    {options.map((o) => <option value={o.value}>{o.label}</option>)}
+  </select>
+  <Icon
+    name="chevron-down"
+    size={18}
+    class="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2 text-fg-muted"
+  />
+</div>
