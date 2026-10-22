@@ -68,14 +68,24 @@ export const filterCourses = <T extends CourseCardData>(courses: T[], filters: C
     if (filters.category && !course.categories.includes(filters.category)) return false;
     if (terms.length === 0) return true;
     const haystack = normalizeSearch(
-      [course.title, course.description, course.levelLabel, course.categoryLabel, course.glyph, course.slug].join(' '),
+      [
+        course.title,
+        course.description,
+        course.levelLabel,
+        course.categoryLabel,
+        course.glyph,
+        course.slug,
+      ].join(' '),
     );
     return terms.every((term) => haystack.includes(term));
   });
 };
 
 /** "Beginner", "N5", or a range in curriculum order: "N5 – N1", "Beginner – N5". */
-export const levelRangeLabel = (levels: readonly LevelId[], labels: Readonly<Record<LevelId, string>>): string => {
+export const levelRangeLabel = (
+  levels: readonly LevelId[],
+  labels: Readonly<Record<LevelId, string>>,
+): string => {
   const sorted = [...levels].sort((a, b) => LEVEL_IDS.indexOf(a) - LEVEL_IDS.indexOf(b));
   const first = sorted[0];
   const last = sorted[sorted.length - 1];

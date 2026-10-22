@@ -27,8 +27,7 @@ export const routes = {
   login: (lang: Locale) => withLocale(lang, '/login/'),
   register: (lang: Locale) => withLocale(lang, '/register/'),
   forgotPassword: (lang: Locale) => withLocale(lang, '/forgot-password/'),
-  checkout: (lang: Locale, plan?: PlanId) =>
-    withLocale(lang, '/checkout/') + (plan ? `?plan=${plan}` : ''),
+  checkout: (lang: Locale, plan?: PlanId) => withLocale(lang, '/checkout/') + (plan ? `?plan=${plan}` : ''),
   checkoutSuccess: (lang: Locale) => withLocale(lang, '/checkout/success/'),
   legal: (lang: Locale, doc: LegalDoc) => withLocale(lang, `/legal/${doc}/`),
   /** Future (V2): student dashboard. Not built in V1 — see src/features/dashboard/README.md. */

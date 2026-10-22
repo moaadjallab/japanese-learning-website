@@ -14,7 +14,9 @@ const { class: className = '', options, placeholder, ...rest } = Astro.props;
 <div class="relative">
   <select class:list={[inputClass, 'appearance-none pe-11', className]} {...rest}>
     {placeholder && <option value="">{placeholder}</option>}
-    {options.map((o) => <option value={o.value}>{o.label}</option>)}
+    {options.map((o) => (
+      <option value={o.value}>{o.label}</option>
+    ))}
   </select>
   <Icon
     name="chevron-down"

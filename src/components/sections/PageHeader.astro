@@ -20,40 +20,39 @@ const t = useTranslations(lang);
 ---
 
 <header class="relative isolate overflow-hidden border-b border-line bg-surface-sunken">
-  <div class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.045]" aria-hidden="true"></div>
-  {
-    accent && (
-      <span
-        lang="ja"
-        aria-hidden="true"
-        data-glyph={accent}
-        class="font-jp pointer-events-none absolute -bottom-6 end-[-1rem] -z-10 text-[7rem] leading-none text-stone-200/80 select-none before:content-[attr(data-glyph)] sm:text-[10rem]"
-      />
-    )
-  }
+  <div
+    class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.045]"
+    aria-hidden="true"
+  ></div>
+  {accent && (
+    <span
+      lang="ja"
+      aria-hidden="true"
+      data-glyph={accent}
+      class="font-jp pointer-events-none absolute -bottom-6 end-[-1rem] -z-10 text-[7rem] leading-none text-stone-200/80 select-none before:content-[attr(data-glyph)] sm:text-[10rem]"
+    />
+  )}
   <Container size={size} class="py-12 sm:py-16">
-    {
-      breadcrumbs && breadcrumbs.length > 0 && (
-        <nav aria-label={t('common.breadcrumb')} class="mb-6 text-sm">
-          <ol class="flex flex-wrap items-center gap-1.5 text-fg-muted">
-            {breadcrumbs.map((crumb, i) => (
-              <li class="flex items-center gap-1.5">
-                {i > 0 && <Icon name="chevron-right" size={14} class="text-stone-500" />}
-                {crumb.href ? (
-                  <a href={crumb.href} class="hover:text-fg hover:underline">
-                    {crumb.label}
-                  </a>
-                ) : (
-                  <span aria-current="page" class="font-medium text-fg">
-                    {crumb.label}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ol>
-        </nav>
-      )
-    }
+    {breadcrumbs && breadcrumbs.length > 0 && (
+      <nav aria-label={t('common.breadcrumb')} class="mb-6 text-sm">
+        <ol class="flex flex-wrap items-center gap-1.5 text-fg-muted">
+          {breadcrumbs.map((crumb, i) => (
+            <li class="flex items-center gap-1.5">
+              {i > 0 && <Icon name="chevron-right" size={14} class="text-stone-500" />}
+              {crumb.href ? (
+                <a href={crumb.href} class="hover:text-fg hover:underline">
+                  {crumb.label}
+                </a>
+              ) : (
+                <span aria-current="page" class="font-medium text-fg">
+                  {crumb.label}
+                </span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
     {eyebrow && <p class="mb-3 text-sm font-semibold tracking-wide text-primary">{eyebrow}</p>}
     <h1 class="max-w-3xl text-4xl font-bold sm:text-5xl">{title}</h1>
     {subtitle && <p class="mt-4 max-w-2xl text-lg text-fg-muted">{subtitle}</p>}

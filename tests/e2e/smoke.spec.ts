@@ -18,7 +18,10 @@ test.describe('i18n & layout', () => {
   }
 
   test('root redirects according to Accept-Language', async ({ browser }) => {
-    const ar = await browser.newContext({ locale: 'ar-MA', extraHTTPHeaders: { 'Accept-Language': 'ar-MA,ar;q=0.9' } });
+    const ar = await browser.newContext({
+      locale: 'ar-MA',
+      extraHTTPHeaders: { 'Accept-Language': 'ar-MA,ar;q=0.9' },
+    });
     const page = await ar.newPage();
     await page.goto('/');
     await expect(page).toHaveURL(/\/ar\/$/);
@@ -33,7 +36,11 @@ test.describe('i18n & layout', () => {
 
   test('language switcher keeps the equivalent page', async ({ page }) => {
     await page.goto('/en/pricing/');
-    await page.locator('header').getByRole('link', { name: /العربية/ }).first().click();
+    await page
+      .locator('header')
+      .getByRole('link', { name: /العربية/ })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/ar\/pricing\/$/);
     await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   });
@@ -95,7 +102,10 @@ test.describe('course catalog', () => {
     const ld = await page.locator('script[type="application/ld+json"]').allTextContents();
     expect(ld.some((json) => JSON.parse(json)['@type'] === 'Course')).toBe(true);
     expect(ld.join('')).not.toMatch(/AggregateRating|"Review"/);
-    await expect(page.getByRole('link', { name: 'Subscribe Now' }).first()).toHaveAttribute('href', /checkout\/\?plan=/);
+    await expect(page.getByRole('link', { name: 'Subscribe Now' }).first()).toHaveAttribute(
+      'href',
+      /checkout\/\?plan=/,
+    );
   });
 });
 
@@ -123,7 +133,9 @@ test.describe('forms', () => {
     await expect(form.getByRole('alert')).toContainText(/unavailable|went wrong/i);
   });
 
-  test('register validates all fields and shows "coming soon" instead of a fake account', async ({ page }) => {
+  test('register validates all fields and shows "coming soon" instead of a fake account', async ({
+    page,
+  }) => {
     await page.goto('/en/register/');
     const form = page.getByTestId('register-form');
     await form.getByRole('button', { name: 'Create Account' }).click();

@@ -30,7 +30,6 @@ for await (const file of htmlFiles(fileURLToPath(DIST))) {
   }
 }
 
-
 const lines = ['/*'];
 for (const [name, value] of Object.entries(SECURITY_HEADERS)) lines.push(`  ${name}: ${value}`);
 lines.push(`  Content-Security-Policy: ${buildCsp([...hashes])}`);

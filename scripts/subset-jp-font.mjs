@@ -53,4 +53,6 @@ const text = [...chars].sort().join('');
 const subset = await subsetFont(await readFile(SOURCE), text, { targetFormat: 'woff2' });
 await mkdir(OUT_DIR, { recursive: true });
 await writeFile(OUT, subset);
-console.log(`[subset-jp-font] ${chars.size} characters → ${(subset.length / 1024).toFixed(1)} KiB (${OUT.replace(root, '')})`);
+console.log(
+  `[subset-jp-font] ${chars.size} characters → ${(subset.length / 1024).toFixed(1)} KiB (${OUT.replace(root, '')})`,
+);

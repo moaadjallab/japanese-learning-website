@@ -34,7 +34,9 @@ describe('dictionaries', () => {
   it('uses the exact SPEC copy for key headlines', () => {
     expect(en.home.hero.title).toBe('Learn Japanese Online');
     expect(ar.home.hero.title).toBe('تعلّم اللغة اليابانية عبر الإنترنت');
-    expect(ar.home.hero.subtitle).toBe('تعلّم اللغة اليابانية من المستوى المبتدئ إلى المتقدم من خلال دورات منظمة وحصص مباشرة.');
+    expect(ar.home.hero.subtitle).toBe(
+      'تعلّم اللغة اليابانية من المستوى المبتدئ إلى المتقدم من خلال دورات منظمة وحصص مباشرة.',
+    );
     expect(en.home.finalCta.title).toBe('Ready to Start Learning Japanese?');
     expect(ar.home.finalCta.title).toBe('هل أنت مستعد لبدء تعلم اللغة اليابانية؟');
     expect(en.success.title).toBe('Welcome to our Japanese learning community! 🎉');

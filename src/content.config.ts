@@ -39,10 +39,12 @@ const plans = defineCollection({
     name: localized(z.string()),
     description: localized(z.string()),
     features: localized(z.array(z.string())),
-    comparison: z.object(Object.fromEntries(COMPARISON_KEYS.map((k) => [k, z.boolean()])) as Record<
-      (typeof COMPARISON_KEYS)[number],
-      z.ZodBoolean
-    >),
+    comparison: z.object(
+      Object.fromEntries(COMPARISON_KEYS.map((k) => [k, z.boolean()])) as Record<
+        (typeof COMPARISON_KEYS)[number],
+        z.ZodBoolean
+      >,
+    ),
   }),
 });
 

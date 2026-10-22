@@ -15,7 +15,10 @@
     "order": 2,
     "homeOrder": 2,
     "question": { "en": "What levels are available?", "ar": "ما المستويات المتاحة؟" },
-    "homeQuestion": { "en": "What Japanese levels do you offer?", "ar": "ما مستويات اللغة اليابانية التي تقدّمونها؟" },
+    "homeQuestion": {
+      "en": "What Japanese levels do you offer?",
+      "ar": "ما مستويات اللغة اليابانية التي تقدّمونها؟"
+    },
     "answer": {
       "en": "We offer courses from Beginner through all five JLPT levels: N5, N4, N3, N2 and N1 (N1 is the most advanced). Not sure about your level? Choose “I don't know” when you register and we will help you find the right starting point.",
       "ar": "نقدّم دورات تبدأ من المستوى المبتدئ وتشمل مستويات JLPT الخمسة: N5 وN4 وN3 وN2 وN1 (المستوى N1 هو الأكثر تقدمًا). لست متأكدًا من مستواك؟ اختر «لا أعرف» عند التسجيل وسنساعدك على تحديد نقطة البداية المناسبة."

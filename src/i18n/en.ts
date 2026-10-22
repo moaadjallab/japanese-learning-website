@@ -97,8 +97,7 @@ export const en = {
     hero: {
       eyebrow: 'Online Japanese school',
       title: 'Learn Japanese Online', // SPEC (flag rendered separately)
-      subtitle:
-        'Learn Japanese from beginner to advanced with structured online courses and live classes.', // SPEC
+      subtitle: 'Learn Japanese from beginner to advanced with structured online courses and live classes.', // SPEC
       highlights: ['Beginner to JLPT N1', 'Live online classes', 'Explained in Arabic & English'],
       visualLabel: 'Decorative illustration: a vermilion sun behind a torii-inspired gate with sakura petals',
       sampleWord: 'Today’s word',
@@ -283,19 +282,23 @@ export const en = {
       items: [
         {
           title: 'A clear path',
-          description: 'Courses follow the JLPT levels from Beginner to N1, so you always know what comes next.',
+          description:
+            'Courses follow the JLPT levels from Beginner to N1, so you always know what comes next.',
         },
         {
           title: 'Explained in your language',
-          description: 'Grammar and vocabulary are explained in Arabic or English, with Japanese used naturally throughout.',
+          description:
+            'Grammar and vocabulary are explained in Arabic or English, with Japanese used naturally throughout.',
         },
         {
           title: 'Practice, not only theory',
-          description: 'Exercises, quizzes and conversation practice help you remember and speak with confidence.',
+          description:
+            'Exercises, quizzes and conversation practice help you remember and speak with confidence.',
         },
         {
           title: 'Live guidance',
-          description: 'Live classes and teacher support (Premium and Private plans) keep you motivated and on track.',
+          description:
+            'Live classes and teacher support (Premium and Private plans) keep you motivated and on track.',
         },
       ],
     },
@@ -329,7 +332,8 @@ export const en = {
   contactPage: {
     meta: {
       title: 'Contact Us',
-      description: 'Questions about our Japanese courses or subscriptions? Contact us by form, email, WhatsApp or Instagram.',
+      description:
+        'Questions about our Japanese courses or subscriptions? Contact us by form, email, WhatsApp or Instagram.',
     },
     eyebrow: 'Contact',
     title: 'Get in touch',

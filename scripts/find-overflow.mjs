@@ -11,9 +11,20 @@ const out = await page.evaluate(() => {
     const r = el.getBoundingClientRect();
     if ((r.right > vw + 1 || r.left < -1) && r.width > 0) {
       // Skip descendants of horizontally scrollable containers.
-      let p = el.parentElement, scroller = false;
-      while (p) { const o = getComputedStyle(p).overflowX; if (o === 'auto' || o === 'scroll' || o === 'hidden' || o === 'clip') { scroller = true; break; } p = p.parentElement; }
-      if (!scroller) res.push(`${el.tagName.toLowerCase()}.${String(el.className).slice(0, 80)} L${Math.round(r.left)} R${Math.round(r.right)}`);
+      let p = el.parentElement,
+        scroller = false;
+      while (p) {
+        const o = getComputedStyle(p).overflowX;
+        if (o === 'auto' || o === 'scroll' || o === 'hidden' || o === 'clip') {
+          scroller = true;
+          break;
+        }
+        p = p.parentElement;
+      }
+      if (!scroller)
+        res.push(
+          `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 80)} L${Math.round(r.left)} R${Math.round(r.right)}`,
+        );
     }
   }
   return { vw, sw: document.documentElement.scrollWidth, res: res.slice(0, 15) };

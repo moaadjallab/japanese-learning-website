@@ -23,7 +23,10 @@ const dict = getDictionary(lang);
 <Section id="about-us" tone="raised">
   <div class="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
     <figure class="relative mx-auto w-full max-w-sm lg:max-w-none">
-      <div class="absolute inset-x-1 -inset-y-3 -z-10 rotate-2 rounded-[2rem] bg-sakura/60 sm:-inset-3" aria-hidden="true"></div>
+      <div
+        class="absolute inset-x-1 -inset-y-3 -z-10 rotate-2 rounded-[2rem] bg-sakura/60 sm:-inset-3"
+        aria-hidden="true"
+      ></div>
       <img
         src="/images/placeholders/teacher.svg"
         alt={t('home.teacher.imageAlt')}
@@ -34,7 +37,10 @@ const dict = getDictionary(lang);
         class="aspect-[4/5] w-full rounded-[1.75rem] object-cover shadow-lift"
         {...ph('teacher photo')}
       />
-      <figcaption class="absolute inset-x-4 bottom-4 rounded-2xl bg-surface-raised/95 p-4 shadow-soft backdrop-blur" {...ph('teacher name & role')}>
+      <figcaption
+        class="absolute inset-x-4 bottom-4 rounded-2xl bg-surface-raised/95 p-4 shadow-soft backdrop-blur"
+        {...ph('teacher name & role')}
+      >
         <p class="font-semibold">{t('home.teacher.teacherName')}</p>
         <p class="text-sm text-fg-muted">{t('home.teacher.teacherRole')}</p>
       </figcaption>
@@ -42,23 +48,21 @@ const dict = getDictionary(lang);
 
     <div>
       <p class="mb-3 text-sm font-semibold tracking-wide text-primary">{t('home.teacher.eyebrow')}</p>
-      <h2 id="about-us-title" class="text-3xl font-bold sm:text-4xl">{t('home.teacher.title')}</h2>
-      {
-        dict.home.teacher.body.map((paragraph) => (
-          <p class="mt-5 text-lg text-fg-muted">{interpolate(paragraph, { brand: site.name[lang] })}</p>
-        ))
-      }
+      <h2 id="about-us-title" class="text-3xl font-bold sm:text-4xl">
+        {t('home.teacher.title')}
+      </h2>
+      {dict.home.teacher.body.map((paragraph) => (
+        <p class="mt-5 text-lg text-fg-muted">{interpolate(paragraph, { brand: site.name[lang] })}</p>
+      ))}
       <ul class="mt-8 grid gap-3 sm:grid-cols-2">
-        {
-          dict.home.teacher.points.map((point) => (
-            <li class="flex items-center gap-3 rounded-xl bg-washi px-4 py-3 ring-1 ring-line">
-              <span class="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary">
-                <Icon name="check" size={14} strokeWidth={3} />
-              </span>
-              <span class="font-medium">{point}</span>
-            </li>
-          ))
-        }
+        {dict.home.teacher.points.map((point) => (
+          <li class="flex items-center gap-3 rounded-xl bg-washi px-4 py-3 ring-1 ring-line">
+            <span class="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary">
+              <Icon name="check" size={14} strokeWidth={3} />
+            </span>
+            <span class="font-medium">{point}</span>
+          </li>
+        ))}
       </ul>
       <Button href={routes.about(lang)} variant="secondary" size="lg" class="mt-9">
         {t('common.learnMore')}

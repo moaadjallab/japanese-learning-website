@@ -9,7 +9,10 @@ import { levelRangeLabel } from '@/lib/catalog/filter';
 import type { Course, CourseCardData } from '@/lib/domain/types';
 import { routes } from '@/lib/routes';
 
-const toCourse = (entry: { id: string; data: Omit<Course, 'slug'> }): Course => ({ slug: entry.id, ...entry.data });
+const toCourse = (entry: { id: string; data: Omit<Course, 'slug'> }): Course => ({
+  slug: entry.id,
+  ...entry.data,
+});
 
 export const getCourses = async (): Promise<Course[]> =>
   (await getCollection('courses')).map(toCourse).sort((a, b) => a.order - b.order);

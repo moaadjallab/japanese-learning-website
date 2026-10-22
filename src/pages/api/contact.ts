@@ -4,12 +4,7 @@
  * → honeypot → Cloudflare Turnstile → send email (Resend adapter by default).
  */
 import type { APIRoute } from 'astro';
-import {
-  CONTACT_FROM_EMAIL,
-  CONTACT_TO_EMAIL,
-  RESEND_API_KEY,
-  TURNSTILE_SECRET_KEY,
-} from 'astro:env/server';
+import { CONTACT_FROM_EMAIL, CONTACT_TO_EMAIL, RESEND_API_KEY, TURNSTILE_SECRET_KEY } from 'astro:env/server';
 import { site } from '@/config/site';
 import { jsonError, jsonOk } from '@/lib/api/response';
 import { escapeHtml, getEmailProvider } from '@/lib/email';
@@ -56,7 +51,13 @@ export const POST: APIRoute = async (context) => {
   const ip = getClientIp(request, () => context.clientAddress);
   const rate = limiter.check(ip);
   if (!rate.allowed) {
-    return jsonError(429, 'rate_limited', 'Too many requests.', {}, { 'Retry-After': String(rate.retryAfter) });
+    return jsonError(
+      429,
+      'rate_limited',
+      'Too many requests.',
+      {},
+      { 'Retry-After': String(rate.retryAfter) },
+    );
   }
 
   // 4. Validate.
@@ -88,7 +89,9 @@ export const POST: APIRoute = async (context) => {
   const to = CONTACT_TO_EMAIL ?? (isDev ? site.contact.email : undefined);
   const from = CONTACT_FROM_EMAIL ?? (isDev ? `${site.name.en} <no-reply@example.com>` : undefined);
   if (!provider || !to || !from) {
-    console.error('[contact] Email delivery is not configured (RESEND_API_KEY / CONTACT_TO_EMAIL / CONTACT_FROM_EMAIL).');
+    console.error(
+      '[contact] Email delivery is not configured (RESEND_API_KEY / CONTACT_TO_EMAIL / CONTACT_FROM_EMAIL).',
+    );
     return jsonError(503, 'service_unavailable', 'Contact form is not configured.');
   }
 

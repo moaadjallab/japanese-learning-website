@@ -25,10 +25,21 @@ const t = useTranslations(lang);
 <section class="px-4 py-16 sm:px-6 sm:py-20 lg:px-8" aria-labelledby="final-cta-title">
   <Container size="wide" class="px-0! sm:px-0! lg:px-0!">
     <div class="relative isolate overflow-hidden rounded-[2rem] bg-ink px-6 py-16 text-center text-washi sm:px-12 sm:py-20">
-      <div class="pattern-asanoha pointer-events-none absolute inset-0 -z-10 opacity-[0.06]" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -bottom-52 start-1/2 -z-10 size-80 -translate-x-1/2 rounded-full bg-primary/80 blur-[2px] rtl:translate-x-1/2" aria-hidden="true"></div>
+      <div
+        class="pattern-asanoha pointer-events-none absolute inset-0 -z-10 opacity-[0.06]"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="pointer-events-none absolute -bottom-52 start-1/2 -z-10 size-80 -translate-x-1/2 rounded-full bg-primary/80 blur-[2px] rtl:translate-x-1/2"
+        aria-hidden="true"
+      ></div>
       <!-- Torii-inspired line art -->
-      <svg class="mx-auto mb-8 h-12 w-24 text-sakura" viewBox="0 0 96 48" fill="currentColor" aria-hidden="true">
+      <svg
+        class="mx-auto mb-8 h-12 w-24 text-sakura"
+        viewBox="0 0 96 48"
+        fill="currentColor"
+        aria-hidden="true"
+      >
         <path d="M4 6 Q48 0 92 6 L93 11 Q48 5 3 11 Z"></path>
         <rect x="10" y="15" width="76" height="4" rx="1"></rect>
         <rect x="20" y="10" width="5" height="38" rx="1"></rect>
@@ -43,7 +54,9 @@ const t = useTranslations(lang);
           {cta ?? t('common.startLearning')}
           <Icon name="arrow-right" size={18} />
         </a>
-        <a href={routes.contact(lang)} class={buttonClass('inverse', 'lg')}>{t('common.contactUs')}</a>
+        <a href={routes.contact(lang)} class={buttonClass('inverse', 'lg')}>
+          {t('common.contactUs')}
+        </a>
       </div>
     </div>
   </Container>

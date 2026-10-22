@@ -39,157 +39,194 @@ const link = (href: string, label: string) =>
   `<a class="font-semibold text-primary underline-offset-4 hover:underline" href="${href}">${escapeHtml(label)}</a>`;
 const refundLink = link(routes.legal(lang, 'refund'), t('legalLinks.refund'));
 const termsLink = link(routes.legal(lang, 'terms'), t('legalLinks.terms'));
-const withLinks = (text: string) => escapeHtml(text).replace('{refund}', refundLink).replace('{terms}', termsLink);
+const withLinks = (text: string) =>
+  escapeHtml(text).replace('{refund}', refundLink).replace('{terms}', termsLink);
 ---
 
 <BaseLayout lang={lang} title={t('checkout.meta.title')} description={t('checkout.meta.description')} noindex>
-  <PageHeader lang={lang} eyebrow={t('checkout.eyebrow')} title={t('checkout.title')} subtitle={t('checkout.subtitle')} accent="申込" />
+  <PageHeader
+    lang={lang}
+    eyebrow={t('checkout.eyebrow')}
+    title={t('checkout.title')}
+    subtitle={t('checkout.subtitle')}
+    accent="申込"
+  />
 
-  {
-    !plan ? (
-      <section class="py-14 sm:py-20" aria-labelledby="no-plan-title">
-        <Container>
-          <div class="mx-auto mb-12 max-w-xl text-center">
-            <h2 id="no-plan-title" class="text-2xl font-bold">{t('checkout.noPlanTitle')}</h2>
-            <p class="mt-2 text-fg-muted">{t('checkout.noPlanBody')}</p>
-          </div>
-          <PricingCards lang={lang} />
-        </Container>
-      </section>
-    ) : (
-      <Container class="grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.15fr_1fr] lg:gap-10">
-        <!-- Order summary -->
-        <section aria-labelledby="summary-title" class="space-y-6">
-          <div class="rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line sm:p-8">
-            <div class="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <p class="text-sm font-semibold text-fg-muted">{t('checkout.selectedPlan')}</p>
-                <h2 id="summary-title" class="mt-1 flex items-center gap-2 text-2xl font-bold">
-                  {plan.name[lang]}
-                  {plan.highlighted && <span class={badgeClass('primary')}>{t('common.mostPopular')}</span>}
-                </h2>
-                <p class="mt-1 text-fg-muted">{plan.description[lang]}</p>
-              </div>
-              <a href={routes.pricing(lang)} class="text-sm font-semibold text-primary underline-offset-4 hover:underline">
-                {t('checkout.changePlan')}
-              </a>
+  {!plan ? (
+    <section class="py-14 sm:py-20" aria-labelledby="no-plan-title">
+      <Container>
+        <div class="mx-auto mb-12 max-w-xl text-center">
+          <h2 id="no-plan-title" class="text-2xl font-bold">
+            {t('checkout.noPlanTitle')}
+          </h2>
+          <p class="mt-2 text-fg-muted">{t('checkout.noPlanBody')}</p>
+        </div>
+        <PricingCards lang={lang} />
+      </Container>
+    </section>
+  ) : (
+    <Container class="grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.15fr_1fr] lg:gap-10">
+      <!-- Order summary -->
+      <section aria-labelledby="summary-title" class="space-y-6">
+        <div class="rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line sm:p-8">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="text-sm font-semibold text-fg-muted">{t('checkout.selectedPlan')}</p>
+              <h2 id="summary-title" class="mt-1 flex items-center gap-2 text-2xl font-bold">
+                {plan.name[lang]}
+                {plan.highlighted && <span class={badgeClass('primary')}>{t('common.mostPopular')}</span>}
+              </h2>
+              <p class="mt-1 text-fg-muted">{plan.description[lang]}</p>
             </div>
+            <a
+              href={routes.pricing(lang)}
+              class="text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              {t('checkout.changePlan')}
+            </a>
+          </div>
 
-            <dl class="mt-6 grid gap-4 border-y border-line py-5 sm:grid-cols-2">
-              <div>
-                <dt class="text-sm text-fg-muted">{t('checkout.monthlyPrice')}</dt>
-                <dd class="mt-1 text-2xl font-bold" {...(isPriceSet(plan) ? {} : ph('price'))}>
-                  <span dir="ltr">{formatPrice(plan, lang)}</span>
-                  <span class="text-sm font-medium text-fg-muted"> {t('common.perMonth')}</span>
-                </dd>
-              </div>
-              <div>
-                <dt class="text-sm text-fg-muted">{t('checkout.billingFrequency')}</dt>
-                <dd class="mt-1 text-lg font-semibold">{t('common.monthly')}</dd>
-              </div>
-            </dl>
+          <dl class="mt-6 grid gap-4 border-y border-line py-5 sm:grid-cols-2">
+            <div>
+              <dt class="text-sm text-fg-muted">{t('checkout.monthlyPrice')}</dt>
+              <dd class="mt-1 text-2xl font-bold" {...(isPriceSet(plan) ? {} : ph('price'))}>
+                <span dir="ltr">{formatPrice(plan, lang)}</span>
+                <span class="text-sm font-medium text-fg-muted"> {t('common.perMonth')}</span>
+              </dd>
+            </div>
+            <div>
+              <dt class="text-sm text-fg-muted">{t('checkout.billingFrequency')}</dt>
+              <dd class="mt-1 text-lg font-semibold">{t('common.monthly')}</dd>
+            </div>
+          </dl>
 
-            <h3 class="mt-6 font-semibold">{t('checkout.planFeatures')}</h3>
-            <ul class="mt-3 grid gap-2.5 sm:grid-cols-2">
-              {plan.features[lang].map((f) => (
-                <li class="flex items-center gap-2.5 text-sm">
-                  <span class="inline-flex size-5 items-center justify-center rounded-full bg-sakura text-vermilion-dark">
-                    <Icon name="check" size={12} strokeWidth={3} />
-                  </span>
-                  {f}
-                </li>
+          <h3 class="mt-6 font-semibold">{t('checkout.planFeatures')}</h3>
+          <ul class="mt-3 grid gap-2.5 sm:grid-cols-2">
+            {plan.features[lang].map((f) => (
+              <li class="flex items-center gap-2.5 text-sm">
+                <span class="inline-flex size-5 items-center justify-center rounded-full bg-sakura text-vermilion-dark">
+                  <Icon name="check" size={12} strokeWidth={3} />
+                </span>
+                {f}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div class="rounded-card bg-surface-raised p-6 ring-1 ring-line">
+            <h3 class="flex items-center gap-2 font-semibold">
+              <Icon name="calendar" size={18} class="text-primary" />
+              {t('checkout.conditionsTitle')}
+            </h3>
+            <ul
+              class="mt-3 list-disc space-y-2 ps-5 text-sm text-fg-muted marker:text-stone-300"
+              {...ph('subscription terms')}
+            >
+              {dict.checkout.conditions.map((c) => (
+                <li>{c}</li>
               ))}
             </ul>
           </div>
-
-          <div class="grid gap-6 sm:grid-cols-2">
-            <div class="rounded-card bg-surface-raised p-6 ring-1 ring-line">
-              <h3 class="flex items-center gap-2 font-semibold">
-                <Icon name="calendar" size={18} class="text-primary" />
-                {t('checkout.conditionsTitle')}
-              </h3>
-              <ul class="mt-3 list-disc space-y-2 ps-5 text-sm text-fg-muted marker:text-stone-300" {...ph('subscription terms')}>
-                {dict.checkout.conditions.map((c) => <li>{c}</li>)}
-              </ul>
-            </div>
-            <div class="rounded-card bg-surface-raised p-6 ring-1 ring-line">
-              <h3 class="flex items-center gap-2 font-semibold">
-                <Icon name="info" size={18} class="text-primary" />
-                {t('checkout.cancellationTitle')}
-              </h3>
-              <ul class="mt-3 list-disc space-y-2 ps-5 text-sm text-fg-muted marker:text-stone-300" {...ph('cancellation policy')}>
-                {dict.checkout.cancellation.map((c) => <li set:html={withLinks(c)} />)}
-              </ul>
-            </div>
+          <div class="rounded-card bg-surface-raised p-6 ring-1 ring-line">
+            <h3 class="flex items-center gap-2 font-semibold">
+              <Icon name="info" size={18} class="text-primary" />
+              {t('checkout.cancellationTitle')}
+            </h3>
+            <ul
+              class="mt-3 list-disc space-y-2 ps-5 text-sm text-fg-muted marker:text-stone-300"
+              {...ph('cancellation policy')}
+            >
+              {dict.checkout.cancellation.map((c) => (
+                <li set:html={withLinks(c)} />
+              ))}
+            </ul>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <!-- Payment -->
-        <section aria-labelledby="payment-title" class="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] lg:self-start">
-          <div class="rounded-card bg-surface-raised p-6 shadow-lift ring-1 ring-line sm:p-8">
-            <h2 id="payment-title" class="flex items-center gap-2 text-xl font-bold">
-              <Icon name="lock" size={20} class="text-primary" />
-              {t('checkout.paymentMethodTitle')}
-            </h2>
-            <p class="mt-3 text-sm text-fg-muted">{t('checkout.paymentMethodBody')}</p>
-            <div class="mt-4 flex items-center gap-3 rounded-xl border border-dashed border-stone-300 bg-washi p-4 text-sm text-fg-muted" {...ph('payment methods')}>
-              <Icon name="card" size={22} class="text-stone-500" />
-              {t('checkout.paymentMethodPending')}
-            </div>
-
-            <dl class="mt-6 space-y-3 border-t border-line pt-5 text-sm">
-              <div class="flex justify-between gap-4">
-                <dt class="text-fg-muted">{t('checkout.selectedPlan')}</dt>
-                <dd class="font-semibold">{plan.name[lang]}</dd>
-              </div>
-              <div class="flex justify-between gap-4">
-                <dt class="text-fg-muted">{t('checkout.billingFrequency')}</dt>
-                <dd class="font-semibold">{t('common.monthly')}</dd>
-              </div>
-              <div class="flex items-baseline justify-between gap-4 border-t border-line pt-3">
-                <dt class="font-semibold">{t('checkout.amountDue')}</dt>
-                <dd class="text-2xl font-bold">
-                  <span dir="ltr">{formatPrice(plan, lang)}</span>
-                  <span class="text-sm font-medium text-fg-muted"> {t('common.perMonth')}</span>
-                </dd>
-              </div>
-            </dl>
-
-            {confirmed && !externalUrl && (
-              <div role="status" class="mt-6 rounded-xl bg-sakura-soft p-4 text-sm ring-1 ring-sakura" data-testid="payments-coming-soon">
-                <p class="flex items-center gap-2 font-semibold text-fg">
-                  <Icon name="clock" size={18} class="text-primary" />
-                  {t('checkout.comingSoonTitle')}
-                </p>
-                <p class="mt-1 text-fg-muted">{t('checkout.comingSoonBody')}</p>
-                <a href={routes.contact(lang)} class="mt-2 inline-block font-semibold text-primary underline-offset-4 hover:underline">
-                  {t('common.contactUs')}
-                </a>
-              </div>
-            )}
-
-            {externalUrl ? (
-              <>
-                <a href={externalUrl} rel="noopener noreferrer" class={buttonClass('primary', 'lg', 'mt-6 w-full')}>
-                  <Icon name="lock" size={18} />
-                  {t('checkout.confirm')}
-                </a>
-                <p class="mt-3 text-center text-xs text-fg-muted">{t('checkout.redirectNote')}</p>
-              </>
-            ) : (
-              <form method="get" action="#payment-title" class="mt-6">
-                <input type="hidden" name="plan" value={plan.id} />
-                <input type="hidden" name="confirm" value="1" />
-                <button type="submit" class={buttonClass('primary', 'lg', 'w-full')}>
-                  <Icon name="lock" size={18} />
-                  {t('checkout.confirm')}
-                </button>
-              </form>
-            )}
-            <p class="mt-4 text-center text-xs text-fg-muted" set:html={withLinks(t('checkout.agree'))} />
+      <!-- Payment -->
+      <section
+        aria-labelledby="payment-title"
+        class="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] lg:self-start"
+      >
+        <div class="rounded-card bg-surface-raised p-6 shadow-lift ring-1 ring-line sm:p-8">
+          <h2 id="payment-title" class="flex items-center gap-2 text-xl font-bold">
+            <Icon name="lock" size={20} class="text-primary" />
+            {t('checkout.paymentMethodTitle')}
+          </h2>
+          <p class="mt-3 text-sm text-fg-muted">{t('checkout.paymentMethodBody')}</p>
+          <div
+            class="mt-4 flex items-center gap-3 rounded-xl border border-dashed border-stone-300 bg-washi p-4 text-sm text-fg-muted"
+            {...ph('payment methods')}
+          >
+            <Icon name="card" size={22} class="text-stone-500" />
+            {t('checkout.paymentMethodPending')}
           </div>
-        </section>
-      </Container>
-    )
-  }
+
+          <dl class="mt-6 space-y-3 border-t border-line pt-5 text-sm">
+            <div class="flex justify-between gap-4">
+              <dt class="text-fg-muted">{t('checkout.selectedPlan')}</dt>
+              <dd class="font-semibold">{plan.name[lang]}</dd>
+            </div>
+            <div class="flex justify-between gap-4">
+              <dt class="text-fg-muted">{t('checkout.billingFrequency')}</dt>
+              <dd class="font-semibold">{t('common.monthly')}</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 border-t border-line pt-3">
+              <dt class="font-semibold">{t('checkout.amountDue')}</dt>
+              <dd class="text-2xl font-bold">
+                <span dir="ltr">{formatPrice(plan, lang)}</span>
+                <span class="text-sm font-medium text-fg-muted"> {t('common.perMonth')}</span>
+              </dd>
+            </div>
+          </dl>
+
+          {confirmed && !externalUrl && (
+            <div
+              role="status"
+              class="mt-6 rounded-xl bg-sakura-soft p-4 text-sm ring-1 ring-sakura"
+              data-testid="payments-coming-soon"
+            >
+              <p class="flex items-center gap-2 font-semibold text-fg">
+                <Icon name="clock" size={18} class="text-primary" />
+                {t('checkout.comingSoonTitle')}
+              </p>
+              <p class="mt-1 text-fg-muted">{t('checkout.comingSoonBody')}</p>
+              <a
+                href={routes.contact(lang)}
+                class="mt-2 inline-block font-semibold text-primary underline-offset-4 hover:underline"
+              >
+                {t('common.contactUs')}
+              </a>
+            </div>
+          )}
+
+          {externalUrl ? (
+            <>
+              <a
+                href={externalUrl}
+                rel="noopener noreferrer"
+                class={buttonClass('primary', 'lg', 'mt-6 w-full')}
+              >
+                <Icon name="lock" size={18} />
+                {t('checkout.confirm')}
+              </a>
+              <p class="mt-3 text-center text-xs text-fg-muted">{t('checkout.redirectNote')}</p>
+            </>
+          ) : (
+            <form method="get" action="#payment-title" class="mt-6">
+              <input type="hidden" name="plan" value={plan.id} />
+              <input type="hidden" name="confirm" value="1" />
+              <button type="submit" class={buttonClass('primary', 'lg', 'w-full')}>
+                <Icon name="lock" size={18} />
+                {t('checkout.confirm')}
+              </button>
+            </form>
+          )}
+          <p class="mt-4 text-center text-xs text-fg-muted" set:html={withLinks(t('checkout.agree'))} />
+        </div>
+      </section>
+    </Container>
+  )}
 </BaseLayout>

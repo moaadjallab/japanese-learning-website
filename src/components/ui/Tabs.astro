@@ -23,29 +23,32 @@ const panels = await Promise.all(tabs.map((_, i) => Astro.slots.render(`panel-${
     hidden
     data-tablist
   >
-    {
-      tabs.map((tab, i) => (
-        <button
-          type="button"
-          role="tab"
-          id={`${id}-tab-${i}`}
-          aria-controls={`${id}-panel-${i}`}
-          aria-selected={i === 0 ? 'true' : 'false'}
-          tabindex={i === 0 ? 0 : -1}
-          class="rounded-full px-4 py-2 text-sm font-semibold text-fg-muted transition-colors hover:text-fg aria-selected:bg-surface-raised aria-selected:text-fg aria-selected:shadow-soft"
-        >
-          {tab}
-        </button>
-      ))
-    }
+    {tabs.map((tab, i) => (
+      <button
+        type="button"
+        role="tab"
+        id={`${id}-tab-${i}`}
+        aria-controls={`${id}-panel-${i}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        tabindex={i === 0 ? 0 : -1}
+        class="rounded-full px-4 py-2 text-sm font-semibold text-fg-muted transition-colors hover:text-fg aria-selected:bg-surface-raised aria-selected:text-fg aria-selected:shadow-soft"
+      >
+        {tab}
+      </button>
+    ))}
   </div>
-  {
-    tabs.map((_tab, i) => (
-      <div role="tabpanel" id={`${id}-panel-${i}`} aria-labelledby={`${id}-tab-${i}`} tabindex="0" class="mt-6" data-panel>
-        <Fragment set:html={panels[i]} />
-      </div>
-    ))
-  }
+  {tabs.map((_tab, i) => (
+    <div
+      role="tabpanel"
+      id={`${id}-panel-${i}`}
+      aria-labelledby={`${id}-tab-${i}`}
+      tabindex="0"
+      class="mt-6"
+      data-panel
+    >
+      <Fragment set:html={panels[i]} />
+    </div>
+  ))}
 </div>
 
 <script>

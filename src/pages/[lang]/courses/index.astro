@@ -61,7 +61,12 @@ const labels = {
         <h2 class="text-xl font-semibold">{t('coursesPage.notSureTitle')}</h2>
         <p class="mt-1 text-fg-muted">{t('coursesPage.notSureBody')}</p>
       </div>
-      <a href={routes.contact(lang)} class="shrink-0 font-semibold text-primary underline-offset-4 hover:underline">{t('common.contactUs')}</a>
+      <a
+        href={routes.contact(lang)}
+        class="shrink-0 font-semibold text-primary underline-offset-4 hover:underline"
+      >
+        {t('common.contactUs')}
+      </a>
     </aside>
   </Container>
   <FinalCta lang={lang} />

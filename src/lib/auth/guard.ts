@@ -32,7 +32,9 @@ export const guardRoute = (
   now: Date = new Date(),
 ): GuardDecision => {
   if (!session) return { allowed: false, reason: 'unauthenticated', redirectTo: routes.login(lang) };
-  if (new Date(session.expiresAt) <= now) return { allowed: false, reason: 'expired', redirectTo: routes.login(lang) };
-  if (!hasAnyRole(session, required)) return { allowed: false, reason: 'forbidden', redirectTo: routes.home(lang) };
+  if (new Date(session.expiresAt) <= now)
+    return { allowed: false, reason: 'expired', redirectTo: routes.login(lang) };
+  if (!hasAnyRole(session, required))
+    return { allowed: false, reason: 'forbidden', redirectTo: routes.home(lang) };
   return { allowed: true };
 };

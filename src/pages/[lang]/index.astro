@@ -37,10 +37,20 @@ const siteUrl = Astro.site ?? Astro.url.origin;
   <!-- 4. How it works -->
   <HowItWorks lang={lang} />
   <!-- 5. Pricing preview -->
-  <Section id="plans" eyebrow={t('home.pricing.eyebrow')} title={t('home.pricing.title')} subtitle={t('home.pricing.subtitle')} tone="sunken" pattern>
+  <Section
+    id="plans"
+    eyebrow={t('home.pricing.eyebrow')}
+    title={t('home.pricing.title')}
+    subtitle={t('home.pricing.subtitle')}
+    tone="sunken"
+    pattern
+  >
     <PricingCards lang={lang} />
     <p class="mt-10 text-center">
-      <a href={routes.pricing(lang, 'compare')} class="inline-flex items-center gap-1.5 font-semibold text-primary underline-offset-4 hover:underline">
+      <a
+        href={routes.pricing(lang, 'compare')}
+        class="inline-flex items-center gap-1.5 font-semibold text-primary underline-offset-4 hover:underline"
+      >
         {t('common.comparePlans')}
         <Icon name="arrow-right" size={16} />
       </a>

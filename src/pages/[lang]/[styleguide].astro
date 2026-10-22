@@ -46,25 +46,34 @@ const sgTitle = 'font-mono text-xs font-semibold uppercase tracking-widest text-
 ---
 
 <BaseLayout lang={lang} title="Styleguide" description="Internal component styleguide" noindex>
-  <Section headingLevel="h1" title="Styleguide" subtitle="Dev-only overview of tokens and components." align="start">
+  <Section
+    headingLevel="h1"
+    title="Styleguide"
+    subtitle="Dev-only overview of tokens and components."
+    align="start"
+  >
     <p class="mb-8 text-sm text-fg-muted">
-      Other pages: <a class="text-primary underline" href={routes.checkoutSuccess(lang) + '?preview=1'}>success (preview)</a>
-      · <a class="text-primary underline" href="/en/does-not-exist/">404</a>
+      Other pages:{' '}
+      <a class="text-primary underline" href={routes.checkoutSuccess(lang) + '?preview=1'}>
+        success (preview)
+      </a>
+      ·{' '}
+      <a class="text-primary underline" href="/en/does-not-exist/">
+        404
+      </a>
     </p>
 
     <h2 class={sgTitle}>Colors</h2>
     <div class="grid grid-cols-2 gap-3 sm:grid-cols-5">
-      {
-        swatches.map(([name, hex, cls]) => (
-          <div class="overflow-hidden rounded-xl ring-1 ring-line">
-            <div class:list={['h-16', cls]} />
-            <div class="bg-surface-raised p-2 text-xs">
-              <p class="font-semibold">{name}</p>
-              <p class="font-mono text-fg-muted">{hex}</p>
-            </div>
+      {swatches.map(([name, hex, cls]) => (
+        <div class="overflow-hidden rounded-xl ring-1 ring-line">
+          <div class:list={['h-16', cls]} />
+          <div class="bg-surface-raised p-2 text-xs">
+            <p class="font-semibold">{name}</p>
+            <p class="font-mono text-fg-muted">{hex}</p>
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
 
     <h2 class:list={[sgTitle, 'mt-12']}>Typography</h2>
@@ -74,8 +83,15 @@ const sgTitle = 'font-mono text-xs font-semibold uppercase tracking-widest text-
       <p class="text-xl font-semibold">Heading xl</p>
       <p class="text-base">Body — The quick brown fox. نص عربي للتجربة.</p>
       <p class="text-sm text-fg-muted">Muted small text</p>
-      <p lang="ja" class="font-jp text-4xl">日本語 · ひらがな · カタカナ · 漢字</p>
-      <p lang="ja" class="text-xl">日本語を勉強しています。 <span lang="en" class="text-fg-muted">(Nihongo o benkyō shite imasu.)</span></p>
+      <p lang="ja" class="font-jp text-4xl">
+        日本語 · ひらがな · カタカナ · 漢字
+      </p>
+      <p lang="ja" class="text-xl">
+        日本語を勉強しています。{' '}
+        <span lang="en" class="text-fg-muted">
+          (Nihongo o benkyō shite imasu.)
+        </span>
+      </p>
     </div>
 
     <h2 class:list={[sgTitle, 'mt-12']}>Buttons</h2>
@@ -83,28 +99,53 @@ const sgTitle = 'font-mono text-xs font-semibold uppercase tracking-widest text-
       <Button>{t('common.startLearning')}</Button>
       <Button variant="secondary">{t('common.viewPlans')}</Button>
       <Button variant="ghost">Ghost</Button>
-      <Button variant="link" href="#">Link</Button>
+      <Button variant="link" href="#">
+        Link
+      </Button>
       <Button size="sm">Small</Button>
-      <Button size="lg">Large <Icon name="arrow-right" size={18} /></Button>
+      <Button size="lg">
+        Large <Icon name="arrow-right" size={18} />
+      </Button>
       <Button disabled>Disabled</Button>
-      <div class="rounded-xl bg-ink p-3"><Button variant="inverse">Inverse</Button></div>
+      <div class="rounded-xl bg-ink p-3">
+        <Button variant="inverse">Inverse</Button>
+      </div>
     </div>
 
     <h2 class:list={[sgTitle, 'mt-12']}>Badges</h2>
     <div class="flex flex-wrap gap-2">
-      <Badge>Neutral</Badge><Badge tone="primary">{t('common.mostPopular')}</Badge><Badge tone="accent">N5</Badge><Badge tone="ink">JLPT</Badge>
+      <Badge>Neutral</Badge>
+      <Badge tone="primary">{t('common.mostPopular')}</Badge>
+      <Badge tone="accent">N5</Badge>
+      <Badge tone="ink">JLPT</Badge>
     </div>
 
     <h2 class:list={[sgTitle, 'mt-12']}>Cards</h2>
     <div class="grid gap-4 sm:grid-cols-3">
-      <Card><p class="font-semibold">Card</p><p class="mt-2 text-sm text-fg-muted">Default padding.</p></Card>
-      <Card interactive><p class="font-semibold">Interactive card</p><p class="mt-2 text-sm text-fg-muted">Hover me.</p></Card>
-      <Card padding="lg" class="bg-sakura-soft"><p class="font-semibold">Tinted card</p></Card>
+      <Card>
+        <p class="font-semibold">Card</p>
+        <p class="mt-2 text-sm text-fg-muted">Default padding.</p>
+      </Card>
+      <Card interactive>
+        <p class="font-semibold">Interactive card</p>
+        <p class="mt-2 text-sm text-fg-muted">Hover me.</p>
+      </Card>
+      <Card padding="lg" class="bg-sakura-soft">
+        <p class="font-semibold">Tinted card</p>
+      </Card>
     </div>
 
     <h2 class:list={[sgTitle, 'mt-12']}>Icons</h2>
     <div class="flex flex-wrap gap-3">
-      {icons.map((name) => <span class="inline-flex flex-col items-center gap-1 rounded-lg bg-surface-raised p-3 text-[10px] ring-1 ring-line" title={name}><Icon name={name} size={22} />{name}</span>)}
+      {icons.map((name) => (
+        <span
+          class="inline-flex flex-col items-center gap-1 rounded-lg bg-surface-raised p-3 text-[10px] ring-1 ring-line"
+          title={name}
+        >
+          <Icon name={name} size={22} />
+          {name}
+        </span>
+      ))}
     </div>
 
     <h2 class:list={[sgTitle, 'mt-12']}>Form controls</h2>
@@ -113,10 +154,23 @@ const sgTitle = 'font-mono text-xs font-semibold uppercase tracking-widest text-
         <Input id="sg-name" name="name" autocomplete="name" required />
       </FormField>
       <FormField id="sg-email" label={dict.contactPage.form.email} error={dict.validation.email} required>
-        <Input id="sg-email" name="email" type="email" aria-invalid="true" aria-describedby="sg-email-error" value="not-an-email" />
+        <Input
+          id="sg-email"
+          name="email"
+          type="email"
+          aria-invalid="true"
+          aria-describedby="sg-email-error"
+          value="not-an-email"
+        />
       </FormField>
       <FormField id="sg-level" label={dict.auth.register.japaneseLevel} hint="Hint text">
-        <Select id="sg-level" name="level" aria-describedby="sg-level-hint" placeholder={dict.auth.register.chooseLevel} options={Object.entries(dict.levels).map(([value, label]) => ({ value, label }))} />
+        <Select
+          id="sg-level"
+          name="level"
+          aria-describedby="sg-level-hint"
+          placeholder={dict.auth.register.chooseLevel}
+          options={Object.entries(dict.levels).map(([value, label]) => ({ value, label }))}
+        />
       </FormField>
       <FormField id="sg-message" label={dict.contactPage.form.message}>
         <Textarea id="sg-message" name="message" />
@@ -135,9 +189,15 @@ const sgTitle = 'font-mono text-xs font-semibold uppercase tracking-widest text-
 
     <h2 class:list={[sgTitle, 'mt-12']}>Tabs</h2>
     <Tabs id="sg-tabs" label="Example tabs" tabs={['Hiragana', 'Katakana', 'Kanji']}>
-      <p slot="panel-0" lang="ja" class="font-jp text-3xl">あ い う え お</p>
-      <p slot="panel-1" lang="ja" class="font-jp text-3xl">ア イ ウ エ オ</p>
-      <p slot="panel-2" lang="ja" class="font-jp text-3xl">山 川 日 月 人</p>
+      <p slot="panel-0" lang="ja" class="font-jp text-3xl">
+        あ い う え お
+      </p>
+      <p slot="panel-1" lang="ja" class="font-jp text-3xl">
+        ア イ ウ エ オ
+      </p>
+      <p slot="panel-2" lang="ja" class="font-jp text-3xl">
+        山 川 日 月 人
+      </p>
     </Tabs>
   </Section>
 </BaseLayout>

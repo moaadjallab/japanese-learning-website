@@ -2,12 +2,12 @@
 
 Every provider implements `PaymentProvider` (`../types.ts`):
 
-| Method                  | Responsibility                                                                    |
-| ----------------------- | --------------------------------------------------------------------------------- |
-| `createCheckoutSession` | Create a provider-hosted checkout for a plan and return its URL.                  |
-| `handleWebhook`         | **Verify the signature**, then update the subscription (D1 `subscriptions`).      |
-| `getSubscriptionStatus` | Used by the success page and (V2) the dashboard to confirm access.                |
-| `cancelSubscription`    | Cancel at the end of the current period.                                          |
+| Method                  | Responsibility                                                               |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `createCheckoutSession` | Create a provider-hosted checkout for a plan and return its URL.             |
+| `handleWebhook`         | **Verify the signature**, then update the subscription (D1 `subscriptions`). |
+| `getSubscriptionStatus` | Used by the success page and (V2) the dashboard to confirm access.           |
+| `cancelSubscription`    | Cancel at the end of the current period.                                     |
 
 ## Shipped in V1
 

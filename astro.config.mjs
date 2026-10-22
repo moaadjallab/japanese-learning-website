@@ -9,14 +9,7 @@ import tailwindcss from '@tailwindcss/vite';
 const SITE_URL = process.env.SITE_URL || 'https://www.example.com';
 
 // Paths (without locale prefix) that must never appear in the sitemap (noindex pages).
-const NOINDEX_SEGMENTS = [
-  '/login',
-  '/register',
-  '/forgot-password',
-  '/checkout',
-  '/legal/',
-  '/_styleguide',
-];
+const NOINDEX_SEGMENTS = ['/login', '/register', '/forgot-password', '/checkout', '/legal/', '/_styleguide'];
 
 export default defineConfig({
   site: SITE_URL,

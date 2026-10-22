@@ -35,24 +35,22 @@ const items = mainNav.map((item) => ({
 
     <nav aria-label={t('nav.label')} class="mx-auto hidden lg:block">
       <ul class="flex items-center gap-0.5">
-        {
-          items.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                aria-current={item.active ? 'page' : undefined}
-                class:list={[
-                  'relative rounded-full px-2.5 py-2 text-sm font-medium transition-colors xl:px-3.5',
-                  item.active ? 'text-fg' : 'text-fg-muted hover:text-fg',
-                  item.active &&
-                    'after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-primary',
-                ]}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
+        {items.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={item.active ? 'page' : undefined}
+              class:list={[
+                'relative rounded-full px-2.5 py-2 text-sm font-medium transition-colors xl:px-3.5',
+                item.active ? 'text-fg' : 'text-fg-muted hover:text-fg',
+                item.active &&
+                  'after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-primary',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
 
@@ -61,12 +59,19 @@ const items = mainNav.map((item) => ({
       <a
         href={routes.login(lang)}
         class="rounded-full px-2 py-2 text-sm font-semibold text-fg hover:text-primary"
-        aria-current={isActivePath(current, routes.login(lang)) ? 'page' : undefined}>{t('nav.login')}</a
+        aria-current={isActivePath(current, routes.login(lang)) ? 'page' : undefined}
       >
-      <a href={routes.pricing(lang)} class={buttonClass('primary', 'sm')}>{t('common.startLearning')}</a>
+        {t('nav.login')}
+      </a>
+      <a href={routes.pricing(lang)} class={buttonClass('primary', 'sm')}>
+        {t('common.startLearning')}
+      </a>
     </div>
 
-    <a href={routes.pricing(lang)} class={buttonClass('primary', 'sm', 'hidden min-[400px]:inline-flex lg:hidden')}>
+    <a
+      href={routes.pricing(lang)}
+      class={buttonClass('primary', 'sm', 'hidden min-[400px]:inline-flex lg:hidden')}
+    >
       {t('common.startLearning')}
     </a>
     <button
@@ -79,8 +84,12 @@ const items = mainNav.map((item) => ({
       data-label-close={t('common.closeMenu')}
       data-menu-toggle
     >
-      <span data-icon-open><Icon name="menu" size={24} /></span>
-      <span data-icon-close hidden><Icon name="x" size={24} /></span>
+      <span data-icon-open>
+        <Icon name="menu" size={24} />
+      </span>
+      <span data-icon-close hidden>
+        <Icon name="x" size={24} />
+      </span>
     </button>
   </div>
 
@@ -93,28 +102,30 @@ const items = mainNav.map((item) => ({
     <div class="mx-auto flex max-w-xl flex-col gap-6 px-4 py-6 sm:px-6">
       <nav aria-label={t('nav.label')}>
         <ul class="divide-y divide-line">
-          {
-            items.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  aria-current={item.active ? 'page' : undefined}
-                  class:list={[
-                    'flex items-center justify-between py-3.5 text-lg font-semibold',
-                    item.active ? 'text-primary' : 'text-fg',
-                  ]}
-                >
-                  {item.label}
-                  <Icon name="chevron-right" size={18} class="text-stone-500" />
-                </a>
-              </li>
-            ))
-          }
+          {items.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={item.active ? 'page' : undefined}
+                class:list={[
+                  'flex items-center justify-between py-3.5 text-lg font-semibold',
+                  item.active ? 'text-primary' : 'text-fg',
+                ]}
+              >
+                {item.label}
+                <Icon name="chevron-right" size={18} class="text-stone-500" />
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
       <div class="flex flex-col gap-3">
-        <a href={routes.pricing(lang)} class={buttonClass('primary', 'lg', 'w-full')}>{t('common.startLearning')}</a>
-        <a href={routes.login(lang)} class={buttonClass('secondary', 'lg', 'w-full')}>{t('nav.login')}</a>
+        <a href={routes.pricing(lang)} class={buttonClass('primary', 'lg', 'w-full')}>
+          {t('common.startLearning')}
+        </a>
+        <a href={routes.login(lang)} class={buttonClass('secondary', 'lg', 'w-full')}>
+          {t('nav.login')}
+        </a>
       </div>
       <LanguageSwitcher lang={lang} class="justify-center text-base" />
     </div>

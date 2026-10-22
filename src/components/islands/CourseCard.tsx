@@ -35,12 +35,18 @@ export function CourseCard({ course, labels, eager = false }: Props) {
           </span>
         </div>
         <h2 className="mt-3 text-lg font-semibold">
-          <a href={course.href} className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
+          <a
+            href={course.href}
+            className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+          >
             {course.title}
           </a>
         </h2>
         <p className="mt-2 line-clamp-3 flex-1 text-sm text-fg-muted">{course.description}</p>
-        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary" aria-hidden="true">
+        <span
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+          aria-hidden="true"
+        >
           {labels.viewCourse}
           <Icon
             name="arrow-right"

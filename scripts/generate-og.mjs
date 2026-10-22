@@ -39,7 +39,9 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" vi
 </svg>`;
 
 await mkdir(new URL('../public/og/', import.meta.url), { recursive: true });
-await sharp(Buffer.from(og)).png({ compressionLevel: 9 }).toFile(fileURLToPath(new URL('../public/og/default.png', import.meta.url)));
+await sharp(Buffer.from(og))
+  .png({ compressionLevel: 9 })
+  .toFile(fileURLToPath(new URL('../public/og/default.png', import.meta.url)));
 
 const favicon = await readFile(new URL('../public/favicon.svg', import.meta.url));
 const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><rect width="180" height="180" fill="#FAF8F5"/></svg>`;

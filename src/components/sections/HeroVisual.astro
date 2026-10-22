@@ -38,10 +38,7 @@ const petals = [
         <stop offset="0%" stop-color="#FAF8F5" stop-opacity="0"></stop>
         <stop offset="100%" stop-color="#FAF8F5" stop-opacity="1"></stop>
       </linearGradient>
-      <path
-        id="hero-petal"
-        d="M0 0c-6-6-7-15-2-20l2 3 2-3c5 5 4 14-2 20z"
-      ></path>
+      <path id="hero-petal" d="M0 0c-6-6-7-15-2-20l2 3 2-3c5 5 4 14-2 20z"></path>
     </defs>
 
     <!-- Soft card backdrop -->
@@ -62,25 +59,28 @@ const petals = [
     <rect x="20" y="370" width="460" height="50" fill="url(#hero-fade)"></rect>
     <!-- Sakura petals -->
     <g fill="#E8A6B4">
-      {
-        petals.map((p) => (
-          <use href="#hero-petal" transform={`translate(${p.x} ${p.y}) rotate(${p.r}) scale(${p.s})`} />
-        ))
-      }
+      {petals.map((p) => (
+        <use href="#hero-petal" transform={`translate(${p.x} ${p.y}) rotate(${p.r}) scale(${p.s})`} />
+      ))}
     </g>
   </svg>
 
   <!-- Word-of-the-day card (real content, translated) -->
-  <div
-    class="absolute bottom-[6%] start-0 w-56 rounded-2xl bg-surface-raised/95 p-4 shadow-lift ring-1 ring-line backdrop-blur sm:start-[-4%]"
-  >
+  <div class="absolute bottom-[6%] start-0 w-56 rounded-2xl bg-surface-raised/95 p-4 shadow-lift ring-1 ring-line backdrop-blur sm:start-[-4%]">
     <p class="text-xs font-semibold text-primary">{t('home.hero.sampleWord')}</p>
     <p class="mt-1 flex items-baseline gap-2">
-      <span lang="ja" class="font-jp text-3xl text-fg">学ぶ</span>
-      <span lang="ja" class="text-sm text-fg-muted">まなぶ</span>
+      <span lang="ja" class="font-jp text-3xl text-fg">
+        学ぶ
+      </span>
+      <span lang="ja" class="text-sm text-fg-muted">
+        まなぶ
+      </span>
     </p>
     <p class="mt-1 text-sm text-fg-muted">
-      <span lang="ja-Latn" class="italic">manabu</span> — {t('home.hero.sampleMeaning')}
+      <span lang="ja-Latn" class="italic">
+        manabu
+      </span>{' '}
+      — {t('home.hero.sampleMeaning')}
     </p>
   </div>
 

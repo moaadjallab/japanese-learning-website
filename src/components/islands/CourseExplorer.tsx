@@ -169,11 +169,20 @@ export default function CourseExplorer({ locale, courses, levels, categories, la
       </form>
 
       <div className="mt-6 flex min-h-10 flex-wrap items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-fg" aria-live="polite" aria-atomic="true" data-testid="result-count">
+        <p
+          className="text-sm font-semibold text-fg"
+          aria-live="polite"
+          aria-atomic="true"
+          data-testid="result-count"
+        >
           {countLabel(locale, labels.resultCount, results.length)}
         </p>
         {active && (
-          <button type="button" onClick={() => setFilters(EMPTY_FILTERS)} className={buttonClass('ghost', 'sm')}>
+          <button
+            type="button"
+            onClick={() => setFilters(EMPTY_FILTERS)}
+            className={buttonClass('ghost', 'sm')}
+          >
             <Icon name="x" size={16} />
             {labels.clearFilters}
           </button>
@@ -193,16 +202,23 @@ export default function CourseExplorer({ locale, courses, levels, categories, la
           ))}
         </ul>
       ) : (
-        <div className="mt-4 rounded-card bg-surface-raised px-6 py-14 text-center ring-1 ring-line" data-testid="course-empty">
+        <div
+          className="mt-4 rounded-card bg-surface-raised px-6 py-14 text-center ring-1 ring-line"
+          data-testid="course-empty"
+        >
           <span
             lang="ja"
             aria-hidden="true"
             data-glyph="無"
-            className="font-jp block text-5xl text-stone-300 before:content-[attr(data-glyph)]"
+            className="block font-jp text-5xl text-stone-300 before:content-[attr(data-glyph)]"
           />
           <h2 className="mt-4 text-xl font-semibold">{labels.emptyTitle}</h2>
           <p className="mx-auto mt-2 max-w-md text-fg-muted">{labels.emptyBody}</p>
-          <button type="button" onClick={() => setFilters(EMPTY_FILTERS)} className={buttonClass('secondary', 'md', 'mt-6')}>
+          <button
+            type="button"
+            onClick={() => setFilters(EMPTY_FILTERS)}
+            className={buttonClass('secondary', 'md', 'mt-6')}
+          >
             {labels.clearFilters}
           </button>
         </div>

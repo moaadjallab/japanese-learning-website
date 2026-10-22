@@ -2,7 +2,14 @@
  * React form primitives for islands. Same visuals as the Astro FormField/Input/Select.
  * Every control is linked to its label (htmlFor/id) and to hint + error (aria-describedby).
  */
-import { useId, useState, type ReactNode, type InputHTMLAttributes, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import {
+  useId,
+  useState,
+  type ReactNode,
+  type InputHTMLAttributes,
+  type SelectHTMLAttributes,
+  type TextareaHTMLAttributes,
+} from 'react';
 import { Icon } from '@/components/icons/Icon';
 import { errorClass, hintClass, inputClass, labelClass } from '@/components/ui/styles';
 
@@ -196,8 +203,15 @@ export function FormAlert({
     info: 'bg-stone-50 text-fg ring-line',
   }[tone];
   return (
-    <div role={tone === 'error' ? 'alert' : 'status'} className={`flex gap-3 rounded-xl p-4 text-sm ring-1 ${styles}`}>
-      <Icon name={tone === 'success' ? 'check' : tone === 'error' ? 'alert' : 'info'} size={20} className="mt-0.5" />
+    <div
+      role={tone === 'error' ? 'alert' : 'status'}
+      className={`flex gap-3 rounded-xl p-4 text-sm ring-1 ${styles}`}
+    >
+      <Icon
+        name={tone === 'success' ? 'check' : tone === 'error' ? 'alert' : 'info'}
+        size={20}
+        className="mt-0.5"
+      />
       <div>
         {title && <p className="font-semibold">{title}</p>}
         <div className={title ? 'mt-1' : ''}>{children}</div>

@@ -19,16 +19,20 @@ const t = useTranslations(lang);
 const entry = await getEntry('legal', `${lang}/${doc}`);
 if (!entry) throw new Error(`Missing legal document: src/content/legal/${lang}/${doc}.md`);
 const { Content } = await render(entry);
-const updated = new Intl.DateTimeFormat(LOCALE_META[lang].intl, { dateStyle: 'long', numberingSystem: 'latn' }).format(
-  entry.data.updated,
-);
+const updated = new Intl.DateTimeFormat(LOCALE_META[lang].intl, {
+  dateStyle: 'long',
+  numberingSystem: 'latn',
+}).format(entry.data.updated);
 ---
 
 <BaseLayout lang={lang} title={entry.data.title} description={entry.data.description} noindex>
   <PageHeader lang={lang} title={entry.data.title} subtitle={t('legal.lastUpdated', { date: updated })} />
   <Container class="grid gap-10 py-12 sm:py-16 lg:grid-cols-[1fr_16rem]">
     <article class="min-w-0">
-      <p role="note" class="mb-8 flex gap-3 rounded-xl bg-sakura-soft p-4 text-sm font-medium text-vermilion-dark ring-1 ring-sakura">
+      <p
+        role="note"
+        class="mb-8 flex gap-3 rounded-xl bg-sakura-soft p-4 text-sm font-medium text-vermilion-dark ring-1 ring-sakura"
+      >
         <Icon name="alert" size={20} class="shrink-0" />
         {t('legal.draftBanner')}
       </p>
@@ -37,24 +41,26 @@ const updated = new Intl.DateTimeFormat(LOCALE_META[lang].intl, { dateStyle: 'lo
       </div>
     </article>
     <nav aria-labelledby="legal-nav" class="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] lg:self-start">
-      <h2 id="legal-nav" class="text-sm font-semibold text-fg-muted">{t('legal.onThisPage')}</h2>
+      <h2 id="legal-nav" class="text-sm font-semibold text-fg-muted">
+        {t('legal.onThisPage')}
+      </h2>
       <ul class="mt-3 space-y-1">
-        {
-          legalNav.map((d) => (
-            <li>
-              <a
-                href={routes.legal(lang, d)}
-                aria-current={d === doc ? 'page' : undefined}
-                class:list={[
-                  'block rounded-lg px-3 py-2 text-sm',
-                  d === doc ? 'bg-sakura-soft font-semibold text-fg' : 'text-fg-muted hover:bg-stone-100 hover:text-fg',
-                ]}
-              >
-                {t(`legalLinks.${d}`)}
-              </a>
-            </li>
-          ))
-        }
+        {legalNav.map((d) => (
+          <li>
+            <a
+              href={routes.legal(lang, d)}
+              aria-current={d === doc ? 'page' : undefined}
+              class:list={[
+                'block rounded-lg px-3 py-2 text-sm',
+                d === doc
+                  ? 'bg-sakura-soft font-semibold text-fg'
+                  : 'text-fg-muted hover:bg-stone-100 hover:text-fg',
+              ]}
+            >
+              {t(`legalLinks.${d}`)}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   </Container>

@@ -26,14 +26,12 @@ const {
 const className = buttonClass(variant, size, `${fullWidth ? 'w-full' : ''} ${extra}`.trim());
 ---
 
-{
-  href ? (
-    <a href={href} class={className} {...rest}>
-      <slot />
-    </a>
-  ) : (
-    <button type={type} class={className} {...(rest as HTMLAttributes<'button'>)}>
-      <slot />
-    </button>
-  )
-}
+{href ? (
+  <a href={href} class={className} {...rest}>
+    <slot />
+  </a>
+) : (
+  <button type={type} class={className} {...(rest as HTMLAttributes<'button'>)}>
+    <slot />
+  </button>
+)}

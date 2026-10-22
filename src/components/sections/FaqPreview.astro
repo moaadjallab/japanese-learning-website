@@ -22,7 +22,13 @@ const items = faqs.map((faq) => ({
 }));
 ---
 
-<Section id="faq" eyebrow={t('home.faq.eyebrow')} title={t('home.faq.title')} subtitle={t('home.faq.subtitle')} size="narrow">
+<Section
+  id="faq"
+  eyebrow={t('home.faq.eyebrow')}
+  title={t('home.faq.title')}
+  subtitle={t('home.faq.subtitle')}
+  size="narrow"
+>
   <Accordion items={items} name="home-faq" />
   <div class="mt-10 text-center">
     <Button href={routes.faq(lang)} variant="secondary" size="lg">

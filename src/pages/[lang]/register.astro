@@ -48,6 +48,8 @@ const consentHtml = escapeHtml(r.consent)
   />
   <p class="mt-8 border-t border-line pt-6 text-center text-sm text-fg-muted">
     {r.haveAccount}
-    <a href={routes.login(lang)} class="ms-1 font-semibold text-primary underline-offset-4 hover:underline">{r.login}</a>
+    <a href={routes.login(lang)} class="ms-1 font-semibold text-primary underline-offset-4 hover:underline">
+      {r.login}
+    </a>
   </p>
 </AuthLayout>

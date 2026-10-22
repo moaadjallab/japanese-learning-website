@@ -26,7 +26,12 @@ describe('contact schema', () => {
     const result = validate(contactSchema, { name: ' ', email: 'nope', subject: 'Hi', message: 'short' });
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.errors).toMatchObject({ name: 'required', email: 'email', subject: 'min:3', message: 'min:10' });
+      expect(result.errors).toMatchObject({
+        name: 'required',
+        email: 'email',
+        subject: 'min:3',
+        message: 'min:10',
+      });
     }
   });
   it('flags the honeypot', () => {
@@ -53,7 +58,11 @@ describe('auth schemas', () => {
     expect(validate(registerSchema, validRegister).success).toBe(true);
   });
   it('requires matching, reasonably strong passwords', () => {
-    const weak = validate(registerSchema, { ...validRegister, password: 'abcdefgh', confirmPassword: 'abcdefgh' });
+    const weak = validate(registerSchema, {
+      ...validRegister,
+      password: 'abcdefgh',
+      confirmPassword: 'abcdefgh',
+    });
     expect(!weak.success && weak.errors.password).toBe('passwordStrength');
     const mismatch = validate(registerSchema, { ...validRegister, confirmPassword: 'other1234' });
     expect(!mismatch.success && mismatch.errors.confirmPassword).toBe('passwordMatch');

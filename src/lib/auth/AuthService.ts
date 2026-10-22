@@ -51,9 +51,16 @@ export class HttpAuthService implements AuthService {
       credentials: 'same-origin',
     });
     if (res.status === 501) throw new AuthNotAvailableError();
-    const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: { code?: string; message?: string } } & T;
+    const data = (await res.json().catch(() => ({}))) as {
+      ok?: boolean;
+      error?: { code?: string; message?: string };
+    } & T;
     if (!res.ok) {
-      throw new AuthRequestError(data.error?.message ?? 'Request failed', data.error?.code ?? 'unknown', res.status);
+      throw new AuthRequestError(
+        data.error?.message ?? 'Request failed',
+        data.error?.code ?? 'unknown',
+        res.status,
+      );
     }
     return data;
   }
@@ -72,7 +79,9 @@ export class HttpAuthService implements AuthService {
   }
   async getSession() {
     try {
-      return await this.request<{ session: Session | null }>('session', undefined, 'GET').then((d) => d.session);
+      return await this.request<{ session: Session | null }>('session', undefined, 'GET').then(
+        (d) => d.session,
+      );
     } catch (error) {
       if (error instanceof AuthNotAvailableError) return null;
       throw error;

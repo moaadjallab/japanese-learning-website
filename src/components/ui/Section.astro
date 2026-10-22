@@ -43,46 +43,39 @@ const headingId = id ? `${id}-title` : undefined;
   aria-labelledby={title && headingId ? headingId : undefined}
   class:list={['relative isolate py-16 sm:py-20 lg:py-24', tones[tone], className]}
 >
-  {
-    pattern && (
-      <div
-        class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.04]"
-        aria-hidden="true"
-      />
-    )
-  }
+  {pattern && (
+    <div
+      class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.04]"
+      aria-hidden="true"
+    />
+  )}
   <Container size={size}>
-    {
-      (eyebrow || title || subtitle) && (
-        <div
-          class:list={[
-            'mb-10 max-w-2xl sm:mb-14',
-            align === 'center' ? 'mx-auto text-center' : 'text-start',
-          ]}
-        >
-          {eyebrow && (
-            <p
-              class:list={[
-                'mb-3 text-sm font-semibold tracking-wide',
-                tone === 'inverse' ? 'text-sakura' : 'text-primary',
-              ]}
-            >
-              {eyebrow}
-            </p>
-          )}
-          {title && (
-            <Heading id={headingId} class="text-3xl font-bold sm:text-4xl">
-              {title}
-            </Heading>
-          )}
-          {subtitle && (
-            <p class:list={['mt-4 text-lg', tone === 'inverse' ? 'text-stone-200' : 'text-fg-muted']}>
-              {subtitle}
-            </p>
-          )}
-        </div>
-      )
-    }
+    {(eyebrow || title || subtitle) && (
+      <div
+        class:list={['mb-10 max-w-2xl sm:mb-14', align === 'center' ? 'mx-auto text-center' : 'text-start']}
+      >
+        {eyebrow && (
+          <p
+            class:list={[
+              'mb-3 text-sm font-semibold tracking-wide',
+              tone === 'inverse' ? 'text-sakura' : 'text-primary',
+            ]}
+          >
+            {eyebrow}
+          </p>
+        )}
+        {title && (
+          <Heading id={headingId} class="text-3xl font-bold sm:text-4xl">
+            {title}
+          </Heading>
+        )}
+        {subtitle && (
+          <p class:list={['mt-4 text-lg', tone === 'inverse' ? 'text-stone-200' : 'text-fg-muted']}>
+            {subtitle}
+          </p>
+        )}
+      </div>
+    )}
     <slot />
   </Container>
 </section>

@@ -22,57 +22,61 @@ const plans = await getPlans();
 ---
 
 <ul class="grid items-stretch gap-5 lg:grid-cols-3 lg:gap-6">
-  {
-    plans.map((plan) => (
-      <li
-        class:list={[
-          'reveal relative flex flex-col rounded-card p-6 sm:p-8',
-          plan.highlighted
-            ? 'bg-ink text-washi shadow-lift ring-2 ring-primary lg:-my-3 lg:py-11'
-            : 'bg-surface-raised shadow-soft ring-1 ring-line',
-        ]}
+  {plans.map((plan) => (
+    <li
+      class:list={[
+        'reveal relative flex flex-col rounded-card p-6 sm:p-8',
+        plan.highlighted
+          ? 'bg-ink text-washi shadow-lift ring-2 ring-primary lg:-my-3 lg:py-11'
+          : 'bg-surface-raised shadow-soft ring-1 ring-line',
+      ]}
+    >
+      {plan.highlighted && (
+        <span class:list={[badgeClass('primary'), 'absolute -top-3 start-6 px-3 py-1 shadow-soft']}>
+          <Icon name="sparkle" size={14} />
+          {t('common.mostPopular')}
+        </span>
+      )}
+      <Heading class="text-xl font-bold">{plan.name[lang]}</Heading>
+      <p class:list={['mt-2 text-sm', plan.highlighted ? 'text-stone-300' : 'text-fg-muted']}>
+        {plan.description[lang]}
+      </p>
+
+      <p class="mt-6 flex items-baseline gap-1.5" {...(isPriceSet(plan) ? {} : ph('price'))}>
+        <span class="text-4xl font-bold tracking-tight" dir="ltr">
+          {formatPrice(plan, lang)}
+        </span>
+        <span class:list={['text-sm font-medium', plan.highlighted ? 'text-stone-300' : 'text-fg-muted']}>
+          {t('common.perMonth')}
+        </span>
+      </p>
+      <p class:list={['mt-1 text-xs', plan.highlighted ? 'text-stone-400' : 'text-fg-muted']}>
+        {t('common.billingFrequency')}: {t('common.monthly')}
+      </p>
+
+      <ul class="mt-6 flex-1 space-y-3 text-sm">
+        {plan.features[lang].map((feature) => (
+          <li class="flex items-start gap-2.5">
+            <span
+              class:list={[
+                'mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full',
+                plan.highlighted ? 'bg-primary text-on-primary' : 'bg-sakura text-vermilion-dark',
+              ]}
+            >
+              <Icon name="check" size={12} strokeWidth={3} />
+            </span>
+            {feature}
+          </li>
+        ))}
+      </ul>
+
+      <a
+        href={routes.checkout(lang, plan.id)}
+        class={buttonClass(plan.highlighted ? 'primary' : 'secondary', 'lg', 'mt-8 w-full')}
       >
-        {plan.highlighted && (
-          <span class:list={[badgeClass('primary'), 'absolute -top-3 start-6 px-3 py-1 shadow-soft']}>
-            <Icon name="sparkle" size={14} />
-            {t('common.mostPopular')}
-          </span>
-        )}
-        <Heading class="text-xl font-bold">{plan.name[lang]}</Heading>
-        <p class:list={['mt-2 text-sm', plan.highlighted ? 'text-stone-300' : 'text-fg-muted']}>{plan.description[lang]}</p>
-
-        <p class="mt-6 flex items-baseline gap-1.5" {...(isPriceSet(plan) ? {} : ph('price'))}>
-          <span class="text-4xl font-bold tracking-tight" dir="ltr">{formatPrice(plan, lang)}</span>
-          <span class:list={['text-sm font-medium', plan.highlighted ? 'text-stone-300' : 'text-fg-muted']}>{t('common.perMonth')}</span>
-        </p>
-        <p class:list={['mt-1 text-xs', plan.highlighted ? 'text-stone-400' : 'text-fg-muted']}>
-          {t('common.billingFrequency')}: {t('common.monthly')}
-        </p>
-
-        <ul class="mt-6 flex-1 space-y-3 text-sm">
-          {plan.features[lang].map((feature) => (
-            <li class="flex items-start gap-2.5">
-              <span
-                class:list={[
-                  'mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full',
-                  plan.highlighted ? 'bg-primary text-on-primary' : 'bg-sakura text-vermilion-dark',
-                ]}
-              >
-                <Icon name="check" size={12} strokeWidth={3} />
-              </span>
-              {feature}
-            </li>
-          ))}
-        </ul>
-
-        <a
-          href={routes.checkout(lang, plan.id)}
-          class={buttonClass(plan.highlighted ? 'primary' : 'secondary', 'lg', 'mt-8 w-full')}
-        >
-          {t('common.subscribeNow')}
-          <span class="sr-only">— {plan.name[lang]}</span>
-        </a>
-      </li>
-    ))
-  }
+        {t('common.subscribeNow')}
+        <span class="sr-only">— {plan.name[lang]}</span>
+      </a>
+    </li>
+  ))}
 </ul>

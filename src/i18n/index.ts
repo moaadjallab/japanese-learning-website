@@ -35,9 +35,7 @@ export type TranslationParams = Record<string, string | number>;
 /** Replace `{name}` tokens. Unknown tokens are left untouched so they are easy to spot. */
 export const interpolate = (template: string, params?: TranslationParams): string =>
   params
-    ? template.replace(/\{(\w+)\}/g, (match, key: string) =>
-        key in params ? String(params[key]) : match,
-      )
+    ? template.replace(/\{(\w+)\}/g, (match, key: string) => (key in params ? String(params[key]) : match))
     : template;
 
 const lookup = (dict: unknown, key: string): string | undefined => {

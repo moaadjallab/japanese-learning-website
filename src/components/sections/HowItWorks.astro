@@ -22,23 +22,25 @@ const kanjiNumerals = ['一', '二', '三', '四'];
       class="absolute inset-x-[12%] top-10 hidden h-px bg-gradient-to-r from-transparent via-stone-300 to-transparent lg:block"
       aria-hidden="true"
     ></span>
-    {
-      dict.home.howItWorks.steps.map((step, i) => (
-        <li class="reveal relative rounded-card bg-surface-raised p-6 text-center shadow-soft ring-1 ring-line">
-          <div class="relative mx-auto flex size-20 items-center justify-center rounded-full bg-washi ring-1 ring-line">
-            <span lang="ja" aria-hidden="true" class="font-jp absolute -top-1 -end-1 flex size-8 items-center justify-center rounded-full bg-primary text-sm text-on-primary">
-              {kanjiNumerals[i]}
-            </span>
-            <Icon name={icons[i] ?? 'sparkle'} size={28} class="text-fg" />
-          </div>
-          <p class="mt-5 text-xs font-semibold tracking-wider text-primary">
-            <span class="sr-only">{dict.home.howItWorks.eyebrow}: </span>
-            {String(i + 1).padStart(2, '0')}
-          </p>
-          <h3 class="mt-1 text-lg font-semibold">{step.title}</h3>
-          <p class="mt-2 text-fg-muted">{step.description}</p>
-        </li>
-      ))
-    }
+    {dict.home.howItWorks.steps.map((step, i) => (
+      <li class="reveal relative rounded-card bg-surface-raised p-6 text-center shadow-soft ring-1 ring-line">
+        <div class="relative mx-auto flex size-20 items-center justify-center rounded-full bg-washi ring-1 ring-line">
+          <span
+            lang="ja"
+            aria-hidden="true"
+            class="font-jp absolute -top-1 -end-1 flex size-8 items-center justify-center rounded-full bg-primary text-sm text-on-primary"
+          >
+            {kanjiNumerals[i]}
+          </span>
+          <Icon name={icons[i] ?? 'sparkle'} size={28} class="text-fg" />
+        </div>
+        <p class="mt-5 text-xs font-semibold tracking-wider text-primary">
+          <span class="sr-only">{dict.home.howItWorks.eyebrow}: </span>
+          {String(i + 1).padStart(2, '0')}
+        </p>
+        <h3 class="mt-1 text-lg font-semibold">{step.title}</h3>
+        <p class="mt-2 text-fg-muted">{step.description}</p>
+      </li>
+    ))}
   </ol>
 </Section>

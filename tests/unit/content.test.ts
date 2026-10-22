@@ -58,7 +58,9 @@ describe('plans.json', () => {
 
 describe('faqs.json', () => {
   it('covers the 4 FAQ categories and the 9 home-page questions', () => {
-    expect(new Set(faqs.map((f) => f.category))).toEqual(new Set(['courses', 'subscriptions', 'classes', 'payments']));
+    expect(new Set(faqs.map((f) => f.category))).toEqual(
+      new Set(['courses', 'subscriptions', 'classes', 'payments']),
+    );
     expect(faqs.filter((f) => 'homeOrder' in f)).toHaveLength(9);
   });
 });

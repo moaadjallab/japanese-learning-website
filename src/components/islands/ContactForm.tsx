@@ -5,7 +5,12 @@
  */
 import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { buttonClass } from '@/components/ui/styles';
-import { contactSchema, validate, validationMessage, type ValidationMessages } from '@/lib/validation/schemas';
+import {
+  contactSchema,
+  validate,
+  validationMessage,
+  type ValidationMessages,
+} from '@/lib/validation/schemas';
 import { FormAlert, TextField, TextareaField } from './forms/fields';
 
 export interface ContactFormLabels {
@@ -35,7 +40,8 @@ interface Props {
 }
 
 type Field = 'name' | 'email' | 'subject' | 'message';
-type Status = { kind: 'idle' } | { kind: 'sending' } | { kind: 'success' } | { kind: 'error'; message: string };
+type Status =
+  { kind: 'idle' } | { kind: 'sending' } | { kind: 'success' } | { kind: 'error'; message: string };
 
 declare global {
   interface Window {
@@ -47,10 +53,22 @@ declare global {
   }
 }
 
-const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad';
+const TURNSTILE_SRC =
+  'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad';
 
-export default function ContactForm({ locale, labels, validation, turnstileSiteKey, privacyNoteHtml }: Props) {
-  const [values, setValues] = useState<Record<Field, string>>({ name: '', email: '', subject: '', message: '' });
+export default function ContactForm({
+  locale,
+  labels,
+  validation,
+  turnstileSiteKey,
+  privacyNoteHtml,
+}: Props) {
+  const [values, setValues] = useState<Record<Field, string>>({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [token, setToken] = useState<string>('');
@@ -133,7 +151,9 @@ export default function ContactForm({ locale, labels, validation, turnstileSiteK
         submitted.current = false;
         return;
       }
-      const data = (await res.json().catch(() => null)) as { error?: { code?: string; fields?: Record<string, string> } } | null;
+      const data = (await res.json().catch(() => null)) as {
+        error?: { code?: string; fields?: Record<string, string> };
+      } | null;
       const code = data?.error?.code;
       if (code === 'validation_error' && data?.error?.fields) {
         const fieldErrors: Partial<Record<Field, string>> = {};
@@ -164,7 +184,14 @@ export default function ContactForm({ locale, labels, validation, turnstileSiteK
   const sending = status.kind === 'sending';
 
   return (
-    <form ref={formRef} noValidate onSubmit={onSubmit} className="space-y-5" aria-busy={sending} data-testid="contact-form">
+    <form
+      ref={formRef}
+      noValidate
+      onSubmit={onSubmit}
+      className="space-y-5"
+      aria-busy={sending}
+      data-testid="contact-form"
+    >
       {status.kind === 'success' && <FormAlert tone="success">{labels.success}</FormAlert>}
       {status.kind === 'error' && <FormAlert tone="error">{status.message}</FormAlert>}
 
@@ -221,13 +248,18 @@ export default function ContactForm({ locale, labels, validation, turnstileSiteK
         </label>
       </div>
 
-      {turnstileSiteKey && <div ref={widgetRef} role="group" aria-label={labels.captchaLabel} className="min-h-[65px]" />}
+      {turnstileSiteKey && (
+        <div ref={widgetRef} role="group" aria-label={labels.captchaLabel} className="min-h-[65px]" />
+      )}
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-fg-muted" dangerouslySetInnerHTML={{ __html: privacyNoteHtml }} />
         <button type="submit" disabled={sending} className={buttonClass('primary', 'lg', 'shrink-0')}>
           {sending && (
-            <span className="size-4 animate-spin rounded-full border-2 border-on-primary border-t-transparent" aria-hidden="true" />
+            <span
+              className="size-4 animate-spin rounded-full border-2 border-on-primary border-t-transparent"
+              aria-hidden="true"
+            />
           )}
           {sending ? labels.sending : labels.submit}
         </button>

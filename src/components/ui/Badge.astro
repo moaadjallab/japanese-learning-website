@@ -8,4 +8,6 @@ interface Props {
 const { tone = 'neutral', class: className = '' } = Astro.props;
 ---
 
-<span class:list={[badgeClass(tone), className]}><slot /></span>
+<span class:list={[badgeClass(tone), className]}>
+  <slot />
+</span>

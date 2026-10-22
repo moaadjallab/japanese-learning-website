@@ -89,7 +89,10 @@ function StatusAlert({
     return (
       <FormAlert tone="info" title={labels.unavailableTitle}>
         <p>{labels.unavailableBody}</p>
-        <a href={labels.contactHref} className="mt-2 inline-block font-semibold text-primary underline-offset-4 hover:underline">
+        <a
+          href={labels.contactHref}
+          className="mt-2 inline-block font-semibold text-primary underline-offset-4 hover:underline"
+        >
           {labels.contactUs}
         </a>
       </FormAlert>
@@ -101,11 +104,22 @@ function StatusAlert({
   return null;
 }
 
-function SubmitButton({ loading, label, loadingLabel }: { loading: boolean; label: string; loadingLabel: string }) {
+function SubmitButton({
+  loading,
+  label,
+  loadingLabel,
+}: {
+  loading: boolean;
+  label: string;
+  loadingLabel: string;
+}) {
   return (
     <button type="submit" disabled={loading} className={buttonClass('primary', 'lg', 'w-full')}>
       {loading && (
-        <span className="size-4 animate-spin rounded-full border-2 border-on-primary border-t-transparent" aria-hidden="true" />
+        <span
+          className="size-4 animate-spin rounded-full border-2 border-on-primary border-t-transparent"
+          aria-hidden="true"
+        />
       )}
       {loading ? loadingLabel : label}
     </button>
@@ -143,7 +157,14 @@ export function LoginForm({
     void submit(values, (data) => authService.login(data));
   };
   return (
-    <form ref={formRef} noValidate onSubmit={onSubmit} className="space-y-5" aria-busy={status === 'loading'} data-testid="login-form">
+    <form
+      ref={formRef}
+      noValidate
+      onSubmit={onSubmit}
+      className="space-y-5"
+      aria-busy={status === 'loading'}
+      data-testid="login-form"
+    >
       <StatusAlert status={status} labels={common} hasFieldErrors={Object.keys(errors).length > 0} />
       <TextField
         name="email"
@@ -170,7 +191,10 @@ export function LoginForm({
           onChange={(e) => set('password', e.target.value)}
         />
         <div className="text-end">
-          <a href={labels.forgotHref} className="text-sm font-semibold text-primary underline-offset-4 hover:underline">
+          <a
+            href={labels.forgotHref}
+            className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
+          >
             {labels.forgot}
           </a>
         </div>
@@ -227,7 +251,14 @@ export function RegisterForm({
     void submit(values, ({ confirmPassword: _confirm, ...data }) => authService.register(data));
   };
   return (
-    <form ref={formRef} noValidate onSubmit={onSubmit} className="space-y-5" aria-busy={status === 'loading'} data-testid="register-form">
+    <form
+      ref={formRef}
+      noValidate
+      onSubmit={onSubmit}
+      className="space-y-5"
+      aria-busy={status === 'loading'}
+      data-testid="register-form"
+    >
       <StatusAlert status={status} labels={common} hasFieldErrors={Object.keys(errors).length > 0} />
       <TextField
         name="fullName"
@@ -324,7 +355,14 @@ export function ForgotPasswordForm({
     void submit({ email }, (data) => authService.requestPasswordReset(data.email));
   };
   return (
-    <form ref={formRef} noValidate onSubmit={onSubmit} className="space-y-5" aria-busy={status === 'loading'} data-testid="forgot-form">
+    <form
+      ref={formRef}
+      noValidate
+      onSubmit={onSubmit}
+      className="space-y-5"
+      aria-busy={status === 'loading'}
+      data-testid="forgot-form"
+    >
       <StatusAlert status={status} labels={common} hasFieldErrors={Object.keys(errors).length > 0} />
       <TextField
         name="email"

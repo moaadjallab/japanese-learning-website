@@ -10,7 +10,10 @@ if (!url || !out) {
 }
 const browser = await chromium.launch();
 // Reduced motion: scroll-driven reveal animations would otherwise hide content in full-page captures.
-const page = await browser.newPage({ viewport: { width: Number(width), height: 900 }, reducedMotion: 'reduce' });
+const page = await browser.newPage({
+  viewport: { width: Number(width), height: 900 },
+  reducedMotion: 'reduce',
+});
 page.on('console', (msg) => msg.type() === 'error' && console.log('[console]', msg.text()));
 page.on('pageerror', (err) => console.log('[pageerror]', err.message));
 await page.goto(url, { waitUntil: 'networkidle' });

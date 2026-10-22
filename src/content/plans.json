@@ -40,7 +40,13 @@
       "ar": "حصص مباشرة ودعم من المعلّم لتتقدّم أسرع."
     },
     "features": {
-      "en": ["Everything in Basic", "Live classes", "Conversation practice", "Teacher support", "Additional exercises"],
+      "en": [
+        "Everything in Basic",
+        "Live classes",
+        "Conversation practice",
+        "Teacher support",
+        "Additional exercises"
+      ],
       "ar": ["كل ما في الخطة الأساسية", "حصص مباشرة", "تدريب على المحادثة", "دعم المعلّم", "تمارين إضافية"]
     },
     "comparison": {

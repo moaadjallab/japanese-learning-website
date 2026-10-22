@@ -1,6 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { isActivePath, routes, stripLocale, switchLocalePath } from '@/lib/routes';
-import { filterCourses, levelRangeLabel, normalizeSearch, parseFilters, serializeFilters } from '@/lib/catalog/filter';
+import {
+  filterCourses,
+  levelRangeLabel,
+  normalizeSearch,
+  parseFilters,
+  serializeFilters,
+} from '@/lib/catalog/filter';
 import { formatPrice, PRICE_PLACEHOLDER } from '@/lib/pricing';
 import { createRateLimiter } from '@/lib/security/rateLimit';
 import { verifyTurnstile } from '@/lib/security/turnstile';
@@ -19,7 +25,9 @@ describe('routes', () => {
     expect(routes.home('ar')).toBe('/ar/');
     expect(routes.course('en', 'kanji')).toBe('/en/courses/kanji/');
     expect(routes.checkout('ar', 'premium')).toBe('/ar/checkout/?plan=premium');
-    expect(routes.courses('en', { level: 'n5', category: 'jlpt' })).toBe('/en/courses/?level=n5&category=jlpt');
+    expect(routes.courses('en', { level: 'n5', category: 'jlpt' })).toBe(
+      '/en/courses/?level=n5&category=jlpt',
+    );
     expect(routes.legal('en', 'refund')).toBe('/en/legal/refund/');
   });
   it('strips and switches locales', () => {
@@ -52,22 +60,44 @@ const card = (over: Partial<CourseCardData>): CourseCardData => ({
 describe('catalog filter', () => {
   const courses = [
     card({ slug: 'kanji', title: 'Kanji', levels: ['n5', 'n4', 'n3', 'n2', 'n1'], categories: ['kanji'] }),
-    card({ slug: 'travel', title: 'Japanese for Travel', levels: ['beginner', 'n5'], categories: ['travel', 'conversation'] }),
-    card({ slug: 'ar', title: 'الهيراغانا والكاتاكانا', levels: ['beginner'], categories: ['hiragana-katakana'] }),
+    card({
+      slug: 'travel',
+      title: 'Japanese for Travel',
+      levels: ['beginner', 'n5'],
+      categories: ['travel', 'conversation'],
+    }),
+    card({
+      slug: 'ar',
+      title: 'الهيراغانا والكاتاكانا',
+      levels: ['beginner'],
+      categories: ['hiragana-katakana'],
+    }),
   ];
   it('filters by level and category', () => {
-    expect(filterCourses(courses, { q: '', level: 'n1', category: '' }).map((c) => c.slug)).toEqual(['kanji']);
-    expect(filterCourses(courses, { q: '', level: '', category: 'conversation' }).map((c) => c.slug)).toEqual(['travel']);
+    expect(filterCourses(courses, { q: '', level: 'n1', category: '' }).map((c) => c.slug)).toEqual([
+      'kanji',
+    ]);
+    expect(filterCourses(courses, { q: '', level: '', category: 'conversation' }).map((c) => c.slug)).toEqual(
+      ['travel'],
+    );
     expect(filterCourses(courses, { q: '', level: 'beginner', category: 'kanji' })).toHaveLength(0);
   });
   it('searches case- and diacritic-insensitively, including Arabic', () => {
-    expect(filterCourses(courses, { q: 'TRAVEL', level: '', category: '' }).map((c) => c.slug)).toEqual(['travel']);
-    expect(filterCourses(courses, { q: 'الهيراغانا', level: '', category: '' }).map((c) => c.slug)).toEqual(['ar']);
+    expect(filterCourses(courses, { q: 'TRAVEL', level: '', category: '' }).map((c) => c.slug)).toEqual([
+      'travel',
+    ]);
+    expect(filterCourses(courses, { q: 'الهيراغانا', level: '', category: '' }).map((c) => c.slug)).toEqual([
+      'ar',
+    ]);
     expect(normalizeSearch('Ryokō')).toBe('ryoko');
     expect(normalizeSearch('أَهلاً')).toBe('اهلا');
   });
   it('round-trips URL params and ignores invalid values', () => {
-    expect(parseFilters('?level=n3&category=work&q=keigo')).toEqual({ q: 'keigo', level: 'n3', category: 'work' });
+    expect(parseFilters('?level=n3&category=work&q=keigo')).toEqual({
+      q: 'keigo',
+      level: 'n3',
+      category: 'work',
+    });
     expect(parseFilters('?level=n9&category=<script>')).toEqual({ q: '', level: '', category: '' });
     expect(serializeFilters({ q: ' kanji ', level: 'n5', category: '' })).toBe('?q=kanji&level=n5');
     expect(serializeFilters({ q: '', level: '', category: '' })).toBe('');
@@ -162,7 +192,9 @@ describe('auth service (V1)', () => {
   it('reports "not available" on 501 instead of faking a session', async () => {
     const fetch501 = vi.fn().mockResolvedValue(new Response('{}', { status: 501 }));
     const service = new HttpAuthService('/api/auth', fetch501);
-    await expect(service.login({ email: 'a@b.c', password: 'x' })).rejects.toBeInstanceOf(AuthNotAvailableError);
+    await expect(service.login({ email: 'a@b.c', password: 'x' })).rejects.toBeInstanceOf(
+      AuthNotAvailableError,
+    );
     expect(await service.getSession()).toBeNull();
   });
 });
@@ -173,7 +205,10 @@ describe('payment adapters (V1)', () => {
     await expect(provider.getSubscriptionStatus('cs_123')).rejects.toBeInstanceOf(PaymentsNotAvailableError);
   });
   it('only uses configured https checkout links', async () => {
-    const provider = new ExternalLinkPaymentProvider({ basic: 'https://pay.example.com/b', premium: 'javascript:alert(1)' });
+    const provider = new ExternalLinkPaymentProvider({
+      basic: 'https://pay.example.com/b',
+      premium: 'javascript:alert(1)',
+    });
     expect(provider.linkFor('basic')).toBe('https://pay.example.com/b');
     expect(provider.linkFor('premium')).toBeUndefined();
     expect(provider.linkFor('private')).toBeUndefined();

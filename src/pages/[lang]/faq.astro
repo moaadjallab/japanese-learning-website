@@ -24,7 +24,10 @@ const siteUrl = Astro.site ?? Astro.url.origin;
   title={t('faqPage.meta.title')}
   description={t('faqPage.meta.description')}
   jsonLd={[
-    faqPageLd(groups.flatMap((g) => g.items), lang),
+    faqPageLd(
+      groups.flatMap((g) => g.items),
+      lang,
+    ),
     breadcrumbLd(
       [
         { name: t('nav.home'), path: routes.home(lang) },
@@ -34,36 +37,40 @@ const siteUrl = Astro.site ?? Astro.url.origin;
     ),
   ]}
 >
-  <PageHeader lang={lang} eyebrow={t('faqPage.eyebrow')} title={t('faqPage.title')} subtitle={t('faqPage.subtitle')} accent="質問">
+  <PageHeader
+    lang={lang}
+    eyebrow={t('faqPage.eyebrow')}
+    title={t('faqPage.title')}
+    subtitle={t('faqPage.subtitle')}
+    accent="質問"
+  >
     <nav aria-label={t('faqPage.jumpTo')} class="mt-8">
       <ul class="flex flex-wrap gap-2">
-        {
-          groups.map((g) => (
-            <li>
-              <a
-                href={`#faq-${g.category}`}
-                class="inline-flex rounded-full bg-surface-raised px-4 py-2 text-sm font-semibold ring-1 ring-line hover:bg-sakura-soft hover:ring-sakura"
-              >
-                {t(`faqPage.categories.${g.category}`)}
-              </a>
-            </li>
-          ))
-        }
+        {groups.map((g) => (
+          <li>
+            <a
+              href={`#faq-${g.category}`}
+              class="inline-flex rounded-full bg-surface-raised px-4 py-2 text-sm font-semibold ring-1 ring-line hover:bg-sakura-soft hover:ring-sakura"
+            >
+              {t(`faqPage.categories.${g.category}`)}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   </PageHeader>
 
   <Container size="narrow" class="space-y-14 py-14 sm:py-20">
-    {
-      groups.map((g) => (
-        <section id={`faq-${g.category}`} aria-labelledby={`faq-${g.category}-title`}>
-          <h2 id={`faq-${g.category}-title`} class="mb-5 text-2xl font-bold">
-            {t(`faqPage.categories.${g.category}`)}
-          </h2>
-          <Accordion items={g.items.map((f) => ({ id: `q-${f.id}`, title: f.question[lang], content: f.answer[lang] }))} />
-        </section>
-      ))
-    }
+    {groups.map((g) => (
+      <section id={`faq-${g.category}`} aria-labelledby={`faq-${g.category}-title`}>
+        <h2 id={`faq-${g.category}-title`} class="mb-5 text-2xl font-bold">
+          {t(`faqPage.categories.${g.category}`)}
+        </h2>
+        <Accordion
+          items={g.items.map((f) => ({ id: `q-${f.id}`, title: f.question[lang], content: f.answer[lang] }))}
+        />
+      </section>
+    ))}
 
     <aside class="flex flex-col items-start gap-5 rounded-card bg-sakura-soft p-6 ring-1 ring-sakura sm:flex-row sm:items-center sm:justify-between sm:p-8">
       <div>

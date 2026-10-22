@@ -17,7 +17,10 @@ export const THIRD_PARTY = Object.freeze({
 export const buildCsp = (scriptHashes = []) =>
   [
     "default-src 'self'",
-    `script-src 'self' ${scriptHashes.join(' ')} ${THIRD_PARTY.turnstile} ${THIRD_PARTY.analyticsScript}`.replace(/\s+/g, ' '),
+    `script-src 'self' ${scriptHashes.join(' ')} ${THIRD_PARTY.turnstile} ${THIRD_PARTY.analyticsScript}`.replace(
+      /\s+/g,
+      ' ',
+    ),
     // Astro inlines small critical stylesheets; inline styles carry no script execution risk.
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",

@@ -33,7 +33,10 @@ const cheapestPlan = plans[0];
 const related = (await getRelatedCourses(course)).map((c) => toCourseCard(c, lang));
 const siteUrl = Astro.site ?? Astro.url.origin;
 const title = course.title[lang];
-const description = t('courseDetail.metaDescription', { description: course.description[lang], level: levelLabel });
+const description = t('courseDetail.metaDescription', {
+  description: course.description[lang],
+  level: levelLabel,
+});
 ---
 
 <BaseLayout
@@ -65,17 +68,21 @@ const description = t('courseDetail.metaDescription', { description: course.desc
     ]}
   >
     <ul class="mt-6 flex flex-wrap gap-2">
-      <li class={badgeClass('accent')}><span class="sr-only">{t('courseDetail.level')}: </span>{levelLabel}</li>
-      {
-        course.categories.map((c) => (
-          <li>
-            <a href={routes.courses(lang, { category: c })} class:list={[badgeClass('neutral'), 'hover:bg-stone-200']}>
-              <span class="sr-only">{t('courseDetail.category')}: </span>
-              {dict.categories[c]}
-            </a>
-          </li>
-        ))
-      }
+      <li class={badgeClass('accent')}>
+        <span class="sr-only">{t('courseDetail.level')}: </span>
+        {levelLabel}
+      </li>
+      {course.categories.map((c) => (
+        <li>
+          <a
+            href={routes.courses(lang, { category: c })}
+            class:list={[badgeClass('neutral'), 'hover:bg-stone-200']}
+          >
+            <span class="sr-only">{t('courseDetail.category')}: </span>
+            {dict.categories[c]}
+          </a>
+        </li>
+      ))}
     </ul>
   </PageHeader>
 
@@ -91,93 +98,129 @@ const description = t('courseDetail.metaDescription', { description: course.desc
       />
 
       <section aria-labelledby="overview-title">
-        <h2 id="overview-title" class="text-2xl font-bold">{t('courseDetail.overview')}</h2>
+        <h2 id="overview-title" class="text-2xl font-bold">
+          {t('courseDetail.overview')}
+        </h2>
         <p class="mt-4 text-lg text-fg-muted">{course.overview[lang]}</p>
       </section>
 
       <section aria-labelledby="learn-title">
-        <h2 id="learn-title" class="text-2xl font-bold">{t('courseDetail.whatYouLearn')}</h2>
+        <h2 id="learn-title" class="text-2xl font-bold">
+          {t('courseDetail.whatYouLearn')}
+        </h2>
         <ul class="mt-5 grid gap-3 sm:grid-cols-2" {...ph('curriculum outline')}>
-          {
-            course.outcomes[lang].map((item) => (
-              <li class="flex items-start gap-3 rounded-xl bg-surface-raised p-4 ring-1 ring-line">
-                <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-sakura text-vermilion-dark">
-                  <Icon name="check" size={13} strokeWidth={3} />
-                </span>
-                <span>{item}</span>
-              </li>
-            ))
-          }
+          {course.outcomes[lang].map((item) => (
+            <li class="flex items-start gap-3 rounded-xl bg-surface-raised p-4 ring-1 ring-line">
+              <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-sakura text-vermilion-dark">
+                <Icon name="check" size={13} strokeWidth={3} />
+              </span>
+              <span>{item}</span>
+            </li>
+          ))}
         </ul>
       </section>
 
-      <section aria-labelledby="example-title" class="relative overflow-hidden rounded-card bg-ink p-6 text-washi sm:p-8">
-        <div class="pattern-asanoha pointer-events-none absolute inset-0 opacity-[0.06]" aria-hidden="true"></div>
-        <h2 id="example-title" class="relative text-sm font-semibold text-sakura">{t('courseDetail.example')}</h2>
-        <p lang="ja" class="font-jp relative mt-4 text-3xl leading-snug sm:text-4xl">{course.example.ja}</p>
-        <p lang="ja-Latn" class="relative mt-3 text-stone-300 italic">{course.example.romaji}</p>
+      <section
+        aria-labelledby="example-title"
+        class="relative overflow-hidden rounded-card bg-ink p-6 text-washi sm:p-8"
+      >
+        <div
+          class="pattern-asanoha pointer-events-none absolute inset-0 opacity-[0.06]"
+          aria-hidden="true"
+        ></div>
+        <h2 id="example-title" class="relative text-sm font-semibold text-sakura">
+          {t('courseDetail.example')}
+        </h2>
+        <p lang="ja" class="font-jp relative mt-4 text-3xl leading-snug sm:text-4xl">
+          {course.example.ja}
+        </p>
+        <p lang="ja-Latn" class="relative mt-3 text-stone-300 italic">
+          {course.example.romaji}
+        </p>
         <p class="relative mt-1 text-washi">{course.example.meaning[lang]}</p>
       </section>
     </div>
 
-    <aside class="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] lg:self-start" aria-labelledby="plans-title">
+    <aside
+      class="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] lg:self-start"
+      aria-labelledby="plans-title"
+    >
       <div class="rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line">
-        <h2 id="plans-title" class="text-lg font-bold">{t('courseDetail.includedIn')}</h2>
+        <h2 id="plans-title" class="text-lg font-bold">
+          {t('courseDetail.includedIn')}
+        </h2>
         <p class="mt-1 text-sm text-fg-muted">{t('courseDetail.includedInBody')}</p>
         <ul class="mt-5 space-y-2.5">
-          {
-            plans.map((plan) => (
-              <li>
-                <a
-                  href={routes.checkout(lang, plan.id)}
-                  class="flex items-center justify-between gap-3 rounded-xl px-4 py-3 ring-1 ring-line transition-colors hover:bg-sakura-soft hover:ring-sakura"
-                >
-                  <span class="font-semibold">
-                    {plan.name[lang]}
-                    {plan.highlighted && <span class:list={[badgeClass('primary'), 'ms-2 align-middle']}>{t('common.mostPopular')}</span>}
-                  </span>
-                  <span class="text-sm text-fg-muted">
-                    <span dir="ltr" class="font-semibold text-fg">{formatPrice(plan, lang)}</span> {t('common.perMonth')}
-                  </span>
-                </a>
-              </li>
-            ))
-          }
+          {plans.map((plan) => (
+            <li>
+              <a
+                href={routes.checkout(lang, plan.id)}
+                class="flex items-center justify-between gap-3 rounded-xl px-4 py-3 ring-1 ring-line transition-colors hover:bg-sakura-soft hover:ring-sakura"
+              >
+                <span class="font-semibold">
+                  {plan.name[lang]}
+                  {plan.highlighted && (
+                    <span class:list={[badgeClass('primary'), 'ms-2 align-middle']}>
+                      {t('common.mostPopular')}
+                    </span>
+                  )}
+                </span>
+                <span class="text-sm text-fg-muted">
+                  <span dir="ltr" class="font-semibold text-fg">
+                    {formatPrice(plan, lang)}
+                  </span>{' '}
+                  {t('common.perMonth')}
+                </span>
+              </a>
+            </li>
+          ))}
         </ul>
-        {
-          cheapestPlan && (
-            <a href={routes.checkout(lang, (plans.find((p) => p.highlighted) ?? cheapestPlan).id)} class={buttonClass('primary', 'lg', 'mt-6 w-full')}>
-              {t('common.subscribeNow')}
-            </a>
-          )
-        }
-        <a href={routes.pricing(lang, 'compare')} class="mt-3 block text-center text-sm font-semibold text-primary underline-offset-4 hover:underline">
+        {cheapestPlan && (
+          <a
+            href={routes.checkout(lang, (plans.find((p) => p.highlighted) ?? cheapestPlan).id)}
+            class={buttonClass('primary', 'lg', 'mt-6 w-full')}
+          >
+            {t('common.subscribeNow')}
+          </a>
+        )}
+        <a
+          href={routes.pricing(lang, 'compare')}
+          class="mt-3 block text-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
+        >
           {t('common.comparePlans')}
         </a>
       </div>
-      <a href={routes.courses(lang)} class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-fg-muted hover:text-fg">
+      <a
+        href={routes.courses(lang)}
+        class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-fg-muted hover:text-fg"
+      >
         <Icon name="arrow-right" size={16} class="rotate-180" />
         {t('courseDetail.backToCourses')}
       </a>
     </aside>
   </Container>
 
-  {
-    related.length > 0 && (
-      <section class="border-t border-line bg-surface-sunken py-14 sm:py-16" aria-labelledby="related-title">
-        <Container size="wide">
-          <h2 id="related-title" class="text-2xl font-bold">{t('courseDetail.related')}</h2>
-          <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {related.map((c) => (
-              <li>
-                <CourseCard lang={lang} course={c} />
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-    )
-  }
+  {related.length > 0 && (
+    <section class="border-t border-line bg-surface-sunken py-14 sm:py-16" aria-labelledby="related-title">
+      <Container size="wide">
+        <h2 id="related-title" class="text-2xl font-bold">
+          {t('courseDetail.related')}
+        </h2>
+        <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {related.map((c) => (
+            <li>
+              <CourseCard lang={lang} course={c} />
+            </li>
+          ))}
+        </ul>
+      </Container>
+    </section>
+  )}
 
-  <FinalCta lang={lang} title={t('courseDetail.ctaTitle')} subtitle={t('courseDetail.ctaBody')} cta={t('common.subscribeNow')} />
+  <FinalCta
+    lang={lang}
+    title={t('courseDetail.ctaTitle')}
+    subtitle={t('courseDetail.ctaBody')}
+    cta={t('common.subscribeNow')}
+  />
 </BaseLayout>

@@ -38,7 +38,9 @@ const criticalFonts = lang === 'ar' ? [plexArabic, plexArabicBold] : [interLatin
     <meta name="theme-color" content="#FAF8F5" />
     <meta name="color-scheme" content="light" />
     <meta name="format-detection" content="telephone=no" />
-    {criticalFonts.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
+    {criticalFonts.map((href) => (
+      <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
+    ))}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />

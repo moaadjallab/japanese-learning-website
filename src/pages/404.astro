@@ -18,16 +18,34 @@ const t = useTranslations(lang);
 Astro.response.status = 404;
 ---
 
-<BaseLayout lang={lang} title={t('notFound.meta.title')} description={t('notFound.meta.description')} noindex alternates={false}>
+<BaseLayout
+  lang={lang}
+  title={t('notFound.meta.title')}
+  description={t('notFound.meta.description')}
+  noindex
+  alternates={false}
+>
   <section class="relative isolate overflow-hidden py-20 sm:py-28" aria-labelledby="nf-title">
-    <div class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.05]" aria-hidden="true"></div>
+    <div
+      class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.05]"
+      aria-hidden="true"
+    ></div>
     <Container size="narrow" class="text-center">
-      <p lang="ja" aria-hidden="true" data-glyph="迷子" class="font-jp text-7xl text-stone-200 before:content-[attr(data-glyph)] sm:text-8xl"></p>
+      <p
+        lang="ja"
+        aria-hidden="true"
+        data-glyph="迷子"
+        class="font-jp text-7xl text-stone-200 before:content-[attr(data-glyph)] sm:text-8xl"
+      ></p>
       <p class="mt-4 text-sm font-semibold tracking-widest text-primary">{t('notFound.code')}</p>
-      <h1 id="nf-title" class="mt-2 text-3xl font-bold sm:text-4xl">{t('notFound.title')}</h1>
+      <h1 id="nf-title" class="mt-2 text-3xl font-bold sm:text-4xl">
+        {t('notFound.title')}
+      </h1>
       <p class="mx-auto mt-4 max-w-md text-lg text-fg-muted">{t('notFound.body')}</p>
       <div class="mt-10 flex flex-col justify-center gap-3 min-[420px]:flex-row">
-        <a href={routes.home(lang)} class={buttonClass('primary', 'lg')}>{t('notFound.home')}</a>
+        <a href={routes.home(lang)} class={buttonClass('primary', 'lg')}>
+          {t('notFound.home')}
+        </a>
         <a href={routes.courses(lang)} class={buttonClass('secondary', 'lg')}>
           {t('notFound.courses')}
           <Icon name="arrow-right" size={18} />
