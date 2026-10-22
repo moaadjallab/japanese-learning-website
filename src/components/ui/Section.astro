@@ -1,0 +1,88 @@
+---
+/**
+ * Vertical page section with an optional heading block.
+ * `headingLevel` keeps the document outline correct (one h1 per page).
+ */
+import Container from './Container.astro';
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  tone?: 'default' | 'sunken' | 'raised' | 'inverse';
+  align?: 'start' | 'center';
+  headingLevel?: 'h1' | 'h2';
+  size?: 'narrow' | 'default' | 'wide';
+  class?: string;
+  pattern?: boolean;
+}
+const {
+  id,
+  eyebrow,
+  title,
+  subtitle,
+  tone = 'default',
+  align = 'center',
+  headingLevel: Heading = 'h2',
+  size = 'default',
+  class: className = '',
+  pattern = false,
+} = Astro.props;
+const tones = {
+  default: 'bg-surface',
+  sunken: 'bg-surface-sunken',
+  raised: 'bg-surface-raised',
+  inverse: 'bg-surface-inverse text-fg-inverse',
+};
+const headingId = id ? `${id}-title` : undefined;
+---
+
+<section
+  id={id}
+  aria-labelledby={title && headingId ? headingId : undefined}
+  class:list={['relative isolate py-16 sm:py-20 lg:py-24', tones[tone], className]}
+>
+  {
+    pattern && (
+      <div
+        class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.04]"
+        aria-hidden="true"
+      />
+    )
+  }
+  <Container size={size}>
+    {
+      (eyebrow || title || subtitle) && (
+        <div
+          class:list={[
+            'mb-10 max-w-2xl sm:mb-14',
+            align === 'center' ? 'mx-auto text-center' : 'text-start',
+          ]}
+        >
+          {eyebrow && (
+            <p
+              class:list={[
+                'mb-3 text-sm font-semibold tracking-wide',
+                tone === 'inverse' ? 'text-sakura' : 'text-primary',
+              ]}
+            >
+              {eyebrow}
+            </p>
+          )}
+          {title && (
+            <Heading id={headingId} class="text-3xl font-bold sm:text-4xl">
+              {title}
+            </Heading>
+          )}
+          {subtitle && (
+            <p class:list={['mt-4 text-lg', tone === 'inverse' ? 'text-stone-200' : 'text-fg-muted']}>
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )
+    }
+    <slot />
+  </Container>
+</section>

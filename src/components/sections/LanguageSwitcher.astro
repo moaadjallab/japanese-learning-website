@@ -1,0 +1,61 @@
+---
+/**
+ * "العربية | English" switcher. Links point to the same page in the other locale.
+ * CourseExplorer updates these hrefs ([data-lang-switch]) so filters survive a language switch.
+ */
+import { LOCALES, LOCALE_META, type Locale } from '@/i18n/config';
+import { useTranslations } from '@/i18n';
+import { switchLocalePath } from '@/lib/routes';
+
+interface Props {
+  lang: Locale;
+  tone?: 'default' | 'inverse';
+  class?: string;
+}
+const { lang, tone = 'default', class: className = '' } = Astro.props;
+const t = useTranslations(lang);
+// Arabic first, as written in the spec: "العربية | English".
+const order: Locale[] = ['ar', 'en'];
+const search = Astro.url.search && !Astro.isPrerendered ? Astro.url.search : '';
+---
+
+<nav aria-label={t('language.label')} class:list={['flex items-center text-sm', className]}>
+  <ul class="flex items-center">
+    {
+      order
+        .filter((l) => LOCALES.includes(l))
+        .map((l, i) => (
+          <li class="flex items-center">
+            {i > 0 && (
+              <span aria-hidden="true" class:list={['px-1.5', tone === 'inverse' ? 'text-stone-500' : 'text-stone-300']}>
+                |
+              </span>
+            )}
+            {l === lang ? (
+              <span
+                lang={LOCALE_META[l].htmlLang}
+                aria-current="true"
+                class:list={['rounded-md px-1.5 py-1 font-semibold', tone === 'inverse' ? 'text-washi' : 'text-fg']}
+              >
+                {LOCALE_META[l].label}
+              </span>
+            ) : (
+              <a
+                href={switchLocalePath(Astro.url.pathname, l, search)}
+                hreflang={LOCALE_META[l].htmlLang}
+                lang={LOCALE_META[l].htmlLang}
+                data-lang-switch={l}
+                aria-label={t('language.switchTo', { language: LOCALE_META[l].label })}
+                class:list={[
+                  'rounded-md px-1.5 py-1 font-medium underline-offset-4 hover:underline',
+                  tone === 'inverse' ? 'text-stone-300 hover:text-washi' : 'text-fg-muted hover:text-fg',
+                ]}
+              >
+                {LOCALE_META[l].label}
+              </a>
+            )}
+          </li>
+        ))
+    }
+  </ul>
+</nav>

@@ -1,0 +1,11 @@
+---
+import { badgeClass, type BadgeTone } from './styles';
+
+interface Props {
+  tone?: BadgeTone;
+  class?: string;
+}
+const { tone = 'neutral', class: className = '' } = Astro.props;
+---
+
+<span class:list={[badgeClass(tone), className]}><slot /></span>

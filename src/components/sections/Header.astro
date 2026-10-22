@@ -1,0 +1,184 @@
+---
+/**
+ * Sticky site header. Desktop: logo · main nav · language switcher · Login · Start Learning.
+ * Mobile (< lg): logo · Start Learning · menu button → accessible panel
+ * (aria-expanded, focus trap, ESC to close, focus returns to the toggle).
+ */
+import Logo from '@/components/layout/Logo.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { buttonClass } from '@/components/ui/styles';
+import { mainNav } from '@/config/navigation';
+import { useTranslations } from '@/i18n';
+import type { Locale } from '@/i18n/config';
+import { isActivePath, routes } from '@/lib/routes';
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const current = Astro.url.pathname;
+const items = mainNav.map((item) => ({
+  label: t(`nav.${item.key}`),
+  href: item.href(lang),
+  active: isActivePath(current, item.href(lang)),
+}));
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-line/80 bg-washi/90 backdrop-blur-md supports-[backdrop-filter]:bg-washi/80"
+  data-site-header
+>
+  <div class="mx-auto flex h-(--header-h) max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+    <Logo lang={lang} class="me-auto lg:me-0" />
+
+    <nav aria-label={t('nav.label')} class="mx-auto hidden lg:block">
+      <ul class="flex items-center gap-0.5">
+        {
+          items.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={item.active ? 'page' : undefined}
+                class:list={[
+                  'relative rounded-full px-2.5 py-2 text-sm font-medium transition-colors xl:px-3.5',
+                  item.active ? 'text-fg' : 'text-fg-muted hover:text-fg',
+                  item.active &&
+                    'after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-primary',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="hidden items-center gap-3 lg:flex">
+      <LanguageSwitcher lang={lang} />
+      <a
+        href={routes.login(lang)}
+        class="rounded-full px-2 py-2 text-sm font-semibold text-fg hover:text-primary"
+        aria-current={isActivePath(current, routes.login(lang)) ? 'page' : undefined}>{t('nav.login')}</a
+      >
+      <a href={routes.pricing(lang)} class={buttonClass('primary', 'sm')}>{t('common.startLearning')}</a>
+    </div>
+
+    <a href={routes.pricing(lang)} class={buttonClass('primary', 'sm', 'hidden min-[400px]:inline-flex lg:hidden')}>
+      {t('common.startLearning')}
+    </a>
+    <button
+      type="button"
+      class="-me-2 inline-flex size-11 items-center justify-center rounded-full text-fg hover:bg-stone-100 lg:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label={t('common.openMenu')}
+      data-label-open={t('common.openMenu')}
+      data-label-close={t('common.closeMenu')}
+      data-menu-toggle
+    >
+      <span data-icon-open><Icon name="menu" size={24} /></span>
+      <span data-icon-close hidden><Icon name="x" size={24} /></span>
+    </button>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="absolute inset-x-0 top-full h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-line bg-washi lg:hidden"
+    data-menu-panel
+    hidden
+  >
+    <div class="mx-auto flex max-w-xl flex-col gap-6 px-4 py-6 sm:px-6">
+      <nav aria-label={t('nav.label')}>
+        <ul class="divide-y divide-line">
+          {
+            items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={item.active ? 'page' : undefined}
+                  class:list={[
+                    'flex items-center justify-between py-3.5 text-lg font-semibold',
+                    item.active ? 'text-primary' : 'text-fg',
+                  ]}
+                >
+                  {item.label}
+                  <Icon name="chevron-right" size={18} class="text-stone-500" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <div class="flex flex-col gap-3">
+        <a href={routes.pricing(lang)} class={buttonClass('primary', 'lg', 'w-full')}>{t('common.startLearning')}</a>
+        <a href={routes.login(lang)} class={buttonClass('secondary', 'lg', 'w-full')}>{t('nav.login')}</a>
+      </div>
+      <LanguageSwitcher lang={lang} class="justify-center text-base" />
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+
+  if (toggle && panel) {
+    const iconOpen = toggle.querySelector<HTMLElement>('[data-icon-open]');
+    const iconClose = toggle.querySelector<HTMLElement>('[data-icon-close]');
+    const focusables = () =>
+      [toggle, ...panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')].filter(
+        (el) => el.offsetParent !== null || el === toggle,
+      );
+
+    const setOpen = (open: boolean, { restoreFocus = true } = {}) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', (open ? toggle.dataset.labelClose : toggle.dataset.labelOpen) ?? '');
+      panel.hidden = !open;
+      if (iconOpen) iconOpen.hidden = open;
+      if (iconClose) iconClose.hidden = !open;
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open) {
+        panel.querySelector<HTMLElement>('a[href]')?.focus();
+      } else if (restoreFocus) {
+        toggle.focus();
+      }
+    };
+    const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+
+    toggle.addEventListener('click', () => setOpen(!isOpen()));
+
+    document.addEventListener('keydown', (event) => {
+      if (!isOpen()) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (event.key === 'Tab') {
+        // Focus trap: cycle between the toggle and the panel's controls.
+        const items = focusables();
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (!first || !last) return;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    // Close when following an in-page link or when resizing to desktop.
+    panel.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a[href]')) setOpen(false, { restoreFocus: false });
+    });
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', (mq) => {
+      if (mq.matches && isOpen()) setOpen(false, { restoreFocus: false });
+    });
+  }
+</script>

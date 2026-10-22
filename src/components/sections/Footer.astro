@@ -1,0 +1,105 @@
+---
+/** Site footer (SPEC): logo, description, navigation, support, languages, legal, copyright. */
+import Logo from '@/components/layout/Logo.astro';
+import Container from '@/components/ui/Container.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { mainNav, legalNav } from '@/config/navigation';
+import { site } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import { LOCALE_META, type Locale } from '@/i18n/config';
+import { routes, switchLocalePath } from '@/lib/routes';
+import { ph } from '@/lib/placeholder';
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+
+const support = [
+  { label: t('footer.email'), value: site.contact.email, href: `mailto:${site.contact.email}`, icon: 'mail', external: false },
+  { label: t('footer.whatsapp'), value: site.contact.whatsappDisplay, href: `https://wa.me/${site.contact.whatsapp}`, icon: 'chat', external: true },
+  { label: t('footer.instagram'), value: `@${site.contact.instagramHandle}`, href: site.contact.instagramUrl, icon: 'camera', external: true },
+] as const;
+const headingClass = 'text-sm font-semibold text-washi';
+const linkClass = 'text-stone-300 transition-colors hover:text-washi';
+---
+
+<footer class="relative isolate overflow-hidden bg-ink text-stone-300" aria-labelledby="footer-heading">
+  <h2 id="footer-heading" class="sr-only">{site.name[lang]}</h2>
+  <div class="pattern-asanoha pointer-events-none absolute inset-0 -z-10 opacity-[0.05]" aria-hidden="true"></div>
+  <Container size="wide" class="py-14 sm:py-16">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
+      <div class="sm:col-span-2 lg:col-span-4">
+        <Logo lang={lang} tone="inverse" />
+        <p class="mt-5 max-w-sm text-sm leading-relaxed text-stone-300">{t('footer.description')}</p>
+      </div>
+
+      <nav aria-labelledby="footer-nav" class="lg:col-span-2">
+        <h3 id="footer-nav" class={headingClass}>{t('footer.navigation')}</h3>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          {mainNav.map((item) => <li><a href={item.href(lang)} class={linkClass}>{t(`nav.${item.key}`)}</a></li>)}
+        </ul>
+      </nav>
+
+      <div class="lg:col-span-3">
+        <h3 class={headingClass}>{t('footer.support')}</h3>
+        <ul class="mt-4 space-y-3 text-sm">
+          {
+            support.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[linkClass, 'inline-flex items-center gap-2.5']}
+                  {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  <Icon name={item.icon} size={18} class="text-sakura" />
+                  <span>
+                    <span class="sr-only">{item.label}: </span>
+                    <span dir="ltr" {...ph('contact detail')}>{item.value}</span>
+                  </span>
+                  {item.external && <span class="sr-only">{t('common.opensNewTab')}</span>}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="lg:col-span-3 grid grid-cols-2 gap-8 lg:grid-cols-1">
+        <div>
+          <h3 class={headingClass}>{t('footer.languages')}</h3>
+          <ul class="mt-4 space-y-2.5 text-sm">
+            {
+              (['ar', 'en'] as const).map((l) => (
+                <li>
+                  <a
+                    href={switchLocalePath(Astro.url.pathname, l)}
+                    hreflang={l}
+                    lang={l}
+                    aria-current={l === lang ? 'true' : undefined}
+                    class:list={[linkClass, l === lang && 'font-semibold text-washi']}
+                  >
+                    {LOCALE_META[l].label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <nav aria-labelledby="footer-legal">
+          <h3 id="footer-legal" class={headingClass}>{t('footer.legal')}</h3>
+          <ul class="mt-4 space-y-2.5 text-sm">
+            {legalNav.map((doc) => <li><a href={routes.legal(lang, doc)} class={linkClass}>{t(`legalLinks.${doc}`)}</a></li>)}
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-3 border-t border-stone-700 pt-6 text-xs text-stone-400 sm:flex-row sm:items-center sm:justify-between">
+      <p>{t('footer.rights', { year, brand: site.name[lang] })}</p>
+      <p lang="ja" class="font-jp tracking-[0.3em] text-stone-400" aria-hidden="true">一期一会</p>
+    </div>
+  </Container>
+</footer>

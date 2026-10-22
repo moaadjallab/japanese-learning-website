@@ -1,0 +1,37 @@
+---
+/** Button, or a link styled as a button when `href` is set. */
+import type { HTMLAttributes } from 'astro/types';
+import { buttonClass, type ButtonSize, type ButtonVariant } from './styles';
+
+type Props = {
+  href?: string;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  fullWidth?: boolean;
+} & Omit<HTMLAttributes<'a'>, 'type' | 'class'>;
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  class: extra = '',
+  fullWidth,
+  ...rest
+} = Astro.props;
+const className = buttonClass(variant, size, `${fullWidth ? 'w-full' : ''} ${extra}`.trim());
+---
+
+{
+  href ? (
+    <a href={href} class={className} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={className} {...(rest as HTMLAttributes<'button'>)}>
+      <slot />
+    </button>
+  )
+}

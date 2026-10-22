@@ -1,0 +1,82 @@
+---
+/**
+ * <head> SEO tags: title, description, canonical, hreflang (ar/en/x-default),
+ * Open Graph, Twitter card, robots and JSON-LD.
+ */
+import { site } from '@/config/site';
+import { LOCALES, LOCALE_META, type Locale } from '@/i18n/config';
+import { t } from '@/i18n';
+import { stripLocale } from '@/lib/routes';
+
+interface Props {
+  lang: Locale;
+  title: string;
+  description: string;
+  /** Skip the " | Brand" suffix (used on the home page). */
+  rawTitle?: boolean;
+  noindex?: boolean;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>[];
+  /** Set false for pages that only exist in one locale. */
+  alternates?: boolean;
+}
+const {
+  lang,
+  title,
+  description,
+  rawTitle = false,
+  noindex = false,
+  ogImage = site.ogImage,
+  ogType = 'website',
+  jsonLd = [],
+  alternates = true,
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL(Astro.url.origin);
+const path = stripLocale(Astro.url.pathname);
+const normalizedPath = path.endsWith('/') ? path : `${path}/`;
+const canonical = new URL(`/${lang}${normalizedPath}`, siteUrl).href;
+const hreflangs = LOCALES.map((l) => ({ lang: l, href: new URL(`/${l}${normalizedPath}`, siteUrl).href }));
+// x-default: the root URL negotiates language for the home page; English elsewhere.
+const xDefault = normalizedPath === '/' ? new URL('/', siteUrl).href : new URL(`/en${normalizedPath}`, siteUrl).href;
+const fullTitle = rawTitle ? title : t(lang, 'meta.titleTemplate', { title, brand: site.name[lang] });
+const imageUrl = new URL(ogImage, siteUrl).href;
+// Escape "<" so JSON-LD can never close the script element.
+const serialize = (data: Record<string, unknown>) => JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+{
+  alternates && !noindex && (
+    <>
+      {hreflangs.map((alt) => <link rel="alternate" hreflang={alt.lang} href={alt.href} />)}
+      <link rel="alternate" hreflang="x-default" href={xDefault} />
+    </>
+  )
+}
+
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={site.name[lang]} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={LOCALE_META[lang].ogLocale} />
+{
+  LOCALES.filter((l) => l !== lang).map((l) => (
+    <meta property="og:locale:alternate" content={LOCALE_META[l].ogLocale} />
+  ))
+}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+{site.twitterHandle && <meta name="twitter:site" content={`@${site.twitterHandle}`} />}
+
+{jsonLd.map((data) => <script type="application/ld+json" set:html={serialize(data)} />)}
