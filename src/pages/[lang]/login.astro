@@ -1,0 +1,38 @@
+---
+import AuthLayout from '@/layouts/AuthLayout.astro';
+import { LoginForm } from '@/components/islands/AuthForms';
+import { buttonClass } from '@/components/ui/styles';
+import { getDictionary, localeStaticPaths, resolveLocale, useTranslations } from '@/i18n';
+import { authCommonLabels } from '@/lib/auth/labels';
+import { routes } from '@/lib/routes';
+
+export const getStaticPaths = localeStaticPaths;
+const lang = resolveLocale(Astro.params.lang);
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+---
+
+<AuthLayout
+  lang={lang}
+  metaTitle={t('auth.login.meta.title')}
+  metaDescription={t('auth.login.meta.description')}
+  title={t('auth.login.title')}
+  subtitle={t('auth.login.subtitle')}
+>
+  <LoginForm
+    client:load
+    labels={{
+      email: dict.auth.login.email,
+      password: dict.auth.login.password,
+      submit: dict.auth.login.submit,
+      forgot: dict.auth.login.forgot,
+      forgotHref: routes.forgotPassword(lang),
+    }}
+    common={authCommonLabels(lang)}
+    validation={dict.validation}
+  />
+  <div class="mt-8 border-t border-line pt-6 text-center">
+    <p class="text-sm text-fg-muted">{t('auth.login.noAccount')}</p>
+    <a href={routes.register(lang)} class={buttonClass('secondary', 'md', 'mt-3 w-full')}>{t('auth.login.createAccount')}</a>
+  </div>
+</AuthLayout>

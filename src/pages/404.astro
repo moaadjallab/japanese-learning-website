@@ -1,0 +1,38 @@
+---
+/**
+ * Localized 404, rendered on demand so the language follows the URL (/ar/... → Arabic).
+ * Unknown URLs fall through Cloudflare's static assets to the Worker, which renders this page.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { buttonClass } from '@/components/ui/styles';
+import { DEFAULT_LOCALE, isLocale, useTranslations } from '@/i18n';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const first = Astro.url.pathname.split('/')[1];
+const lang = isLocale(first) ? first : DEFAULT_LOCALE;
+const t = useTranslations(lang);
+Astro.response.status = 404;
+---
+
+<BaseLayout lang={lang} title={t('notFound.meta.title')} description={t('notFound.meta.description')} noindex alternates={false}>
+  <section class="relative isolate overflow-hidden py-20 sm:py-28" aria-labelledby="nf-title">
+    <div class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.05]" aria-hidden="true"></div>
+    <Container size="narrow" class="text-center">
+      <p lang="ja" aria-hidden="true" class="font-jp text-7xl text-stone-200 sm:text-8xl">迷子</p>
+      <p class="mt-4 text-sm font-semibold tracking-widest text-primary">{t('notFound.code')}</p>
+      <h1 id="nf-title" class="mt-2 text-3xl font-bold sm:text-4xl">{t('notFound.title')}</h1>
+      <p class="mx-auto mt-4 max-w-md text-lg text-fg-muted">{t('notFound.body')}</p>
+      <div class="mt-10 flex flex-col justify-center gap-3 min-[420px]:flex-row">
+        <a href={routes.home(lang)} class={buttonClass('primary', 'lg')}>{t('notFound.home')}</a>
+        <a href={routes.courses(lang)} class={buttonClass('secondary', 'lg')}>
+          {t('notFound.courses')}
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+/** Two-column layout for Login / Register / Forgot password (noindex). */
+import BaseLayout from './BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import LogoMark from '@/components/layout/LogoMark.astro';
+import { site } from '@/config/site';
+import type { Locale } from '@/i18n/config';
+
+interface Props {
+  lang: Locale;
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  subtitle: string;
+}
+const { lang, metaTitle, metaDescription, title, subtitle } = Astro.props;
+---
+
+<BaseLayout lang={lang} title={metaTitle} description={metaDescription} noindex>
+  <Container size="wide" class="py-10 sm:py-16">
+    <div class="mx-auto grid max-w-5xl overflow-hidden rounded-[2rem] bg-surface-raised shadow-lift ring-1 ring-line lg:grid-cols-[0.9fr_1.1fr]">
+      <div class="relative isolate hidden flex-col justify-between overflow-hidden bg-ink p-10 text-washi lg:flex" aria-hidden="true">
+        <div class="pattern-asanoha absolute inset-0 -z-10 opacity-[0.07]"></div>
+        <div class="absolute -top-28 -end-28 -z-10 size-72 rounded-full bg-primary"></div>
+        <span class="inline-flex size-14 items-center justify-center rounded-full bg-washi"><LogoMark size={44} /></span>
+        <div>
+          <p lang="ja" class="font-jp text-5xl leading-tight">ようこそ</p>
+          <p lang="ja-Latn" class="mt-2 text-sm text-stone-300 italic">yōkoso</p>
+          <p class="mt-6 max-w-xs text-stone-300">{site.tagline[lang]}</p>
+        </div>
+      </div>
+      <div class="p-6 sm:p-10">
+        <h1 class="text-3xl font-bold">{title}</h1>
+        <p class="mt-2 text-fg-muted">{subtitle}</p>
+        <div class="mt-8">
+          <slot />
+        </div>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+import AuthLayout from '@/layouts/AuthLayout.astro';
+import { RegisterForm } from '@/components/islands/AuthForms';
+import { getDictionary, localeStaticPaths, resolveLocale, useTranslations } from '@/i18n';
+import { authCommonLabels } from '@/lib/auth/labels';
+import { REGISTER_LEVEL_IDS } from '@/lib/validation/schemas';
+import { escapeHtml } from '@/lib/email';
+import { routes } from '@/lib/routes';
+
+export const getStaticPaths = localeStaticPaths;
+const lang = resolveLocale(Astro.params.lang);
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+const r = dict.auth.register;
+const link = (href: string, label: string) =>
+  `<a class="font-semibold text-primary underline-offset-4 hover:underline" href="${href}">${escapeHtml(label)}</a>`;
+const consentHtml = escapeHtml(r.consent)
+  .replace('{terms}', link(routes.legal(lang, 'terms'), t('legalLinks.terms')))
+  .replace('{privacy}', link(routes.legal(lang, 'privacy'), t('legalLinks.privacy')));
+---
+
+<AuthLayout
+  lang={lang}
+  metaTitle={t('auth.register.meta.title')}
+  metaDescription={t('auth.register.meta.description')}
+  title={r.title}
+  subtitle={r.subtitle}
+>
+  <RegisterForm
+    client:load
+    locale={lang}
+    labels={{
+      fullName: r.fullName,
+      email: r.email,
+      password: r.password,
+      passwordHint: r.passwordHint,
+      confirmPassword: r.confirmPassword,
+      preferredLanguage: r.preferredLanguage,
+      languageOptions: r.languageOptions,
+      japaneseLevel: r.japaneseLevel,
+      chooseLevel: r.chooseLevel,
+      levels: REGISTER_LEVEL_IDS.map((value) => ({ value, label: dict.levels[value] })),
+      submit: r.submit,
+      consentHtml,
+    }}
+    common={authCommonLabels(lang)}
+    validation={dict.validation}
+  />
+  <p class="mt-8 border-t border-line pt-6 text-center text-sm text-fg-muted">
+    {r.haveAccount}
+    <a href={routes.login(lang)} class="ms-1 font-semibold text-primary underline-offset-4 hover:underline">{r.login}</a>
+  </p>
+</AuthLayout>
