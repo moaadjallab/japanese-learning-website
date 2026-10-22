@@ -1,0 +1,29 @@
+[
+  {
+    "id": "placeholder-1",
+    "order": 1,
+    "placeholder": true,
+    "quote": null,
+    "name": null,
+    "country": null,
+    "course": "beginner-japanese"
+  },
+  {
+    "id": "placeholder-2",
+    "order": 2,
+    "placeholder": true,
+    "quote": null,
+    "name": null,
+    "country": null,
+    "course": "japanese-n5"
+  },
+  {
+    "id": "placeholder-3",
+    "order": 3,
+    "placeholder": true,
+    "quote": null,
+    "name": null,
+    "country": null,
+    "course": "japanese-conversation"
+  }
+]

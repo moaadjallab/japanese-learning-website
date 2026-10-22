@@ -3,8 +3,8 @@
  * All paths end with a trailing slash (matches the build output and canonical URLs).
  */
 import { LOCALES, isLocale, type Locale } from '@/i18n/config';
+import type { PlanId } from '@/lib/domain/types';
 
-export type PlanId = 'basic' | 'premium' | 'private';
 export type LegalDoc = 'terms' | 'privacy' | 'refund' | 'cookies';
 
 const withLocale = (lang: Locale, path: string) => `/${lang}${path === '/' ? '/' : path}`;

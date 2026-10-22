@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" width="480" height="600">
+  <!-- PLACEHOLDER teacher photo. Replace with a real, consented portrait (4:5, e.g. 960×1200). -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F3D6DC"/>
+      <stop offset="1" stop-color="#EDE8E1"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="600" fill="url(#bg)"/>
+  <circle cx="360" cy="140" r="70" fill="#C8312B" fill-opacity="0.85"/>
+  <g fill="#1B1B1F" fill-opacity="0.16">
+    <circle cx="240" cy="250" r="92"/>
+    <path d="M60 600c0-112 81-196 180-196s180 84 180 196z"/>
+  </g>
+  <g fill="none" stroke="#1B1B1F" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M212 520h56M228 504h24a8 8 0 0 1 8 8v8"/>
+  </g>
+</svg>

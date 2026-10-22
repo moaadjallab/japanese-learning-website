@@ -1,12 +1,57 @@
 ---
+/** Home page — the 9 SPEC sections, in order. */
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Features from '@/components/sections/Features.astro';
+import CourseGrid from '@/components/sections/CourseGrid.astro';
+import HowItWorks from '@/components/sections/HowItWorks.astro';
+import Section from '@/components/ui/Section.astro';
+import PricingCards from '@/components/sections/PricingCards.astro';
+import TeacherIntro from '@/components/sections/TeacherIntro.astro';
+import Testimonials from '@/components/sections/Testimonials.astro';
+import FaqPreview from '@/components/sections/FaqPreview.astro';
+import FinalCta from '@/components/sections/FinalCta.astro';
+import Icon from '@/components/icons/Icon.astro';
 import { localeStaticPaths, resolveLocale, useTranslations } from '@/i18n';
+import { organizationLd, websiteLd } from '@/lib/seo/jsonld';
+import { routes } from '@/lib/routes';
 
 export const getStaticPaths = localeStaticPaths;
 const lang = resolveLocale(Astro.params.lang);
 const t = useTranslations(lang);
+const siteUrl = Astro.site ?? Astro.url.origin;
 ---
 
-<BaseLayout lang={lang} title={t('home.meta.title')} description={t('home.meta.description')}>
-  <h1 class="p-10 text-4xl font-bold">{t('home.hero.title')}</h1>
+<BaseLayout
+  lang={lang}
+  title={t('home.meta.title')}
+  description={t('home.meta.description')}
+  jsonLd={[organizationLd(lang, siteUrl), websiteLd(lang, siteUrl)]}
+>
+  <!-- 1. Hero -->
+  <Hero lang={lang} />
+  <!-- 2. Why learn with us -->
+  <Features lang={lang} />
+  <!-- 3. Our courses -->
+  <CourseGrid lang={lang} />
+  <!-- 4. How it works -->
+  <HowItWorks lang={lang} />
+  <!-- 5. Pricing preview -->
+  <Section id="plans" eyebrow={t('home.pricing.eyebrow')} title={t('home.pricing.title')} subtitle={t('home.pricing.subtitle')} tone="sunken" pattern>
+    <PricingCards lang={lang} />
+    <p class="mt-10 text-center">
+      <a href={routes.pricing(lang, 'compare')} class="inline-flex items-center gap-1.5 font-semibold text-primary underline-offset-4 hover:underline">
+        {t('common.comparePlans')}
+        <Icon name="arrow-right" size={16} />
+      </a>
+    </p>
+  </Section>
+  <!-- 6. About the teacher / platform -->
+  <TeacherIntro lang={lang} />
+  <!-- 7. Testimonials (placeholders) -->
+  <Testimonials lang={lang} />
+  <!-- 8. FAQ preview -->
+  <FaqPreview lang={lang} />
+  <!-- 9. Final CTA -->
+  <FinalCta lang={lang} />
 </BaseLayout>

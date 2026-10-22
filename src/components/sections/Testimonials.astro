@@ -1,0 +1,46 @@
+---
+/**
+ * Home SECTION 7 — What Our Students Say. PLACEHOLDER cards only (no invented identities);
+ * replace entries in src/content/testimonials.json with real, consented reviews.
+ * No Review / AggregateRating structured data is emitted.
+ */
+import Section from '@/components/ui/Section.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { useTranslations } from '@/i18n';
+import type { Locale } from '@/i18n/config';
+import { getTestimonials } from '@/lib/repositories/testimonials';
+import { ph } from '@/lib/placeholder';
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const testimonials = await getTestimonials();
+---
+
+<Section id="testimonials" eyebrow={t('home.testimonials.eyebrow')} title={t('home.testimonials.title')} subtitle={t('home.testimonials.subtitle')} tone="sunken">
+  <ul class="grid gap-5 md:grid-cols-3">
+    {
+      testimonials.map((item) => (
+        <li class="reveal">
+          <figure class="flex h-full flex-col rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line" {...(item.placeholder ? ph('testimonial') : {})}>
+            <Icon name="quote" size={28} class="text-sakura" />
+            <blockquote class="mt-4 flex-1 text-lg text-fg">
+              <p>{item.quote?.[lang] ?? t('placeholders.testimonial')}</p>
+            </blockquote>
+            <figcaption class="mt-6 flex items-center gap-3 border-t border-line pt-5">
+              <span class="inline-flex size-11 items-center justify-center rounded-full bg-stone-100 text-stone-500" aria-hidden="true">
+                <Icon name="user" size={22} />
+              </span>
+              <span>
+                <span class="block font-semibold">{item.name ?? t('placeholders.studentName')}</span>
+                <span class="block text-sm text-fg-muted">{item.country?.[lang] ?? t('placeholders.country')}</span>
+              </span>
+            </figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ul>
+</Section>

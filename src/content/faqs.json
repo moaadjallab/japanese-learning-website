@@ -1,0 +1,159 @@
+[
+  {
+    "id": "who-can-join",
+    "category": "courses",
+    "order": 1,
+    "question": { "en": "Who can join?", "ar": "من يمكنه الانضمام؟" },
+    "answer": {
+      "en": "Anyone who wants to learn Japanese — learners of all ages, from complete beginners to advanced students. Our courses are designed for Arabic-speaking and English-speaking students, whether your goal is the JLPT, conversation, travel, studies, work or Japanese culture.",
+      "ar": "كل من يرغب في تعلّم اللغة اليابانية — متعلّمون من جميع الأعمار، من المبتدئين تمامًا إلى الطلاب المتقدمين. صُمّمت دوراتنا للطلاب الناطقين بالعربية والإنجليزية، سواء كان هدفك اختبار JLPT أو المحادثة أو السفر أو الدراسة أو العمل أو الثقافة اليابانية."
+    }
+  },
+  {
+    "id": "levels",
+    "category": "courses",
+    "order": 2,
+    "homeOrder": 2,
+    "question": { "en": "What levels are available?", "ar": "ما المستويات المتاحة؟" },
+    "homeQuestion": { "en": "What Japanese levels do you offer?", "ar": "ما مستويات اللغة اليابانية التي تقدّمونها؟" },
+    "answer": {
+      "en": "We offer courses from Beginner through all five JLPT levels: N5, N4, N3, N2 and N1 (N1 is the most advanced). Not sure about your level? Choose “I don't know” when you register and we will help you find the right starting point.",
+      "ar": "نقدّم دورات تبدأ من المستوى المبتدئ وتشمل مستويات JLPT الخمسة: N5 وN4 وN3 وN2 وN1 (المستوى N1 هو الأكثر تقدمًا). لست متأكدًا من مستواك؟ اختر «لا أعرف» عند التسجيل وسنساعدك على تحديد نقطة البداية المناسبة."
+    }
+  },
+  {
+    "id": "beginners",
+    "category": "courses",
+    "order": 3,
+    "homeOrder": 1,
+    "question": { "en": "Are beginners welcome?", "ar": "هل يمكن للمبتدئين الانضمام؟" },
+    "homeQuestion": {
+      "en": "Are the courses suitable for complete beginners?",
+      "ar": "هل الدورات مناسبة للمبتدئين تمامًا؟"
+    },
+    "answer": {
+      "en": "Yes. You can start with no prior knowledge of Japanese: the Beginner Japanese and Hiragana & Katakana courses take you through your very first steps, explained in Arabic or English.",
+      "ar": "نعم. يمكنك البدء دون أي معرفة مسبقة باللغة اليابانية: ترافقك دورتا «اللغة اليابانية للمبتدئين» و«الهيراغانا والكاتاكانا» في خطواتك الأولى، مع شرح بالعربية أو الإنجليزية."
+    }
+  },
+  {
+    "id": "live-or-recorded",
+    "category": "courses",
+    "order": 4,
+    "homeOrder": 3,
+    "question": { "en": "Are courses live or recorded?", "ar": "هل الدورات مباشرة أم مسجّلة؟" },
+    "homeQuestion": { "en": "Are the classes live?", "ar": "هل الحصص مباشرة؟" },
+    "answer": {
+      "en": "Both. The Basic plan includes recorded courses and materials that you follow at your own pace. The Premium and Private plans add live online classes with a teacher.",
+      "ar": "كلاهما. تتضمن الخطة الأساسية دورات مسجّلة ومواد تتابعها وفق وتيرتك، بينما تضيف الخطتان المميزة والخاصة حصصًا مباشرة عبر الإنترنت مع معلّم."
+    }
+  },
+  {
+    "id": "subscription-how",
+    "category": "subscriptions",
+    "order": 1,
+    "homeOrder": 6,
+    "question": { "en": "How does the monthly subscription work?", "ar": "كيف يعمل الاشتراك الشهري؟" },
+    "answer": {
+      "en": "Choose a plan (Basic, Premium or Private), create your account and complete your payment. Your subscription is billed monthly and gives you access to everything included in your plan for as long as it is active.",
+      "ar": "اختر خطة (الأساسية أو المميزة أو الخاصة)، وأنشئ حسابك، ثم أكمل عملية الدفع. يُفوتر اشتراكك شهريًا ويمنحك الوصول إلى كل ما تتضمنه خطتك طوال مدة سريانه."
+    }
+  },
+  {
+    "id": "cancel",
+    "category": "subscriptions",
+    "order": 2,
+    "homeOrder": 7,
+    "placeholder": "cancellation policy to confirm",
+    "question": { "en": "Can I cancel?", "ar": "هل يمكنني الإلغاء؟" },
+    "homeQuestion": { "en": "Can I cancel my subscription?", "ar": "هل يمكنني إلغاء اشتراكي؟" },
+    "answer": {
+      "en": "Yes, you can cancel your subscription at any time. You keep access until the end of the billing period you have already paid for. See our Refund Policy for details.",
+      "ar": "نعم، يمكنك إلغاء اشتراكك في أي وقت، ويبقى وصولك متاحًا حتى نهاية فترة الفوترة التي دفعتها. اطّلع على سياسة الاسترداد لمزيد من التفاصيل."
+    }
+  },
+  {
+    "id": "change-plan",
+    "category": "subscriptions",
+    "order": 3,
+    "homeOrder": 9,
+    "placeholder": "plan change policy to confirm",
+    "question": { "en": "Can I change plans?", "ar": "هل يمكنني تغيير الخطة؟" },
+    "homeQuestion": { "en": "Can I change my subscription plan?", "ar": "هل يمكنني تغيير خطة اشتراكي؟" },
+    "answer": {
+      "en": "Yes. You can move to a higher or lower plan. The change applies from your next billing period.",
+      "ar": "نعم. يمكنك الانتقال إلى خطة أعلى أو أدنى، ويسري التغيير ابتداءً من فترة الفوترة التالية."
+    }
+  },
+  {
+    "id": "class-length",
+    "category": "classes",
+    "order": 1,
+    "homeOrder": 4,
+    "placeholder": "live class duration to confirm",
+    "question": { "en": "How long are classes?", "ar": "ما مدة الحصص؟" },
+    "homeQuestion": { "en": "How long are the classes?", "ar": "ما مدة الحصص؟" },
+    "answer": {
+      "en": "The duration of live classes will be published on the Pricing page before subscriptions open. Recorded courses can be followed at your own pace, whenever suits you.",
+      "ar": "ستُنشر مدة الحصص المباشرة في صفحة الأسعار قبل فتح باب الاشتراك. أما الدورات المسجّلة فيمكنك متابعتها وفق وتيرتك وفي الوقت الذي يناسبك."
+    }
+  },
+  {
+    "id": "live-frequency",
+    "category": "classes",
+    "order": 2,
+    "placeholder": "live class schedule to confirm",
+    "question": { "en": "How often are live classes?", "ar": "كم مرة تُعقد الحصص المباشرة؟" },
+    "answer": {
+      "en": "The live class schedule depends on your plan and level. The schedule is shared with Premium and Private subscribers, and Private lessons are arranged around your availability.",
+      "ar": "يعتمد جدول الحصص المباشرة على خطتك ومستواك، ويُشارك الجدول مع مشتركي الخطتين المميزة والخاصة، أما الدروس الخاصة فتُرتَّب وفق أوقاتك المتاحة."
+    }
+  },
+  {
+    "id": "explanation-languages",
+    "category": "classes",
+    "order": 3,
+    "homeOrder": 5,
+    "question": {
+      "en": "What languages are used to explain Japanese?",
+      "ar": "ما اللغات المستخدمة في شرح اللغة اليابانية؟"
+    },
+    "answer": {
+      "en": "Lessons are explained in Arabic or English, so you can learn Japanese through the language you are most comfortable with. Japanese is used naturally throughout, more and more as you progress.",
+      "ar": "تُشرح الدروس بالعربية أو الإنجليزية، لتتعلّم اليابانية باللغة التي ترتاح إليها أكثر. وتُستخدم اليابانية بشكل طبيعي في كل درس، ويزداد استخدامها كلما تقدّمت."
+    }
+  },
+  {
+    "id": "payment-methods",
+    "category": "payments",
+    "order": 1,
+    "homeOrder": 8,
+    "placeholder": "payment methods to confirm",
+    "question": { "en": "What payment methods are supported?", "ar": "ما طرق الدفع المدعومة؟" },
+    "homeQuestion": { "en": "What payment methods are available?", "ar": "ما طرق الدفع المتاحة؟" },
+    "answer": {
+      "en": "Online payments are currently being activated. The accepted payment methods will be shown on the checkout page before you pay. If you would like to subscribe now, contact us and we will help you.",
+      "ar": "يجري حاليًا تفعيل الدفع عبر الإنترنت، وستظهر طرق الدفع المقبولة في صفحة إتمام الاشتراك قبل الدفع. إذا رغبت في الاشتراك الآن، تواصل معنا وسنساعدك."
+    }
+  },
+  {
+    "id": "payment-secure",
+    "category": "payments",
+    "order": 2,
+    "question": { "en": "Is payment secure?", "ar": "هل الدفع آمن؟" },
+    "answer": {
+      "en": "Yes. Payments are processed by a certified third-party payment provider over an encrypted connection. Your card details are entered on the provider's secure page — we never see or store them.",
+      "ar": "نعم. تتم معالجة المدفوعات عبر مزوّد دفع خارجي معتمد ومن خلال اتصال مشفّر. تُدخل بيانات بطاقتك في الصفحة الآمنة الخاصة بالمزوّد، ولا نطّلع عليها ولا نخزّنها أبدًا."
+    }
+  },
+  {
+    "id": "after-payment",
+    "category": "payments",
+    "order": 3,
+    "question": { "en": "What happens after payment?", "ar": "ماذا يحدث بعد الدفع؟" },
+    "answer": {
+      "en": "Your subscription is activated and you receive a confirmation email explaining how to access your courses and, depending on your plan, how to join your live classes.",
+      "ar": "يُفعَّل اشتراكك وتصلك رسالة تأكيد عبر البريد الإلكتروني توضّح كيفية الوصول إلى دوراتك، وكيفية الانضمام إلى حصصك المباشرة حسب خطتك."
+    }
+  }
+]

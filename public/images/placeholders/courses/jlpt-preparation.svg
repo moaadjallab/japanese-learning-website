@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="JLPT Preparation">
+  <!-- PLACEHOLDER course artwork (jlpt-preparation). Replace with final image of the same name. -->
+  <defs>
+    <pattern id="w" width="40" height="20" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="#1B1B1F" stroke-opacity="0.06" stroke-width="1">
+        <path d="M0 20a20 20 0 0 1 40 0M6 20a14 14 0 0 1 28 0M12 20a8 8 0 0 1 16 0"/>
+        <path d="M-20 10a20 20 0 0 1 40 0M20 10a20 20 0 0 1 40 0"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="640" height="400" fill="#F6ECE8"/>
+  <rect width="640" height="400" fill="url(#w)"/>
+  <circle cx="320" cy="200" r="122" fill="none" stroke="#C8312B" stroke-opacity="0.35" stroke-width="2"/>
+  <circle cx="320" cy="200" r="104" fill="#FFFFFF" fill-opacity="0.7"/>
+  <circle cx="452" cy="104" r="16" fill="#C8312B" fill-opacity="0.9"/>
+  <text x="320" y="200" text-anchor="middle" dominant-baseline="central" font-family="'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', 'YuMincho', 'MS Mincho', serif" font-size="104" font-weight="600" fill="#1B1B1F" >試験</text>
+</svg>

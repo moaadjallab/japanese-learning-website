@@ -4,8 +4,8 @@
  * so the same schema serves both locales.
  */
 import { z } from 'zod';
+import { LEVEL_IDS } from '@/lib/domain/types';
 
-export const LEVEL_IDS = ['beginner', 'n5', 'n4', 'n3', 'n2', 'n1'] as const;
 export const REGISTER_LEVEL_IDS = [...LEVEL_IDS, 'unknown'] as const;
 
 const requiredString = (min: number, max: number) =>

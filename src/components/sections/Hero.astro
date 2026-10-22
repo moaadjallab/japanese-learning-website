@@ -1,0 +1,59 @@
+---
+/** Home SECTION 1 — Hero (SPEC copy). */
+import Container from '@/components/ui/Container.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/icons/Icon.astro';
+import HeroVisual from './HeroVisual.astro';
+import { getDictionary, useTranslations } from '@/i18n';
+import type { Locale } from '@/i18n/config';
+import { routes } from '@/lib/routes';
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+---
+
+<section class="relative isolate overflow-hidden" aria-labelledby="hero-title">
+  <div class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.045]" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute -top-40 end-[-10%] -z-10 size-[36rem] rounded-full bg-sakura/50 blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+  <Container size="wide" class="grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:py-24">
+    <div class="max-w-xl">
+      <p class="inline-flex items-center gap-2 rounded-full bg-surface-raised px-3 py-1.5 text-sm font-semibold text-fg ring-1 ring-line">
+        <span lang="ja" class="font-jp text-primary" aria-hidden="true">日本語</span>
+        <span class="h-3.5 w-px bg-line" aria-hidden="true"></span>
+        {t('home.hero.eyebrow')}
+      </p>
+      <h1 id="hero-title" class="mt-6 text-4xl leading-[1.1] font-bold sm:text-5xl lg:text-6xl">
+        {t('home.hero.title')} <span aria-hidden="true" class="whitespace-nowrap">🇯🇵</span>
+      </h1>
+      <p class="mt-6 text-lg text-fg-muted sm:text-xl">{t('home.hero.subtitle')}</p>
+      <div class="mt-9 flex flex-col gap-3 min-[420px]:flex-row">
+        <Button href={routes.pricing(lang)} size="lg">
+          {t('common.startLearning')}
+          <Icon name="arrow-right" size={18} />
+        </Button>
+        <Button href="#plans" variant="secondary" size="lg">{t('common.viewPlans')}</Button>
+      </div>
+      <ul class="mt-9 grid gap-3 text-sm text-fg sm:grid-cols-3 sm:gap-4">
+        {
+          dict.home.hero.highlights.map((item) => (
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-sakura text-vermilion-dark">
+                <Icon name="check" size={14} strokeWidth={2.5} />
+              </span>
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <HeroVisual lang={lang} />
+  </Container>
+</section>

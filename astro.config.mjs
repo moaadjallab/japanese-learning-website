@@ -21,6 +21,7 @@ const NOINDEX_SEGMENTS = [
 export default defineConfig({
   site: SITE_URL,
   trailingSlash: 'ignore',
+  devToolbar: { enabled: false },
   output: 'static',
   // Sessions are not used in V1; avoid requiring a KV binding.
   session: { driver: 'null' },

@@ -1,0 +1,535 @@
+[
+  {
+    "id": "beginner-japanese",
+    "order": 1,
+    "levels": ["beginner"],
+    "categories": ["conversation", "grammar", "vocabulary"],
+    "glyph": "入門",
+    "glyphReading": "nyūmon — introduction",
+    "image": "/images/placeholders/courses/beginner-japanese.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Beginner Japanese", "ar": "اللغة اليابانية للمبتدئين" },
+    "description": {
+      "en": "Your first steps in Japanese: greetings, self-introduction, basic sentences and pronunciation.",
+      "ar": "خطواتك الأولى في اللغة اليابانية: التحيات، والتعريف بالنفس، والجمل الأساسية، والنطق."
+    },
+    "overview": {
+      "en": "Designed for complete beginners with no prior knowledge. You will learn how Japanese sounds and works, build everyday phrases and get comfortable with the writing systems step by step.",
+      "ar": "مصمّمة للمبتدئين تمامًا دون أي معرفة مسبقة. ستتعرّف على أصوات اللغة اليابانية وطريقة عملها، وتبني عبارات يومية، وتألف أنظمة الكتابة خطوة بخطوة."
+    },
+    "outcomes": {
+      "en": [
+        "Pronounce Japanese sounds correctly",
+        "Greet people and introduce yourself",
+        "Build simple sentences with polite forms (desu / masu)",
+        "Understand how hiragana, katakana and kanji work together"
+      ],
+      "ar": [
+        "نطق الأصوات اليابانية بشكل صحيح",
+        "إلقاء التحية والتعريف بنفسك",
+        "تكوين جمل بسيطة بصيغ التأدّب (desu / masu)",
+        "فهم كيفية عمل الهيراغانا والكاتاكانا والكانجي معًا"
+      ]
+    },
+    "example": {
+      "ja": "はじめまして。",
+      "romaji": "Hajimemashite.",
+      "meaning": { "en": "Nice to meet you.", "ar": "تشرّفت بمعرفتك." }
+    }
+  },
+  {
+    "id": "japanese-n5",
+    "order": 2,
+    "levels": ["n5"],
+    "categories": ["jlpt"],
+    "glyph": "N5",
+    "image": "/images/placeholders/courses/japanese-n5.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese N5", "ar": "اللغة اليابانية – المستوى N5" },
+    "description": {
+      "en": "The foundation level of the JLPT: essential grammar, basic kanji and everyday vocabulary.",
+      "ar": "المستوى التأسيسي في اختبار JLPT: القواعد الأساسية، والكانجي الأساسي، ومفردات الحياة اليومية."
+    },
+    "overview": {
+      "en": "Build a solid base for reading and understanding simple, everyday Japanese, aligned with the JLPT N5 level.",
+      "ar": "ابنِ أساسًا متينًا لقراءة اللغة اليابانية اليومية البسيطة وفهمها، بما يتوافق مع المستوى N5 في اختبار JLPT."
+    },
+    "outcomes": {
+      "en": [
+        "Read and write hiragana and katakana fluently",
+        "Use core particles such as wa, ga, o, ni and de",
+        "Read basic kanji used in daily life",
+        "Understand short, slow everyday conversations"
+      ],
+      "ar": [
+        "قراءة الهيراغانا والكاتاكانا وكتابتهما بطلاقة",
+        "استخدام أدوات الربط الأساسية مثل wa وga وo وni وde",
+        "قراءة الكانجي الأساسي المستخدم في الحياة اليومية",
+        "فهم محادثات يومية قصيرة وبطيئة"
+      ]
+    },
+    "example": {
+      "ja": "私は学生です。",
+      "romaji": "Watashi wa gakusei desu.",
+      "meaning": { "en": "I am a student.", "ar": "أنا طالب." }
+    }
+  },
+  {
+    "id": "japanese-n4",
+    "order": 3,
+    "levels": ["n4"],
+    "categories": ["jlpt"],
+    "glyph": "N4",
+    "image": "/images/placeholders/courses/japanese-n4.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese N4", "ar": "اللغة اليابانية – المستوى N4" },
+    "description": {
+      "en": "Expand your grammar and vocabulary to handle more everyday situations with confidence.",
+      "ar": "وسّع قواعدك ومفرداتك لتتعامل بثقة مع مزيد من مواقف الحياة اليومية."
+    },
+    "overview": {
+      "en": "Continue from N5 with verb forms, comparisons and more natural expressions, aligned with the JLPT N4 level.",
+      "ar": "تابع بعد المستوى N5 مع تصريفات الأفعال والمقارنات وتعابير أكثر طبيعية، بما يتوافق مع المستوى N4 في اختبار JLPT."
+    },
+    "outcomes": {
+      "en": [
+        "Use the te-form, plain form and potential form",
+        "Talk about experiences, plans and preferences",
+        "Read short texts written with basic kanji",
+        "Follow everyday conversations spoken slightly slowly"
+      ],
+      "ar": [
+        "استخدام صيغة te والصيغة العادية وصيغة الاستطاعة",
+        "التحدث عن التجارب والخطط والتفضيلات",
+        "قراءة نصوص قصيرة مكتوبة بالكانجي الأساسي",
+        "متابعة محادثات يومية تُقال ببطء نسبي"
+      ]
+    },
+    "example": {
+      "ja": "日本に行ったことがあります。",
+      "romaji": "Nihon ni itta koto ga arimasu.",
+      "meaning": { "en": "I have been to Japan.", "ar": "سبق لي أن ذهبت إلى اليابان." }
+    }
+  },
+  {
+    "id": "japanese-n3",
+    "order": 4,
+    "levels": ["n3"],
+    "categories": ["jlpt"],
+    "glyph": "N3",
+    "image": "/images/placeholders/courses/japanese-n3.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese N3", "ar": "اللغة اليابانية – المستوى N3" },
+    "description": {
+      "en": "The bridge to intermediate Japanese: understand everyday Japanese used in a variety of situations.",
+      "ar": "الجسر نحو المستوى المتوسط: فهم اللغة اليابانية اليومية المستخدمة في مواقف متنوعة."
+    },
+    "overview": {
+      "en": "Bridge the gap between basic and advanced Japanese with more complex grammar, reading practice and listening at near-natural speed.",
+      "ar": "اعبر الفجوة بين المستويين الأساسي والمتقدم من خلال قواعد أكثر تعقيدًا، وتدريب على القراءة، واستماع بسرعة قريبة من الطبيعية."
+    },
+    "outcomes": {
+      "en": [
+        "Understand newspaper headlines and simple articles",
+        "Express opinions, reasons and conditions",
+        "Use common keigo (polite language) in context",
+        "Follow conversations at near-natural speed"
+      ],
+      "ar": [
+        "فهم عناوين الصحف والمقالات البسيطة",
+        "التعبير عن الآراء والأسباب والشروط",
+        "استخدام صيغ الكييغو (لغة التأدّب) الشائعة في سياقها",
+        "متابعة المحادثات بسرعة قريبة من الطبيعية"
+      ]
+    },
+    "example": {
+      "ja": "雨が降りそうです。",
+      "romaji": "Ame ga furisō desu.",
+      "meaning": { "en": "It looks like it's going to rain.", "ar": "يبدو أنها ستمطر." }
+    }
+  },
+  {
+    "id": "japanese-n2",
+    "order": 5,
+    "levels": ["n2"],
+    "categories": ["jlpt"],
+    "glyph": "N2",
+    "image": "/images/placeholders/courses/japanese-n2.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese N2", "ar": "اللغة اليابانية – المستوى N2" },
+    "description": {
+      "en": "Upper-intermediate Japanese for work, study and everyday life in Japan.",
+      "ar": "يابانية فوق المتوسطة للعمل والدراسة والحياة اليومية في اليابان."
+    },
+    "overview": {
+      "en": "Develop the reading, listening and grammar skills needed to understand Japanese in a wide range of everyday and professional situations, aligned with the JLPT N2 level.",
+      "ar": "طوّر مهارات القراءة والاستماع والقواعد اللازمة لفهم اللغة اليابانية في طيف واسع من المواقف اليومية والمهنية، بما يتوافق مع المستوى N2 في اختبار JLPT."
+    },
+    "outcomes": {
+      "en": [
+        "Read articles and explanations on general topics",
+        "Understand news and conversations at natural speed",
+        "Master upper-intermediate grammar patterns",
+        "Communicate effectively at work and in study settings"
+      ],
+      "ar": [
+        "قراءة المقالات والشروح في الموضوعات العامة",
+        "فهم الأخبار والمحادثات بالسرعة الطبيعية",
+        "إتقان أنماط القواعد فوق المتوسطة",
+        "التواصل بفاعلية في بيئات العمل والدراسة"
+      ]
+    },
+    "example": {
+      "ja": "努力したからこそ、成功できた。",
+      "romaji": "Doryoku shita kara koso, seikō dekita.",
+      "meaning": {
+        "en": "It is precisely because I worked hard that I was able to succeed.",
+        "ar": "لأنني اجتهدت تحديدًا، تمكّنت من النجاح."
+      }
+    }
+  },
+  {
+    "id": "japanese-n1",
+    "order": 6,
+    "levels": ["n1"],
+    "categories": ["jlpt"],
+    "glyph": "N1",
+    "image": "/images/placeholders/courses/japanese-n1.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese N1", "ar": "اللغة اليابانية – المستوى N1" },
+    "description": {
+      "en": "Advanced Japanese: understand complex texts and natural speech across a wide range of topics.",
+      "ar": "يابانية متقدمة: فهم النصوص المعقّدة والكلام الطبيعي في طيف واسع من الموضوعات."
+    },
+    "overview": {
+      "en": "The highest JLPT level. Refine your understanding of abstract texts, nuanced grammar and fast, natural speech.",
+      "ar": "أعلى مستويات اختبار JLPT. اصقل فهمك للنصوص المجرّدة والقواعد الدقيقة والكلام الطبيعي السريع."
+    },
+    "outcomes": {
+      "en": [
+        "Read editorials and complex, abstract texts",
+        "Understand lectures and discussions at natural speed",
+        "Use advanced and literary grammar accurately",
+        "Express nuanced ideas in formal and informal Japanese"
+      ],
+      "ar": [
+        "قراءة المقالات الافتتاحية والنصوص المعقّدة والمجرّدة",
+        "فهم المحاضرات والنقاشات بالسرعة الطبيعية",
+        "استخدام القواعد المتقدمة والأدبية بدقة",
+        "التعبير عن الأفكار الدقيقة باليابانية الرسمية وغير الرسمية"
+      ]
+    },
+    "example": {
+      "ja": "言うまでもなく、健康は大切だ。",
+      "romaji": "Iu made mo naku, kenkō wa taisetsu da.",
+      "meaning": { "en": "Needless to say, health is important.", "ar": "غنيّ عن القول إن الصحة مهمة." }
+    }
+  },
+  {
+    "id": "jlpt-preparation",
+    "order": 7,
+    "levels": ["n5", "n4", "n3", "n2", "n1"],
+    "categories": ["jlpt"],
+    "glyph": "試験",
+    "glyphReading": "shiken — exam",
+    "image": "/images/placeholders/courses/jlpt-preparation.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "JLPT Preparation", "ar": "التحضير لاختبار JLPT" },
+    "description": {
+      "en": "Targeted practice for the Japanese-Language Proficiency Test, from N5 to N1.",
+      "ar": "تدريب مركّز على اختبار الكفاءة في اللغة اليابانية (JLPT)، من N5 إلى N1."
+    },
+    "overview": {
+      "en": "Prepare for the exam with test strategies, timed practice and focused review of vocabulary, grammar, reading and listening for your target level.",
+      "ar": "استعدّ للاختبار من خلال استراتيجيات الإجابة، والتدريب ضمن وقت محدد، والمراجعة المركّزة للمفردات والقواعد والقراءة والاستماع حسب مستواك المستهدف."
+    },
+    "outcomes": {
+      "en": [
+        "Understand the structure of each JLPT section",
+        "Practice with exam-style questions under time limits",
+        "Identify and work on your weak areas",
+        "Build a realistic study plan before exam day"
+      ],
+      "ar": [
+        "فهم بنية كل قسم من أقسام اختبار JLPT",
+        "التدرّب على أسئلة مشابهة لأسئلة الاختبار ضمن وقت محدد",
+        "تحديد نقاط ضعفك والعمل عليها",
+        "وضع خطة دراسة واقعية قبل يوم الاختبار"
+      ]
+    },
+    "example": {
+      "ja": "試験に合格しました！",
+      "romaji": "Shiken ni gōkaku shimashita!",
+      "meaning": { "en": "I passed the exam!", "ar": "نجحتُ في الاختبار!" }
+    }
+  },
+  {
+    "id": "japanese-conversation",
+    "order": 8,
+    "levels": ["n5", "n4", "n3", "n2"],
+    "categories": ["conversation"],
+    "glyph": "会話",
+    "glyphReading": "kaiwa — conversation",
+    "image": "/images/placeholders/courses/japanese-conversation.svg",
+    "plans": ["premium", "private"],
+    "title": { "en": "Japanese Conversation", "ar": "المحادثة باللغة اليابانية" },
+    "description": {
+      "en": "Speak Japanese with confidence through guided, practical conversation practice.",
+      "ar": "تحدّث اليابانية بثقة من خلال تدريب عملي وموجَّه على المحادثة."
+    },
+    "overview": {
+      "en": "Turn what you know into real speaking skills. Practice everyday topics, natural expressions and listening, with feedback on pronunciation and fluency.",
+      "ar": "حوّل ما تعرفه إلى مهارة تحدّث حقيقية. تدرّب على موضوعات الحياة اليومية والتعابير الطبيعية والاستماع، مع ملاحظات حول النطق والطلاقة."
+    },
+    "outcomes": {
+      "en": [
+        "Hold everyday conversations on familiar topics",
+        "Use natural expressions and reactions (aizuchi)",
+        "Improve pronunciation, rhythm and intonation",
+        "Gain confidence speaking without translating in your head"
+      ],
+      "ar": [
+        "إجراء محادثات يومية حول موضوعات مألوفة",
+        "استخدام التعابير وردود الفعل الطبيعية (aizuchi)",
+        "تحسين النطق والإيقاع والتنغيم",
+        "اكتساب الثقة في التحدّث دون الترجمة في ذهنك"
+      ]
+    },
+    "example": {
+      "ja": "週末は何をしましたか。",
+      "romaji": "Shūmatsu wa nani o shimashita ka.",
+      "meaning": { "en": "What did you do on the weekend?", "ar": "ماذا فعلت في عطلة نهاية الأسبوع؟" }
+    }
+  },
+  {
+    "id": "japanese-for-travel",
+    "order": 9,
+    "levels": ["beginner", "n5"],
+    "categories": ["travel", "conversation"],
+    "glyph": "旅行",
+    "glyphReading": "ryokō — travel",
+    "image": "/images/placeholders/courses/japanese-for-travel.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese for Travel", "ar": "اليابانية للسفر" },
+    "description": {
+      "en": "Essential phrases for travelling in Japan: transport, hotels, restaurants and shopping.",
+      "ar": "عبارات أساسية للسفر إلى اليابان: المواصلات، والفنادق، والمطاعم، والتسوّق."
+    },
+    "overview": {
+      "en": "A practical course for your trip to Japan. Learn the phrases and cultural basics you need to get around, order food and interact politely.",
+      "ar": "دورة عملية لرحلتك إلى اليابان. تعلّم العبارات وأساسيات الثقافة التي تحتاجها للتنقّل وطلب الطعام والتعامل بأدب."
+    },
+    "outcomes": {
+      "en": [
+        "Ask for directions and use public transport",
+        "Check in at a hotel and order at a restaurant",
+        "Shop, ask for prices and pay",
+        "Understand basic etiquette and polite expressions"
+      ],
+      "ar": [
+        "السؤال عن الاتجاهات واستخدام وسائل النقل العام",
+        "تسجيل الوصول في الفندق والطلب في المطعم",
+        "التسوّق والسؤال عن الأسعار والدفع",
+        "فهم آداب التعامل الأساسية وعبارات التأدّب"
+      ]
+    },
+    "example": {
+      "ja": "駅はどこですか。",
+      "romaji": "Eki wa doko desu ka.",
+      "meaning": { "en": "Where is the station?", "ar": "أين المحطة؟" }
+    }
+  },
+  {
+    "id": "japanese-for-work",
+    "order": 10,
+    "levels": ["n4", "n3", "n2", "n1"],
+    "categories": ["work"],
+    "glyph": "仕事",
+    "glyphReading": "shigoto — work",
+    "image": "/images/placeholders/courses/japanese-for-work.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese for Work", "ar": "اليابانية للعمل" },
+    "description": {
+      "en": "Business Japanese: polite language, emails, meetings and workplace communication.",
+      "ar": "اليابانية المهنية: لغة التأدّب، والرسائل الإلكترونية، والاجتماعات، والتواصل في بيئة العمل."
+    },
+    "overview": {
+      "en": "Learn the Japanese used in professional environments, from keigo and business etiquette to writing emails and taking part in meetings.",
+      "ar": "تعلّم اللغة اليابانية المستخدمة في البيئات المهنية، من الكييغو وآداب العمل إلى كتابة الرسائل الإلكترونية والمشاركة في الاجتماعات."
+    },
+    "outcomes": {
+      "en": [
+        "Use keigo: respectful and humble language",
+        "Write clear, polite business emails",
+        "Introduce yourself and your work professionally",
+        "Understand Japanese workplace culture"
+      ],
+      "ar": [
+        "استخدام الكييغو: لغة الاحترام ولغة التواضع",
+        "كتابة رسائل عمل إلكترونية واضحة ومهذّبة",
+        "تقديم نفسك وعملك بأسلوب مهني",
+        "فهم ثقافة العمل في اليابان"
+      ]
+    },
+    "example": {
+      "ja": "よろしくお願いいたします。",
+      "romaji": "Yoroshiku onegai itashimasu.",
+      "meaning": { "en": "I look forward to working with you.", "ar": "أتطلّع إلى العمل معكم." }
+    }
+  },
+  {
+    "id": "hiragana-katakana",
+    "order": 11,
+    "levels": ["beginner"],
+    "categories": ["hiragana-katakana"],
+    "glyph": "あア",
+    "glyphReading": "a — hiragana & katakana",
+    "image": "/images/placeholders/courses/hiragana-katakana.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Hiragana & Katakana", "ar": "الهيراغانا والكاتاكانا" },
+    "description": {
+      "en": "Learn to read and write the two Japanese phonetic alphabets from scratch.",
+      "ar": "تعلّم قراءة الأبجديتين الصوتيتين اليابانيتين وكتابتهما من الصفر."
+    },
+    "overview": {
+      "en": "The essential first step. Master the 46 basic hiragana and 46 basic katakana characters, their variations and correct stroke order, with reading practice.",
+      "ar": "الخطوة الأولى الأساسية. أتقن الحروف الأساسية الستة والأربعين في كلٍّ من الهيراغانا والكاتاكانا، وتنويعاتها، وترتيب ضربات كتابتها الصحيح، مع تدريب على القراءة."
+    },
+    "outcomes": {
+      "en": [
+        "Read and write all basic hiragana and katakana",
+        "Use dakuten, handakuten and combined sounds",
+        "Follow correct stroke order",
+        "Read simple words and loanwords"
+      ],
+      "ar": [
+        "قراءة جميع حروف الهيراغانا والكاتاكانا الأساسية وكتابتها",
+        "استخدام علامتي dakuten وhandakuten والأصوات المركّبة",
+        "اتباع ترتيب الضربات الصحيح",
+        "قراءة الكلمات البسيطة والكلمات المستعارة"
+      ]
+    },
+    "example": {
+      "ja": "あいうえお・アイウエオ",
+      "romaji": "a i u e o",
+      "meaning": {
+        "en": "The five Japanese vowels in hiragana and katakana",
+        "ar": "الأصوات المتحركة الخمسة في الهيراغانا والكاتاكانا"
+      }
+    }
+  },
+  {
+    "id": "kanji",
+    "order": 12,
+    "levels": ["n5", "n4", "n3", "n2", "n1"],
+    "categories": ["kanji"],
+    "glyph": "漢字",
+    "glyphReading": "kanji",
+    "image": "/images/placeholders/courses/kanji.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Kanji", "ar": "الكانجي" },
+    "description": {
+      "en": "Learn kanji step by step: meanings, readings, stroke order and useful vocabulary.",
+      "ar": "تعلّم الكانجي خطوة بخطوة: المعاني، والقراءات، وترتيب الضربات، والمفردات المفيدة."
+    },
+    "overview": {
+      "en": "A structured approach to kanji, organised by JLPT level. Understand radicals and on'yomi / kun'yomi readings, and learn each character through real words.",
+      "ar": "منهج منظّم لتعلّم الكانجي مرتّب حسب مستويات JLPT. افهم الجذور وقراءات on'yomi وkun'yomi، وتعلّم كل حرف من خلال كلمات حقيقية."
+    },
+    "outcomes": {
+      "en": [
+        "Recognize radicals to remember kanji more easily",
+        "Learn on'yomi and kun'yomi readings",
+        "Write kanji with correct stroke order",
+        "Read kanji in everyday words and texts"
+      ],
+      "ar": [
+        "التعرّف على الجذور لتذكّر الكانجي بسهولة أكبر",
+        "تعلّم قراءات on'yomi وkun'yomi",
+        "كتابة الكانجي بترتيب الضربات الصحيح",
+        "قراءة الكانجي في الكلمات والنصوص اليومية"
+      ]
+    },
+    "example": {
+      "ja": "山（やま）",
+      "romaji": "yama",
+      "meaning": { "en": "mountain", "ar": "جبل" }
+    }
+  },
+  {
+    "id": "japanese-grammar",
+    "order": 13,
+    "levels": ["n5", "n4", "n3", "n2", "n1"],
+    "categories": ["grammar"],
+    "glyph": "文法",
+    "glyphReading": "bunpō — grammar",
+    "image": "/images/placeholders/courses/japanese-grammar.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese Grammar", "ar": "قواعد اللغة اليابانية" },
+    "description": {
+      "en": "Clear explanations of Japanese grammar patterns, with examples and exercises.",
+      "ar": "شرح واضح لأنماط القواعد اليابانية، مع أمثلة وتمارين."
+    },
+    "overview": {
+      "en": "Understand how Japanese sentences are built. Each grammar point is explained in your language, illustrated with natural examples and reinforced with exercises.",
+      "ar": "افهم كيف تُبنى الجملة اليابانية. يُشرح كل نمط قواعدي بلغتك، مع أمثلة طبيعية وتمارين لترسيخه."
+    },
+    "outcomes": {
+      "en": [
+        "Understand Japanese sentence structure",
+        "Use particles accurately",
+        "Conjugate verbs and adjectives",
+        "Apply grammar patterns from N5 to N1"
+      ],
+      "ar": [
+        "فهم بنية الجملة اليابانية",
+        "استخدام أدوات الربط بدقة",
+        "تصريف الأفعال والصفات",
+        "تطبيق أنماط القواعد من N5 إلى N1"
+      ]
+    },
+    "example": {
+      "ja": "写真を撮ってもいいですか。",
+      "romaji": "Shashin o totte mo ii desu ka.",
+      "meaning": { "en": "May I take a photo?", "ar": "هل يمكنني التقاط صورة؟" }
+    }
+  },
+  {
+    "id": "japanese-vocabulary",
+    "order": 14,
+    "levels": ["n5", "n4", "n3", "n2", "n1"],
+    "categories": ["vocabulary"],
+    "glyph": "語彙",
+    "glyphReading": "goi — vocabulary",
+    "image": "/images/placeholders/courses/japanese-vocabulary.svg",
+    "plans": ["basic", "premium", "private"],
+    "title": { "en": "Japanese Vocabulary", "ar": "مفردات اللغة اليابانية" },
+    "description": {
+      "en": "Build a strong, practical vocabulary organised by theme and JLPT level.",
+      "ar": "ابنِ حصيلة مفردات قوية وعملية مرتّبة حسب الموضوع ومستوى JLPT."
+    },
+    "overview": {
+      "en": "Learn the words you need most, grouped by theme and level, with example sentences and review techniques that help you remember them long-term.",
+      "ar": "تعلّم الكلمات التي تحتاجها أكثر من غيرها، مجمّعة حسب الموضوع والمستوى، مع جمل توضيحية وأساليب مراجعة تساعدك على تذكّرها طويلًا."
+    },
+    "outcomes": {
+      "en": [
+        "Learn high-frequency words by theme",
+        "Remember vocabulary with spaced review",
+        "Use new words in natural example sentences",
+        "Expand your vocabulary for your JLPT level"
+      ],
+      "ar": [
+        "تعلّم الكلمات الأكثر استخدامًا حسب الموضوع",
+        "تذكّر المفردات من خلال المراجعة المتباعدة",
+        "استخدام الكلمات الجديدة في جمل طبيعية",
+        "توسيع مفرداتك حسب مستواك في JLPT"
+      ]
+    },
+    "example": {
+      "ja": "食べ物（たべもの）",
+      "romaji": "tabemono",
+      "meaning": { "en": "food", "ar": "طعام" }
+    }
+  }
+]

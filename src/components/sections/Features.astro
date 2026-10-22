@@ -1,0 +1,60 @@
+---
+/** Home SECTION 2 — Why Learn Japanese With Us? (5 feature cards, SPEC copy). */
+import Section from '@/components/ui/Section.astro';
+import Icon from '@/components/icons/Icon.astro';
+import type { IconName } from '@/components/icons/paths';
+import { getDictionary } from '@/i18n';
+import type { Locale } from '@/i18n/config';
+
+interface Props {
+  lang: Locale;
+  id?: string;
+  /** Override the section title (the About page reuses this block). */
+  title?: string;
+  headingTone?: 'default' | 'sunken';
+}
+const { lang, id = 'why', title, headingTone = 'default' } = Astro.props;
+const dict = getDictionary(lang);
+// Icon + decorative Japanese word for each card (same order as the dictionary items).
+const decor: { icon: IconName; ja: string }[] = [
+  { icon: 'layers', ja: '段階' }, // dankai — stages/levels
+  { icon: 'video', ja: '授業' }, // jugyō — class
+  { icon: 'route', ja: '道' }, // michi — path
+  { icon: 'pencil', ja: '練習' }, // renshū — practice
+  { icon: 'lantern', ja: '文化' }, // bunka — culture
+];
+---
+
+<Section
+  id={id}
+  eyebrow={dict.home.features.eyebrow}
+  title={title ?? dict.home.features.title}
+  subtitle={dict.home.features.subtitle}
+  tone={headingTone}
+>
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+    {
+      dict.home.features.items.map((item, i) => (
+        <li
+          class:list={[
+            'reveal group relative overflow-hidden rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line transition-shadow hover:shadow-lift',
+            i < 3 ? 'lg:col-span-2' : 'lg:col-span-3',
+          ]}
+        >
+          <span
+            lang="ja"
+            aria-hidden="true"
+            class="font-jp pointer-events-none absolute -end-1 -top-2 text-6xl text-stone-100 transition-colors group-hover:text-sakura"
+          >
+            {decor[i]?.ja}
+          </span>
+          <span class="relative inline-flex size-12 items-center justify-center rounded-2xl bg-sakura-soft text-primary ring-1 ring-sakura">
+            <Icon name={decor[i]?.icon ?? 'sparkle'} size={24} />
+          </span>
+          <h3 class="relative mt-5 text-lg font-semibold">{item.title}</h3>
+          <p class="relative mt-2 text-fg-muted">{item.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+</Section>
