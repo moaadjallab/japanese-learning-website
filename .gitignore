@@ -33,3 +33,6 @@ Thumbs.db
 screenshots/*
 !screenshots/README.md
 .wrangler-dev.log
+
+# graphify knowledge-graph output (regenerate with: graphify update .)
+graphify-out/
