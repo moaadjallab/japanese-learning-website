@@ -133,28 +133,23 @@ test.describe('forms', () => {
     await expect(form.getByRole('alert')).toContainText(/unavailable|went wrong/i);
   });
 
-  test('register validates all fields and shows "coming soon" instead of a fake account', async ({
-    page,
-  }) => {
+  test('register validates all fields (accessible errors, password toggle)', async ({ page }) => {
     await page.goto('/en/register/');
     const form = page.getByTestId('register-form');
     await form.getByRole('button', { name: 'Create Account' }).click();
     await expect(form.getByLabel('Full Name')).toHaveAttribute('aria-invalid', 'true');
     await expect(form.getByLabel('Japanese Level')).toHaveAttribute('aria-invalid', 'true');
+    await expect(form.getByLabel('Full Name')).toBeFocused();
 
     await form.getByLabel('Full Name').fill('Test User');
     await form.getByLabel('Email').fill('test@example.com');
-    await form.getByLabel(/^Password/).fill('sakura2026');
-    await form.getByLabel('Confirm Password').fill('sakura2026');
     await form.getByLabel('Japanese Level').selectOption('unknown');
-
-    // Password visibility toggle.
+    await form.getByLabel(/^Password/).fill('sakura2026');
     const toggle = form.getByRole('button', { name: 'Show password' }).first();
     await toggle.click();
     await expect(form.getByLabel(/^Password/)).toHaveAttribute('type', 'text');
-
-    await form.getByRole('button', { name: 'Create Account' }).click();
-    await expect(form.getByRole('status')).toContainText('Accounts are coming soon');
+    await form.getByLabel('Confirm Password').fill('different1');
+    await expect(form.getByLabel('Confirm Password')).toHaveAttribute('aria-invalid', 'true');
   });
 });
 
@@ -180,11 +175,9 @@ test.describe('checkout', () => {
 });
 
 test.describe('APIs', () => {
-  test('auth and payment stubs return structured 501s', async ({ request }) => {
-    for (const path of ['/api/auth/login', '/api/payments/checkout-session']) {
-      const res = await request.post(path, { data: {} });
-      expect(res.status()).toBe(501);
-      expect((await res.json()).error.code).toBe('not_implemented');
-    }
+  test('payment stubs return a structured 501', async ({ request }) => {
+    const res = await request.post('/api/payments/checkout-session', { data: {} });
+    expect(res.status()).toBe(501);
+    expect((await res.json()).error.code).toBe('not_implemented');
   });
 });

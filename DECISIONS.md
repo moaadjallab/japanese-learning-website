@@ -81,3 +81,18 @@ Choices made while building V1, with the reasoning, so they can be revisited.
     any horizontal overflow at 360–1536 px in both languages.
 30. **Rate limiting is in-memory per isolate** (best effort). A Cloudflare WAF rate-limiting rule is
     recommended in DEPLOY.md for real protection.
+
+## Accounts (added after V1)
+
+31. **Hand-rolled sessions on D1 instead of Better Auth.** The needs are small (email + password,
+    verification, reset, roles), and doing it with Web Crypto keeps zero runtime dependencies, full control
+    over the Workers runtime constraints (PBKDF2 is capped at 100,000 iterations there) and an API that the
+    existing `AuthService` client already matched. Better Auth remains a drop-in option (AUTH_PLAN.md).
+32. **Unverified users can sign in.** Verification is recorded and reminded on the account page; gate
+    course access on it once the learning space exists, rather than blocking the first visit.
+33. **"My account" page, not a dashboard.** A small on-demand page (profile, roles, subscription status,
+    logout) gives signed-in users a place to land without building the V2 LMS.
+34. **`na_auth` hint cookie.** Static pages are prerendered, so a non-secret, script-readable `1` flag lets
+    the header show "My account" without a request on every page. The real session cookie stays HttpOnly.
+35. **Local test admin via `pnpm db:seed:local`.** The script only targets the local database, and stores
+    generated credentials in the git-ignored `.dev.vars` instead of the repository.

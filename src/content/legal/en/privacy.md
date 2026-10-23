@@ -1,7 +1,7 @@
 ---
 title: Privacy Policy
 description: Draft privacy policy explaining what personal data we collect and how we use it.
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 > **Draft template.** Every item in [brackets] must be completed, and the whole document must be reviewed by a qualified lawyer before launch, in particular for Moroccan Law 09-08 (CNDP), the GDPR and the laws of the Gulf countries where you have students.
@@ -13,7 +13,7 @@ updated: 2026-10-22
 ## 2. Data we collect
 
 - **Contact form:** your name, email address, subject and message.
-- **Account (when accounts open):** full name, email address, password (stored only as a secure hash), preferred language and Japanese level.
+- **Account:** full name, email address, password (stored only as a secure hash), preferred language, Japanese level, and sign-in sessions (with the IP address and browser of each session, for security).
 - **Subscriptions (when payments open):** your plan and subscription status. Card details are handled directly by our payment provider; we never receive your full card number.
 - **Technical data:** IP address and basic request information processed by our hosting provider for security and abuse prevention.
 

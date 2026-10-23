@@ -12,7 +12,7 @@ V1 contains **no payment processing and never simulates a payment**.
 
 Code: `src/lib/payments/` (`PaymentProvider` interface with `createCheckoutSession`, `handleWebhook`,
 `getSubscriptionStatus`, `cancelSubscription`; adapters in `adapters/`), API stubs in
-`src/pages/api/payments/[action].ts`, D1 tables `subscriptions` and `payment_events` in `db/schema.sql`.
+`src/pages/api/payments/[action].ts`, D1 tables `subscriptions` and `payment_events` in `db/migrations/0001_initial_schema.sql`.
 
 ---
 

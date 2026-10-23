@@ -57,6 +57,21 @@ npx wrangler login
 SITE_URL=https://www.yourdomain.com pnpm deploy
 ```
 
+## 2b. D1 database (accounts) — required before the first deploy
+
+1. `npx wrangler d1 create nihongo-academy`
+2. Copy the printed `database_id` into `wrangler.jsonc` (replace `00000000-0000-0000-0000-000000000000`)
+   and commit. Deploys fail until this is done.
+3. Create the tables: `pnpm db:migrate:remote` (run it again whenever a new file appears in `db/migrations/`).
+4. Create the first admin: register normally on the live site, then grant the role:
+
+   ```bash
+   npx wrangler d1 execute DB --remote --command "INSERT INTO user_roles (user_id, role_id) SELECT id, 'admin' FROM users WHERE email = 'you@yourdomain.com'"
+   ```
+
+Auth emails (verification, password reset) use the same `RESEND_API_KEY` and `CONTACT_FROM_EMAIL` as the
+contact form. Add a WAF rate-limiting rule on `/api/auth/*` as well (e.g. 20 requests / 10 minutes per IP).
+
 ## 3. Custom domain & DNS
 
 1. Worker → **Settings → Domains & Routes → Add → Custom domain** → `www.yourdomain.com`
@@ -82,8 +97,6 @@ Security → WAF → Rate limiting rules → `URI Path equals /api/contact`, e.g
 
 - **Web Analytics:** Analytics & Logs → Web Analytics → add site → copy token into
   `PUBLIC_CF_ANALYTICS_TOKEN` (build variable) → redeploy. It is cookieless (no consent banner needed).
-- **D1 database (V2):** `npx wrangler d1 create nihongo-academy`, paste the id into the commented block in
-  `wrangler.jsonc`, then `npx wrangler d1 execute nihongo-academy --remote --file=db/schema.sql`.
 
 ## 6. After deploying, check
 

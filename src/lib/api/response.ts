@@ -9,7 +9,10 @@ export type ApiErrorCode =
   | 'unsupported_media_type'
   | 'service_unavailable'
   | 'not_implemented'
-  | 'internal_error';
+  | 'internal_error'
+  | 'invalid_credentials'
+  | 'email_taken'
+  | 'invalid_token';
 
 const JSON_HEADERS = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' };
 

@@ -16,6 +16,15 @@
   // Non-secret variables. Secrets (RESEND_API_KEY, TURNSTILE_SECRET_KEY, ...) are set with
   // `wrangler secret put <NAME>` or in the Cloudflare dashboard. See DEPLOY.md.
   "vars": {},
-  // Future (V2): uncomment once the D1 database exists (see db/schema.sql and AUTH_PLAN.md).
-  // "d1_databases": [{ "binding": "DB", "database_name": "nihongo-academy", "database_id": "<id>" }]
+  // Accounts, sessions and (later) subscriptions. Local dev uses a local SQLite copy in .wrangler/.
+  // Before the first deploy: `npx wrangler d1 create nihongo-academy` and paste the real id below
+  // (see DEPLOY.md), then `pnpm db:migrate:remote`.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nihongo-academy",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "db/migrations",
+    },
+  ],
 }

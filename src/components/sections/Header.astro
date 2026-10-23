@@ -58,6 +58,9 @@ const items = mainNav.map((item) => ({
       <LanguageSwitcher lang={lang} />
       <a
         href={routes.login(lang)}
+        data-auth-link
+        data-account-href={routes.account(lang)}
+        data-account-label={t('nav.account')}
         class="rounded-full px-2 py-2 text-sm font-semibold text-fg hover:text-primary"
         aria-current={isActivePath(current, routes.login(lang)) ? 'page' : undefined}
       >
@@ -123,7 +126,13 @@ const items = mainNav.map((item) => ({
         <a href={routes.pricing(lang)} class={buttonClass('primary', 'lg', 'w-full')}>
           {t('common.startLearning')}
         </a>
-        <a href={routes.login(lang)} class={buttonClass('secondary', 'lg', 'w-full')}>
+        <a
+          href={routes.login(lang)}
+          data-auth-link
+          data-account-href={routes.account(lang)}
+          data-account-label={t('nav.account')}
+          class={buttonClass('secondary', 'lg', 'w-full')}
+        >
           {t('nav.login')}
         </a>
       </div>
@@ -133,6 +142,16 @@ const items = mainNav.map((item) => ({
 </header>
 
 <script>
+  // Signed-in visitors see "My account" instead of "Login". The na_auth cookie is only a UI hint
+  // (the real session cookie is HttpOnly); the account page itself checks the session server-side.
+  if (/(?:^|;\s*)na_auth=1(?:;|$)/.test(document.cookie)) {
+    document.querySelectorAll<HTMLAnchorElement>('[data-auth-link]').forEach((link) => {
+      link.href = link.dataset.accountHref ?? link.href;
+      link.textContent = link.dataset.accountLabel ?? link.textContent;
+      link.removeAttribute('aria-current');
+    });
+  }
+
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
 

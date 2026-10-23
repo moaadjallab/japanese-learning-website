@@ -20,7 +20,8 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: `pnpm exec wrangler dev --port ${PORT} --ip 127.0.0.1`,
+    // Apply D1 migrations to the local database first (accounts tests need the tables).
+    command: `pnpm db:migrate:local && pnpm exec wrangler dev --port ${PORT} --ip 127.0.0.1`,
     url: `${BASE_URL}/en/`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

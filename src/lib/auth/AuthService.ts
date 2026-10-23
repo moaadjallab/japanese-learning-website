@@ -1,20 +1,25 @@
 /**
  * AuthService — the only API the UI uses for authentication.
  *
- * V1 ships `HttpAuthService`, which calls /api/auth/* endpoints that currently answer
- * 501 Not Implemented. The UI turns that into a friendly "accounts are coming soon" message.
- * There are NO fake sessions: nothing is stored, nobody is "logged in".
- *
- * V2: implement the endpoints (see AUTH_PLAN.md); this client stays the same.
+ * `HttpAuthService` calls the /api/auth/* endpoints (D1-backed sessions, see AUTH_PLAN.md).
+ * The session itself lives in an HttpOnly cookie set by the server; this client never sees it.
+ * If the server answers 501 (no database configured), the UI shows "accounts are coming soon".
  */
-import type { LoginRequest, RegisterRequest, Session, User } from './types';
+import type { LoginRequest, RegisterRequest, User } from './types';
+
+/** User fields returned by the API (no secrets). */
+export type PublicUser = Pick<
+  User,
+  'id' | 'email' | 'fullName' | 'roles' | 'preferredLanguage' | 'japaneseLevel' | 'emailVerified'
+>;
 
 export interface AuthService {
-  login(input: LoginRequest): Promise<Session>;
-  register(input: RegisterRequest): Promise<User>;
+  login(input: LoginRequest): Promise<PublicUser>;
+  register(input: RegisterRequest & { confirmPassword: string }): Promise<PublicUser>;
   requestPasswordReset(email: string): Promise<void>;
+  resetPassword(input: { token: string; password: string; confirmPassword: string }): Promise<void>;
   logout(): Promise<void>;
-  getSession(): Promise<Session | null>;
+  getSession(): Promise<{ expiresAt: string; user: PublicUser } | null>;
 }
 
 /** Thrown when the auth backend is not available yet (HTTP 501). */
@@ -66,22 +71,27 @@ export class HttpAuthService implements AuthService {
   }
 
   login(input: LoginRequest) {
-    return this.request<{ session: Session }>('login', input).then((d) => d.session);
+    return this.request<{ user: PublicUser }>('login', input).then((d) => d.user);
   }
-  register(input: RegisterRequest) {
-    return this.request<{ user: User }>('register', input).then((d) => d.user);
+  register(input: RegisterRequest & { confirmPassword: string }) {
+    return this.request<{ user: PublicUser }>('register', input).then((d) => d.user);
   }
   async requestPasswordReset(email: string) {
     await this.request('forgot-password', { email });
   }
+  async resetPassword(input: { token: string; password: string; confirmPassword: string }) {
+    await this.request('reset-password', input);
+  }
   async logout() {
-    await this.request('logout');
+    await this.request('logout', {});
   }
   async getSession() {
     try {
-      return await this.request<{ session: Session | null }>('session', undefined, 'GET').then(
-        (d) => d.session,
-      );
+      return await this.request<{ session: { expiresAt: string; user: PublicUser } | null }>(
+        'session',
+        undefined,
+        'GET',
+      ).then((d) => d.session);
     } catch (error) {
       if (error instanceof AuthNotAvailableError) return null;
       throw error;

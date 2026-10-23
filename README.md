@@ -9,8 +9,10 @@ language school. Single conversion goal: **Visitor → Subscription**.
   React islands (catalog filters, forms) · Cloudflare Workers (static assets + Worker) · Zod · Vitest · Playwright
 - **Pages (×2 languages):** Home, Courses (+14 course pages), Pricing, About, FAQ, Contact, Login, Register,
   Forgot password, Checkout, Payment success, 4 legal drafts, 404
+- **Accounts:** real email + password accounts on Cloudflare D1 (register, login, logout, email verification,
+  password reset, "My account" page, roles student/teacher/admin). See [AUTH_PLAN.md](AUTH_PLAN.md).
 - **Not in V1 (by design):** LMS, dashboards, video player, quizzes, progress, certificates, real
-  accounts, real payments. The architecture is ready for them (see `AUTH_PLAN.md`, `PAYMENTS_PLAN.md`).
+  payments. The architecture is ready for them (see `AUTH_PLAN.md`, `PAYMENTS_PLAN.md`).
 
 Other docs: [DEPLOY.md](DEPLOY.md) · [AUTH_PLAN.md](AUTH_PLAN.md) · [PAYMENTS_PLAN.md](PAYMENTS_PLAN.md) ·
 [PLACEHOLDERS.md](PLACEHOLDERS.md) · [DECISIONS.md](DECISIONS.md) · [SPEC.md](SPEC.md)
@@ -23,26 +25,33 @@ Requirements: Node.js ≥ 20.3 (22 recommended) and pnpm 10.
 
 ```bash
 pnpm install
-pnpm dev            # http://localhost:4321 → redirects to /en/ or /ar/
+pnpm db:migrate:local   # create the local database tables (accounts)
+pnpm db:seed:local      # optional: local admin test account (credentials written to .dev.vars)
+pnpm dev                # http://localhost:4321 → redirects to /en/ or /ar/
 ```
+
+Log in at `/en/login/` with `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` from `.dev.vars`, or create a student
+account at `/en/register/`. In dev, verification and reset emails are printed in the terminal.
 
 Optional local secrets: copy `.env.example` to `.dev.vars` (used by the Cloudflare runtime in dev).
 Without any secrets the contact form logs messages to the terminal instead of emailing them (dev only).
 
 ### Scripts
 
-| Command                     | What it does                                                                                        |
-| --------------------------- | --------------------------------------------------------------------------------------------------- |
-| `pnpm dev`                  | Dev server (also regenerates the Japanese font subset).                                             |
-| `pnpm build`                | Font subset → `astro build` → `dist/_headers` with CSP hashes.                                      |
-| `pnpm preview`              | Build, then serve the production build with `wrangler dev` (real Workers runtime).                  |
-| `pnpm lint` / `pnpm format` | ESLint (incl. a11y rules) / Prettier.                                                               |
-| `pnpm typecheck`            | `astro check` (TypeScript + Astro templates).                                                       |
-| `pnpm test`                 | Vitest unit tests (i18n, helpers, validation, content rules).                                       |
-| `pnpm test:e2e`             | Playwright smoke + axe accessibility tests (run `pnpm build` first).                                |
-| `pnpm screenshots`          | Responsive screenshots, 6 widths × 2 languages, into `/screenshots` (fails on horizontal overflow). |
-| `pnpm og:generate`          | Regenerate the placeholder Open Graph image and Apple touch icon.                                   |
-| `pnpm deploy`               | Build and `wrangler deploy` (see DEPLOY.md).                                                        |
+| Command                             | What it does                                                                                        |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                          | Dev server (also regenerates the Japanese font subset).                                             |
+| `pnpm build`                        | Font subset → `astro build` → `dist/_headers` with CSP hashes.                                      |
+| `pnpm preview`                      | Build, then serve the production build with `wrangler dev` (real Workers runtime).                  |
+| `pnpm lint` / `pnpm format`         | ESLint (incl. a11y rules) / Prettier.                                                               |
+| `pnpm typecheck`                    | `astro check` (TypeScript + Astro templates).                                                       |
+| `pnpm test`                         | Vitest unit tests (i18n, helpers, validation, content rules).                                       |
+| `pnpm test:e2e`                     | Playwright smoke + axe accessibility tests (run `pnpm build` first).                                |
+| `pnpm screenshots`                  | Responsive screenshots, 6 widths × 2 languages, into `/screenshots` (fails on horizontal overflow). |
+| `pnpm db:migrate:local` / `:remote` | Apply `db/migrations/` to the local / production D1 database.                                       |
+| `pnpm db:seed:local`                | Create or reset the local admin test account (never touches production).                            |
+| `pnpm og:generate`                  | Regenerate the placeholder Open Graph image and Apple touch icon.                                   |
+| `pnpm deploy`                       | Build and `wrangler deploy` (see DEPLOY.md).                                                        |
 
 Dev-only pages: **`/en/_styleguide`** and `/ar/_styleguide` (component library; never built in production),
 and `/en/checkout/success/?preview=1` (success page design preview).
@@ -85,7 +94,7 @@ src/
     api/auth/[action].ts    ← 501 stubs
     api/payments/[action].ts← 501 stubs
   features/{dashboard,teacher,admin}/README.md ← V2 placeholders (not built)
-db/schema.sql               ← D1 schema prepared for V2
+db/migrations/0001_initial_schema.sql               ← D1 schema prepared for V2
 scripts/                    ← font subsetting, OG image, CSP post-build, course artwork, dev helpers
 tests/unit, tests/e2e       ← Vitest, Playwright
 ```

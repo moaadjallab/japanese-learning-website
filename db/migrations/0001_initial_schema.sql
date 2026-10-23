@@ -1,9 +1,7 @@
 -- =============================================================================
--- Cloudflare D1 (SQLite) schema — PREPARED FOR V2, NOT USED BY V1.
--- Apply with:  wrangler d1 execute nihongo-academy --file=db/schema.sql [--remote]
--- See AUTH_PLAN.md and PAYMENTS_PLAN.md. All timestamps are ISO-8601 UTC text.
--- If you adopt Better Auth, generate its tables with its CLI and keep the
--- domain tables below (plans, courses, subscriptions, enrollments) alongside.
+-- Cloudflare D1 (SQLite) schema. Apply with `pnpm db:migrate:local` / `pnpm db:migrate:remote`.
+-- Auth tables (users, roles, user_roles, sessions, verification_tokens) are used by src/lib/auth/server/.
+-- Catalog and billing tables are prepared for later versions. All timestamps are ISO-8601 UTC text.
 -- =============================================================================
 
 PRAGMA foreign_keys = ON;

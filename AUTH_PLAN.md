@@ -1,61 +1,61 @@
-# Authentication plan (V2)
+# Authentication
 
-V1 ships the **UI and the architecture only**. There are no real accounts and no fake sessions:
-`/api/auth/*` answers `501 not_implemented` and the forms show "Accounts are coming soon".
+Email + password accounts are **implemented** on Cloudflare D1 with hand-rolled, dependency-free
+sessions (the pattern popularized by Lucia). No third-party auth service, nothing faked.
 
-## What already exists (V1)
+## What exists
 
-| Piece                                                                                                     | Location                                           |
-| --------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| Types: `Role = 'student' \| 'teacher' \| 'admin'`, `User`, `Session`, requests                            | `src/lib/auth/types.ts`                            |
-| `AuthService` interface + `HttpAuthService` client used by every form                                     | `src/lib/auth/AuthService.ts`                      |
-| Login / Register / Forgot-password UI (validation, a11y, loading, password toggle)                        | `src/components/islands/AuthForms.tsx`             |
-| Shared Zod schemas (client + server)                                                                      | `src/lib/validation/schemas.ts`                    |
-| Route guard `guardRoute(session, AREA_ROLES.x, lang)`                                                     | `src/lib/auth/guard.ts`                            |
-| API stubs (`login`, `register`, `logout`, `session`, `forgot-password`, `reset-password`, `verify-email`) | `src/pages/api/auth/[action].ts`                   |
-| D1 tables: `users`, `roles`, `user_roles`, `sessions`, `verification_tokens`, `teacher_profiles`          | `db/schema.sql`                                    |
-| Future areas (not built)                                                                                  | `src/features/{dashboard,teacher,admin}/README.md` |
+| Piece                                                                                                     | Location                                                              |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Types: `Role = 'student' \| 'teacher' \| 'admin'`, `User`, `Session`                                      | `src/lib/auth/types.ts`                                               |
+| Password hashing (PBKDF2-SHA256, 100k iterations, random salt), tokens, constant-time compare             | `src/lib/auth/server/crypto.ts`                                       |
+| D1 queries: users, roles, sessions, one-time tokens                                                       | `src/lib/auth/server/repository.ts`                                   |
+| Cookies (`na_session` HttpOnly + `na_auth` UI hint)                                                       | `src/lib/auth/server/cookies.ts`                                      |
+| Session loading, localized auth emails                                                                    | `src/lib/auth/server/index.ts`                                        |
+| API: `register`, `login`, `logout`, `session`, `forgot-password`, `reset-password`, `resend-verification` | `src/pages/api/auth/[action].ts`                                      |
+| Middleware → `Astro.locals.session` on on-demand pages                                                    | `src/middleware.ts`                                                   |
+| Route guard `guardRoute(session, AREA_ROLES.x, lang)`                                                     | `src/lib/auth/guard.ts`                                               |
+| Pages: login, register, forgot-password, reset-password, verify-email, **account**                        | `src/pages/[lang]/…`                                                  |
+| Browser client `authService` + form islands                                                               | `src/lib/auth/AuthService.ts`, `src/components/islands/AuthForms.tsx` |
+| Schema / migrations                                                                                       | `db/migrations/0001_initial_schema.sql`                               |
+| Local admin test account                                                                                  | `scripts/seed-admin.mjs` (`pnpm db:seed:local`)                       |
 
-## Recommended approach
+## Flows
 
-**[Better Auth](https://www.better-auth.com/) on Cloudflare D1** (via its Kysely/Drizzle adapter).
+- **Register** → user created with role `student` → signed in → redirected to `/[lang]/account/` →
+  verification email sent (link valid 48 h). Unverified users can still sign in; gate course access on
+  `emailVerified` once courses are online.
+- **Login** → generic error for a wrong email _or_ password; a dummy hash is checked when the email does
+  not exist so timing does not reveal accounts. `?next=` (same-locale paths only) is honored.
+- **Forgot password** → always the same answer; if the account exists, a reset link (valid 1 h, single use)
+  is emailed. **Reset** sets the new password and signs out every device.
+- **Logout** → deletes the session row and both cookies; works as a plain form post (no JavaScript needed).
+- **Header**: static pages read the non-secret `na_auth=1` cookie to show "My account" instead of "Login".
 
-- Framework-agnostic and works in the Workers runtime; has an Astro integration guide.
-- Email + password out of the box, with **email verification** and **password reset** flows,
-  session management, rate limiting, and plugins for roles/admin, 2FA and social sign-in later.
-- Lucia v3 is deprecated as a library (its author now maintains it as a learning resource), so
-  prefer Better Auth, or hand-roll the same pattern following the Lucia guide if you need full control.
+## Security notes
 
-### Implementation steps
+- Session tokens are 256-bit random values; only their SHA-256 is stored. Same for email tokens.
+- Cookie: `HttpOnly; SameSite=Lax; Path=/; Secure` on https; 30-day sliding expiry (renewed when < 15 days remain).
+- CSRF: Astro's built-in origin check on non-GET requests + SameSite cookies.
+- Rate limiting: login (10/15 min per IP+email), register (5/h per IP), email sends (5/h). In-memory per
+  Worker isolate, so **also add a Cloudflare WAF rate-limiting rule on `/api/auth/*`** (see DEPLOY.md).
+- Passwords: at least 8 characters with a letter and a digit (shared Zod schema, client + server).
+- Responses for signed-in users are `Cache-Control: private, no-store`.
+- No roles can be self-assigned: `teacher`/`admin` are granted directly in D1 (or by a future admin UI).
 
-1. **D1:** create the database and bind it as `DB` (see DEPLOY.md). Let Better Auth's CLI generate its
-   tables (`user`, `session`, `account`, `verification`) and keep the domain tables from `db/schema.sql`
-   (`plans`, `courses`, `subscriptions`, `enrollments`, `user_roles`). Map our extra user fields
-   (`preferredLanguage`, `japaneseLevel`) as Better Auth `additionalFields`.
-2. **Server:** create `src/lib/auth/server.ts` that builds the Better Auth instance per request from
-   `locals.runtime.env.DB` and secrets (`BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`).
-3. **API:** replace the stub in `src/pages/api/auth/[action].ts` with the Better Auth handler (or keep our
-   action names and call its server API, so `HttpAuthService` doesn't change).
-4. **Middleware:** in `src/middleware.ts`, read the session cookie and put `session` on `Astro.locals`.
-   Protected pages are on-demand (`prerender = false`) and call `guardRoute()`.
-5. **Emails:** send verification and reset emails through the existing `EmailProvider` (Resend),
-   localized with the user's `preferredLanguage`.
-6. **Roles:** every new user gets `student`. Teachers/admins are granted by an admin (never self-assigned).
+## Local development
 
-### Security requirements
+```bash
+pnpm db:migrate:local    # create the tables in the local D1 (.wrangler/state)
+pnpm db:seed:local       # admin test account; credentials saved in .dev.vars (SEED_ADMIN_*)
+pnpm dev
+```
 
-- Passwords hashed with a slow KDF (Better Auth uses scrypt). Never log passwords or tokens.
-- Session cookie: `HttpOnly; Secure; SameSite=Lax; Path=/`; rotate on login; short absolute expiry + idle expiry.
-- Store only **hashes** of session/verification/reset tokens; reset tokens expire within ~1 hour and are single-use.
-- Generic error messages ("email or password is incorrect"); identical response for forgot-password whether or
-  not the email exists.
-- Rate-limit login, register and forgot-password (Better Auth rate limiter + Cloudflare WAF rule) and
-  add Turnstile to register/forgot-password.
-- Require verified email before granting course access; re-verify on email change.
-- CSRF: same-origin checks (already enforced by Astro's `checkOrigin`) and SameSite cookies.
-- Update the Privacy Policy and Cookie Policy (a strictly necessary session cookie) before launch.
+Without `RESEND_API_KEY`, emails are printed in the dev-server terminal (with the verification/reset links).
 
-### Then, in later versions
+## Next steps
 
-Student dashboard (`/[lang]/dashboard/`), teacher area, admin area, social sign-in (Google/Apple),
-optional 2FA for teachers and admins.
+- Student learning space (V2 LMS) behind `guardRoute(session, AREA_ROLES.student, lang)`.
+- Teacher and admin areas (`src/features/teacher`, `src/features/admin`).
+- Optional: Turnstile on register/forgot-password, 2FA for teachers/admins, social sign-in.
+- If you prefer a library later, Better Auth can replace `src/lib/auth/server/` behind the same API.

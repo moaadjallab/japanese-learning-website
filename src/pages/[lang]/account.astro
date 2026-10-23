@@ -1,0 +1,128 @@
+---
+/**
+ * "My account" (on demand, signed-in users only): profile, roles, subscription status, logout.
+ * Deliberately small — the learning space (LMS) comes in a later version.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/sections/PageHeader.astro';
+import Container from '@/components/ui/Container.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { badgeClass, buttonClass } from '@/components/ui/styles';
+import { getDictionary, isLocale, useTranslations } from '@/i18n';
+import { AREA_ROLES, guardRoute } from '@/lib/auth/guard';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+if (!isLocale(Astro.params.lang)) return Astro.redirect(routes.account('en'));
+const lang = Astro.params.lang;
+const decision = guardRoute(Astro.locals.session, AREA_ROLES.student, lang);
+if (!decision.allowed) {
+  const next = encodeURIComponent(Astro.url.pathname);
+  return Astro.redirect(`${decision.redirectTo}?next=${next}`);
+}
+const user = Astro.locals.session!.user;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+const verificationSent = Astro.url.searchParams.get('verification') === 'sent';
+const row =
+  'flex flex-col gap-1 border-b border-line py-4 last:border-0 sm:flex-row sm:items-center sm:justify-between';
+---
+
+<BaseLayout lang={lang} title={t('account.meta.title')} description={t('account.meta.description')} noindex>
+  <PageHeader
+    lang={lang}
+    eyebrow={t('account.eyebrow')}
+    title={t('account.greeting', { name: user.fullName })}
+    subtitle={t('account.subtitle')}
+    accent="ようこそ"
+  />
+
+  <Container class="grid gap-6 py-12 sm:py-16 lg:grid-cols-[1.4fr_1fr]">
+    <section
+      aria-labelledby="profile-title"
+      class="rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line sm:p-8"
+    >
+      <h2 id="profile-title" class="text-xl font-bold">
+        {t('account.profileTitle')}
+      </h2>
+      {verificationSent && (
+        <p role="status" class="mt-4 rounded-xl bg-[#eef6f0] p-3 text-sm text-success ring-1 ring-[#cfe5d6]">
+          {t('account.verificationSent')}
+        </p>
+      )}
+      <dl class="mt-4">
+        <div class={row}>
+          <dt class="text-sm text-fg-muted">{t('account.fullName')}</dt>
+          <dd class="font-medium">{user.fullName}</dd>
+        </div>
+        <div class={row}>
+          <dt class="text-sm text-fg-muted">{t('account.email')}</dt>
+          <dd class="flex flex-wrap items-center gap-2 font-medium">
+            <span dir="ltr">{user.email}</span>
+            <span class={badgeClass(user.emailVerified ? 'accent' : 'neutral')}>
+              {user.emailVerified ? t('account.emailVerified') : t('account.emailNotVerified')}
+            </span>
+          </dd>
+        </div>
+        <div class={row}>
+          <dt class="text-sm text-fg-muted">{t('account.preferredLanguage')}</dt>
+          <dd class="font-medium">{dict.auth.register.languageOptions[user.preferredLanguage]}</dd>
+        </div>
+        <div class={row}>
+          <dt class="text-sm text-fg-muted">{t('account.japaneseLevel')}</dt>
+          <dd class="font-medium">{dict.levels[user.japaneseLevel]}</dd>
+        </div>
+        <div class={row}>
+          <dt class="text-sm text-fg-muted">{t('account.roles')}</dt>
+          <dd class="flex flex-wrap gap-1.5">
+            {user.roles.map((role) => (
+              <span class={badgeClass(role === 'admin' ? 'ink' : 'neutral')}>
+                {dict.account.roleLabels[role]}
+              </span>
+            ))}
+          </dd>
+        </div>
+      </dl>
+      {!user.emailVerified && (
+        <form method="post" action={`/api/auth/resend-verification?lang=${lang}`} class="mt-4">
+          <button type="submit" class={buttonClass('secondary', 'sm')}>
+            <Icon name="mail" size={16} />
+            {t('account.resendVerification')}
+          </button>
+        </form>
+      )}
+      {user.roles.includes('admin') && <p class="mt-6 text-sm text-fg-muted">{t('account.adminNote')}</p>}
+    </section>
+
+    <div class="space-y-6">
+      <section aria-labelledby="sub-title" class="rounded-card bg-surface-raised p-6 ring-1 ring-line">
+        <h2 id="sub-title" class="text-lg font-bold">
+          {t('account.subscriptionTitle')}
+        </h2>
+        <p class="mt-2 text-fg-muted">{t('account.noSubscription')}</p>
+        <a href={routes.pricing(lang)} class={buttonClass('primary', 'md', 'mt-5 w-full')}>
+          {t('account.choosePlan')}
+        </a>
+      </section>
+      <section aria-labelledby="my-courses-title" class="rounded-card bg-sakura-soft p-6 ring-1 ring-sakura">
+        <h2 id="my-courses-title" class="text-lg font-bold">
+          {t('account.coursesTitle')}
+        </h2>
+        <p class="mt-2 text-fg-muted">{t('account.coursesSoon')}</p>
+        <a
+          href={routes.courses(lang)}
+          class="mt-4 inline-flex items-center gap-1.5 font-semibold text-primary underline-offset-4 hover:underline"
+        >
+          {t('account.browseCourses')}
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </section>
+      <form method="post" action={`/api/auth/logout?lang=${lang}`} data-logout-form>
+        <button type="submit" class={buttonClass('ghost', 'md', 'w-full ring-1 ring-line')}>
+          {t('account.logout')}
+        </button>
+      </form>
+    </div>
+  </Container>
+</BaseLayout>

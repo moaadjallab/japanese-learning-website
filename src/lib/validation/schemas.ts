@@ -68,6 +68,21 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export const forgotPasswordSchema = z.object({ email });
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 
+export const resetPasswordSchema = z
+  .object({
+    token: z.string().min(20, 'required').max(200, 'required'),
+    password: strongPassword,
+    confirmPassword: z.string({ required_error: 'required' }).min(1, 'required'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'passwordMatch',
+  });
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+
+/** One-time token sent by email (verification, password reset). */
+export const tokenSchema = z.object({ token: z.string().min(20).max(200) });
+
 export type FieldErrors<T> = Partial<Record<keyof T & string, string>>;
 
 /** Validate `data` and return either the parsed value or the first error code per field. */

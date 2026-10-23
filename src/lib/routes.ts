@@ -27,6 +27,10 @@ export const routes = {
   login: (lang: Locale) => withLocale(lang, '/login/'),
   register: (lang: Locale) => withLocale(lang, '/register/'),
   forgotPassword: (lang: Locale) => withLocale(lang, '/forgot-password/'),
+  resetPassword: (lang: Locale) => withLocale(lang, '/reset-password/'),
+  verifyEmail: (lang: Locale) => withLocale(lang, '/verify-email/'),
+  /** Signed-in account page (on demand). */
+  account: (lang: Locale) => withLocale(lang, '/account/'),
   checkout: (lang: Locale, plan?: PlanId) => withLocale(lang, '/checkout/') + (plan ? `?plan=${plan}` : ''),
   checkoutSuccess: (lang: Locale) => withLocale(lang, '/checkout/success/'),
   legal: (lang: Locale, doc: LegalDoc) => withLocale(lang, `/legal/${doc}/`),
