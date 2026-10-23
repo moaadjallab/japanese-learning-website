@@ -6,7 +6,10 @@
     "type": "reading",
     "durationMin": 10,
     "videoUrl": null,
-    "title": { "en": "The three Japanese writing systems", "ar": "أنظمة الكتابة اليابانية الثلاثة" },
+    "title": {
+      "en": "The three Japanese writing systems",
+      "ar": "أنظمة الكتابة اليابانية الثلاثة"
+    },
     "summary": {
       "en": "Japanese mixes three scripts: hiragana for grammar and native words, katakana for foreign words, and kanji for meaning. In this course you master the first two.",
       "ar": "تجمع اليابانية بين ثلاثة أنظمة كتابة: الهيراغانا للقواعد والكلمات الأصلية، والكاتاكانا للكلمات الأجنبية، والكانجي للمعاني. في هذه الدورة ستتقن النظامين الأولين."
@@ -15,7 +18,10 @@
       {
         "ja": "ひらがな",
         "romaji": "hiragana",
-        "meaning": { "en": "hiragana (phonetic script)", "ar": "الهيراغانا (كتابة صوتية)" }
+        "meaning": {
+          "en": "hiragana (phonetic script)",
+          "ar": "الهيراغانا (كتابة صوتية)"
+        }
       },
       {
         "ja": "カタカナ",
@@ -28,7 +34,10 @@
       {
         "ja": "漢字",
         "romaji": "kanji",
-        "meaning": { "en": "kanji (Chinese characters)", "ar": "الكانجي (الحروف الصينية)" }
+        "meaning": {
+          "en": "kanji (Chinese characters)",
+          "ar": "الكانجي (الحروف الصينية)"
+        }
       }
     ]
   },
@@ -48,15 +57,46 @@
       "ar": "الأصوات المتحركة الخمسة هي أساس كل مقطع صوتي في اليابانية. تعلّم أشكالها وأصواتها وترتيب ضرباتها."
     },
     "items": [
-      { "ja": "あ", "romaji": "a", "meaning": { "en": "a (as in “father”)", "ar": "a (كالفتحة الطويلة)" } },
-      { "ja": "い", "romaji": "i", "meaning": { "en": "i (as in “machine”)", "ar": "i (كالكسرة الطويلة)" } },
+      {
+        "ja": "あ",
+        "romaji": "a",
+        "meaning": {
+          "en": "a (as in “father”)",
+          "ar": "a (كالفتحة الطويلة)"
+        }
+      },
+      {
+        "ja": "い",
+        "romaji": "i",
+        "meaning": {
+          "en": "i (as in “machine”)",
+          "ar": "i (كالكسرة الطويلة)"
+        }
+      },
       {
         "ja": "う",
         "romaji": "u",
-        "meaning": { "en": "u (as in “food”, lips relaxed)", "ar": "u (كالضمة مع شفتين مرتخيتين)" }
+        "meaning": {
+          "en": "u (as in “food”, lips relaxed)",
+          "ar": "u (كالضمة مع شفتين مرتخيتين)"
+        }
       },
-      { "ja": "え", "romaji": "e", "meaning": { "en": "e (as in “bed”)", "ar": "e (بين الفتحة والكسرة)" } },
-      { "ja": "お", "romaji": "o", "meaning": { "en": "o (as in “more”)", "ar": "o (ضمة مفتوحة)" } }
+      {
+        "ja": "え",
+        "romaji": "e",
+        "meaning": {
+          "en": "e (as in “bed”)",
+          "ar": "e (بين الفتحة والكسرة)"
+        }
+      },
+      {
+        "ja": "お",
+        "romaji": "o",
+        "meaning": {
+          "en": "o (as in “more”)",
+          "ar": "o (ضمة مفتوحة)"
+        }
+      }
     ]
   },
   {
@@ -75,11 +115,46 @@
       "ar": "اجمع صوت الكاف مع الأصوات المتحركة الخمسة واقرأ كلماتك الأولى."
     },
     "items": [
-      { "ja": "か", "romaji": "ka", "meaning": { "en": "ka", "ar": "ka" } },
-      { "ja": "き", "romaji": "ki", "meaning": { "en": "ki", "ar": "ki" } },
-      { "ja": "く", "romaji": "ku", "meaning": { "en": "ku", "ar": "ku" } },
-      { "ja": "け", "romaji": "ke", "meaning": { "en": "ke", "ar": "ke" } },
-      { "ja": "こ", "romaji": "ko", "meaning": { "en": "ko", "ar": "ko" } }
+      {
+        "ja": "か",
+        "romaji": "ka",
+        "meaning": {
+          "en": "ka",
+          "ar": "ka"
+        }
+      },
+      {
+        "ja": "き",
+        "romaji": "ki",
+        "meaning": {
+          "en": "ki",
+          "ar": "ki"
+        }
+      },
+      {
+        "ja": "く",
+        "romaji": "ku",
+        "meaning": {
+          "en": "ku",
+          "ar": "ku"
+        }
+      },
+      {
+        "ja": "け",
+        "romaji": "ke",
+        "meaning": {
+          "en": "ke",
+          "ar": "ke"
+        }
+      },
+      {
+        "ja": "こ",
+        "romaji": "ko",
+        "meaning": {
+          "en": "ko",
+          "ar": "ko"
+        }
+      }
     ]
   },
   {
@@ -98,11 +173,46 @@
       "ar": "انتبه إلى الصوت غير المنتظم «shi». يظهر هذا الصف في كثير من الكلمات اليومية."
     },
     "items": [
-      { "ja": "さ", "romaji": "sa", "meaning": { "en": "sa", "ar": "sa" } },
-      { "ja": "し", "romaji": "shi", "meaning": { "en": "shi (not “si”)", "ar": "shi (وليس si)" } },
-      { "ja": "す", "romaji": "su", "meaning": { "en": "su", "ar": "su" } },
-      { "ja": "せ", "romaji": "se", "meaning": { "en": "se", "ar": "se" } },
-      { "ja": "そ", "romaji": "so", "meaning": { "en": "so", "ar": "so" } }
+      {
+        "ja": "さ",
+        "romaji": "sa",
+        "meaning": {
+          "en": "sa",
+          "ar": "sa"
+        }
+      },
+      {
+        "ja": "し",
+        "romaji": "shi",
+        "meaning": {
+          "en": "shi (not “si”)",
+          "ar": "shi (وليس si)"
+        }
+      },
+      {
+        "ja": "す",
+        "romaji": "su",
+        "meaning": {
+          "en": "su",
+          "ar": "su"
+        }
+      },
+      {
+        "ja": "せ",
+        "romaji": "se",
+        "meaning": {
+          "en": "se",
+          "ar": "se"
+        }
+      },
+      {
+        "ja": "そ",
+        "romaji": "so",
+        "meaning": {
+          "en": "so",
+          "ar": "so"
+        }
+      }
     ]
   },
   {
@@ -121,11 +231,46 @@
       "ar": "يتضمن هذا الصف صوتين غير منتظمين: «chi» و«tsu». تدرّب عليهما ببطء."
     },
     "items": [
-      { "ja": "た", "romaji": "ta", "meaning": { "en": "ta", "ar": "ta" } },
-      { "ja": "ち", "romaji": "chi", "meaning": { "en": "chi (not “ti”)", "ar": "chi (وليس ti)" } },
-      { "ja": "つ", "romaji": "tsu", "meaning": { "en": "tsu (not “tu”)", "ar": "tsu (وليس tu)" } },
-      { "ja": "て", "romaji": "te", "meaning": { "en": "te", "ar": "te" } },
-      { "ja": "と", "romaji": "to", "meaning": { "en": "to", "ar": "to" } }
+      {
+        "ja": "た",
+        "romaji": "ta",
+        "meaning": {
+          "en": "ta",
+          "ar": "ta"
+        }
+      },
+      {
+        "ja": "ち",
+        "romaji": "chi",
+        "meaning": {
+          "en": "chi (not “ti”)",
+          "ar": "chi (وليس ti)"
+        }
+      },
+      {
+        "ja": "つ",
+        "romaji": "tsu",
+        "meaning": {
+          "en": "tsu (not “tu”)",
+          "ar": "tsu (وليس tu)"
+        }
+      },
+      {
+        "ja": "て",
+        "romaji": "te",
+        "meaning": {
+          "en": "te",
+          "ar": "te"
+        }
+      },
+      {
+        "ja": "と",
+        "romaji": "to",
+        "meaning": {
+          "en": "to",
+          "ar": "to"
+        }
+      }
     ]
   },
   {
@@ -144,11 +289,46 @@
       "ar": "صف منتظم. يُعدّ الحرف の (no) من أكثر الحروف استخدامًا في اليابانية."
     },
     "items": [
-      { "ja": "な", "romaji": "na", "meaning": { "en": "na", "ar": "na" } },
-      { "ja": "に", "romaji": "ni", "meaning": { "en": "ni", "ar": "ni" } },
-      { "ja": "ぬ", "romaji": "nu", "meaning": { "en": "nu", "ar": "nu" } },
-      { "ja": "ね", "romaji": "ne", "meaning": { "en": "ne", "ar": "ne" } },
-      { "ja": "の", "romaji": "no", "meaning": { "en": "no", "ar": "no" } }
+      {
+        "ja": "な",
+        "romaji": "na",
+        "meaning": {
+          "en": "na",
+          "ar": "na"
+        }
+      },
+      {
+        "ja": "に",
+        "romaji": "ni",
+        "meaning": {
+          "en": "ni",
+          "ar": "ni"
+        }
+      },
+      {
+        "ja": "ぬ",
+        "romaji": "nu",
+        "meaning": {
+          "en": "nu",
+          "ar": "nu"
+        }
+      },
+      {
+        "ja": "ね",
+        "romaji": "ne",
+        "meaning": {
+          "en": "ne",
+          "ar": "ne"
+        }
+      },
+      {
+        "ja": "の",
+        "romaji": "no",
+        "meaning": {
+          "en": "no",
+          "ar": "no"
+        }
+      }
     ]
   },
   {
@@ -158,22 +338,95 @@
     "type": "video",
     "durationMin": 20,
     "videoUrl": null,
-    "title": { "en": "Katakana: vowels and the K row", "ar": "الكاتاكانا: الأصوات المتحركة وصف الكاف" },
+    "title": {
+      "en": "Katakana: vowels and the K row",
+      "ar": "الكاتاكانا: الأصوات المتحركة وصف الكاف"
+    },
     "summary": {
       "en": "Katakana has the same sounds as hiragana, with sharper shapes. It is used for foreign words and names.",
       "ar": "للكاتاكانا الأصوات نفسها التي للهيراغانا، لكن بأشكال أكثر حدّة. وتُستخدم للكلمات والأسماء الأجنبية."
     },
     "items": [
-      { "ja": "ア", "romaji": "a", "meaning": { "en": "a", "ar": "a" } },
-      { "ja": "イ", "romaji": "i", "meaning": { "en": "i", "ar": "i" } },
-      { "ja": "ウ", "romaji": "u", "meaning": { "en": "u", "ar": "u" } },
-      { "ja": "エ", "romaji": "e", "meaning": { "en": "e", "ar": "e" } },
-      { "ja": "オ", "romaji": "o", "meaning": { "en": "o", "ar": "o" } },
-      { "ja": "カ", "romaji": "ka", "meaning": { "en": "ka", "ar": "ka" } },
-      { "ja": "キ", "romaji": "ki", "meaning": { "en": "ki", "ar": "ki" } },
-      { "ja": "ク", "romaji": "ku", "meaning": { "en": "ku", "ar": "ku" } },
-      { "ja": "ケ", "romaji": "ke", "meaning": { "en": "ke", "ar": "ke" } },
-      { "ja": "コ", "romaji": "ko", "meaning": { "en": "ko", "ar": "ko" } }
+      {
+        "ja": "ア",
+        "romaji": "a",
+        "meaning": {
+          "en": "a",
+          "ar": "a"
+        }
+      },
+      {
+        "ja": "イ",
+        "romaji": "i",
+        "meaning": {
+          "en": "i",
+          "ar": "i"
+        }
+      },
+      {
+        "ja": "ウ",
+        "romaji": "u",
+        "meaning": {
+          "en": "u",
+          "ar": "u"
+        }
+      },
+      {
+        "ja": "エ",
+        "romaji": "e",
+        "meaning": {
+          "en": "e",
+          "ar": "e"
+        }
+      },
+      {
+        "ja": "オ",
+        "romaji": "o",
+        "meaning": {
+          "en": "o",
+          "ar": "o"
+        }
+      },
+      {
+        "ja": "カ",
+        "romaji": "ka",
+        "meaning": {
+          "en": "ka",
+          "ar": "ka"
+        }
+      },
+      {
+        "ja": "キ",
+        "romaji": "ki",
+        "meaning": {
+          "en": "ki",
+          "ar": "ki"
+        }
+      },
+      {
+        "ja": "ク",
+        "romaji": "ku",
+        "meaning": {
+          "en": "ku",
+          "ar": "ku"
+        }
+      },
+      {
+        "ja": "ケ",
+        "romaji": "ke",
+        "meaning": {
+          "en": "ke",
+          "ar": "ke"
+        }
+      },
+      {
+        "ja": "コ",
+        "romaji": "ko",
+        "meaning": {
+          "en": "ko",
+          "ar": "ko"
+        }
+      }
     ]
   },
   {
@@ -183,18 +436,63 @@
     "type": "practice",
     "durationMin": 10,
     "videoUrl": null,
-    "title": { "en": "Practice: read your first words", "ar": "تطبيق: اقرأ كلماتك الأولى" },
+    "title": {
+      "en": "Practice: read your first words",
+      "ar": "تطبيق: اقرأ كلماتك الأولى"
+    },
     "summary": {
       "en": "Read these words using only the characters you have learned. Cover the romaji and test yourself.",
       "ar": "اقرأ هذه الكلمات باستخدام الحروف التي تعلّمتها فقط. غطِّ الكتابة اللاتينية واختبر نفسك."
     },
     "items": [
-      { "ja": "あさ", "romaji": "asa", "meaning": { "en": "morning", "ar": "صباح" } },
-      { "ja": "いえ", "romaji": "ie", "meaning": { "en": "house", "ar": "بيت" } },
-      { "ja": "かさ", "romaji": "kasa", "meaning": { "en": "umbrella", "ar": "مظلة" } },
-      { "ja": "ねこ", "romaji": "neko", "meaning": { "en": "cat", "ar": "قطة" } },
-      { "ja": "すし", "romaji": "sushi", "meaning": { "en": "sushi", "ar": "سوشي" } },
-      { "ja": "ケーキ", "romaji": "kēki", "meaning": { "en": "cake", "ar": "كعكة" } }
+      {
+        "ja": "あさ",
+        "romaji": "asa",
+        "meaning": {
+          "en": "morning",
+          "ar": "صباح"
+        }
+      },
+      {
+        "ja": "いえ",
+        "romaji": "ie",
+        "meaning": {
+          "en": "house",
+          "ar": "بيت"
+        }
+      },
+      {
+        "ja": "かさ",
+        "romaji": "kasa",
+        "meaning": {
+          "en": "umbrella",
+          "ar": "مظلة"
+        }
+      },
+      {
+        "ja": "ねこ",
+        "romaji": "neko",
+        "meaning": {
+          "en": "cat",
+          "ar": "قطة"
+        }
+      },
+      {
+        "ja": "すし",
+        "romaji": "sushi",
+        "meaning": {
+          "en": "sushi",
+          "ar": "سوشي"
+        }
+      },
+      {
+        "ja": "ケーキ",
+        "romaji": "kēki",
+        "meaning": {
+          "en": "cake",
+          "ar": "كعكة"
+        }
+      }
     ]
   },
   {
@@ -204,7 +502,10 @@
     "type": "video",
     "durationMin": 15,
     "videoUrl": null,
-    "title": { "en": "Everyday greetings", "ar": "تحيات الحياة اليومية" },
+    "title": {
+      "en": "Everyday greetings",
+      "ar": "تحيات الحياة اليومية"
+    },
     "summary": {
       "en": "Greet people politely at different times of the day and say thank you.",
       "ar": "ألقِ التحية بأدب في أوقات مختلفة من اليوم وعبّر عن الشكر."
@@ -213,23 +514,42 @@
       {
         "ja": "おはようございます",
         "romaji": "ohayō gozaimasu",
-        "meaning": { "en": "Good morning (polite)", "ar": "صباح الخير (بأسلوب مهذّب)" }
+        "meaning": {
+          "en": "Good morning (polite)",
+          "ar": "صباح الخير (بأسلوب مهذّب)"
+        }
       },
       {
         "ja": "こんにちは",
         "romaji": "konnichiwa",
-        "meaning": { "en": "Hello / Good afternoon", "ar": "مرحبًا / طاب يومك" }
+        "meaning": {
+          "en": "Hello / Good afternoon",
+          "ar": "مرحبًا / طاب يومك"
+        }
       },
-      { "ja": "こんばんは", "romaji": "konbanwa", "meaning": { "en": "Good evening", "ar": "مساء الخير" } },
+      {
+        "ja": "こんばんは",
+        "romaji": "konbanwa",
+        "meaning": {
+          "en": "Good evening",
+          "ar": "مساء الخير"
+        }
+      },
       {
         "ja": "ありがとうございます",
         "romaji": "arigatō gozaimasu",
-        "meaning": { "en": "Thank you (polite)", "ar": "شكرًا (بأسلوب مهذّب)" }
+        "meaning": {
+          "en": "Thank you (polite)",
+          "ar": "شكرًا (بأسلوب مهذّب)"
+        }
       },
       {
         "ja": "すみません",
         "romaji": "sumimasen",
-        "meaning": { "en": "Excuse me / Sorry", "ar": "عفوًا / المعذرة" }
+        "meaning": {
+          "en": "Excuse me / Sorry",
+          "ar": "عفوًا / المعذرة"
+        }
       }
     ]
   },
@@ -240,7 +560,10 @@
     "type": "video",
     "durationMin": 20,
     "videoUrl": null,
-    "title": { "en": "Introducing yourself", "ar": "التعريف بنفسك" },
+    "title": {
+      "en": "Introducing yourself",
+      "ar": "التعريف بنفسك"
+    },
     "summary": {
       "en": "Say who you are, where you are from, and end your introduction politely.",
       "ar": "قل من أنت ومن أين أتيت، واختم تعريفك بنفسك بأسلوب مهذّب."
@@ -249,17 +572,26 @@
       {
         "ja": "はじめまして。",
         "romaji": "Hajimemashite.",
-        "meaning": { "en": "Nice to meet you.", "ar": "تشرّفت بمعرفتك." }
+        "meaning": {
+          "en": "Nice to meet you.",
+          "ar": "تشرّفت بمعرفتك."
+        }
       },
       {
         "ja": "わたしは〜です。",
         "romaji": "Watashi wa ~ desu.",
-        "meaning": { "en": "I am ~.", "ar": "أنا ~." }
+        "meaning": {
+          "en": "I am ~.",
+          "ar": "أنا ~."
+        }
       },
       {
         "ja": "モロッコからきました。",
         "romaji": "Morokko kara kimashita.",
-        "meaning": { "en": "I come from Morocco.", "ar": "أتيت من المغرب." }
+        "meaning": {
+          "en": "I come from Morocco.",
+          "ar": "أتيت من المغرب."
+        }
       },
       {
         "ja": "よろしくおねがいします。",
@@ -278,22 +610,95 @@
     "type": "video",
     "durationMin": 15,
     "videoUrl": null,
-    "title": { "en": "Numbers from 1 to 10", "ar": "الأعداد من 1 إلى 10" },
+    "title": {
+      "en": "Numbers from 1 to 10",
+      "ar": "الأعداد من 1 إلى 10"
+    },
     "summary": {
       "en": "Count from one to ten. Some numbers have two common readings.",
       "ar": "عُدّ من واحد إلى عشرة. لبعض الأعداد قراءتان شائعتان."
     },
     "items": [
-      { "ja": "いち", "romaji": "ichi", "meaning": { "en": "1", "ar": "1" } },
-      { "ja": "に", "romaji": "ni", "meaning": { "en": "2", "ar": "2" } },
-      { "ja": "さん", "romaji": "san", "meaning": { "en": "3", "ar": "3" } },
-      { "ja": "よん／し", "romaji": "yon / shi", "meaning": { "en": "4", "ar": "4" } },
-      { "ja": "ご", "romaji": "go", "meaning": { "en": "5", "ar": "5" } },
-      { "ja": "ろく", "romaji": "roku", "meaning": { "en": "6", "ar": "6" } },
-      { "ja": "なな／しち", "romaji": "nana / shichi", "meaning": { "en": "7", "ar": "7" } },
-      { "ja": "はち", "romaji": "hachi", "meaning": { "en": "8", "ar": "8" } },
-      { "ja": "きゅう／く", "romaji": "kyū / ku", "meaning": { "en": "9", "ar": "9" } },
-      { "ja": "じゅう", "romaji": "jū", "meaning": { "en": "10", "ar": "10" } }
+      {
+        "ja": "いち",
+        "romaji": "ichi",
+        "meaning": {
+          "en": "1",
+          "ar": "1"
+        }
+      },
+      {
+        "ja": "に",
+        "romaji": "ni",
+        "meaning": {
+          "en": "2",
+          "ar": "2"
+        }
+      },
+      {
+        "ja": "さん",
+        "romaji": "san",
+        "meaning": {
+          "en": "3",
+          "ar": "3"
+        }
+      },
+      {
+        "ja": "よん／し",
+        "romaji": "yon / shi",
+        "meaning": {
+          "en": "4",
+          "ar": "4"
+        }
+      },
+      {
+        "ja": "ご",
+        "romaji": "go",
+        "meaning": {
+          "en": "5",
+          "ar": "5"
+        }
+      },
+      {
+        "ja": "ろく",
+        "romaji": "roku",
+        "meaning": {
+          "en": "6",
+          "ar": "6"
+        }
+      },
+      {
+        "ja": "なな／しち",
+        "romaji": "nana / shichi",
+        "meaning": {
+          "en": "7",
+          "ar": "7"
+        }
+      },
+      {
+        "ja": "はち",
+        "romaji": "hachi",
+        "meaning": {
+          "en": "8",
+          "ar": "8"
+        }
+      },
+      {
+        "ja": "きゅう／く",
+        "romaji": "kyū / ku",
+        "meaning": {
+          "en": "9",
+          "ar": "9"
+        }
+      },
+      {
+        "ja": "じゅう",
+        "romaji": "jū",
+        "meaning": {
+          "en": "10",
+          "ar": "10"
+        }
+      }
     ]
   },
   {
@@ -303,7 +708,10 @@
     "type": "video",
     "durationMin": 20,
     "videoUrl": null,
-    "title": { "en": "Asking questions: “What is this?”", "ar": "طرح الأسئلة: «ما هذا؟»" },
+    "title": {
+      "en": "Asking questions: “What is this?”",
+      "ar": "طرح الأسئلة: «ما هذا؟»"
+    },
     "summary": {
       "en": "Use これ (this) and それ (that), and turn a sentence into a question with か.",
       "ar": "استخدم これ (هذا) وそれ (ذلك)، وحوّل الجملة إلى سؤال بإضافة か."
@@ -312,22 +720,34 @@
       {
         "ja": "これはなんですか。",
         "romaji": "Kore wa nan desu ka.",
-        "meaning": { "en": "What is this?", "ar": "ما هذا؟" }
+        "meaning": {
+          "en": "What is this?",
+          "ar": "ما هذا؟"
+        }
       },
       {
         "ja": "それはほんです。",
         "romaji": "Sore wa hon desu.",
-        "meaning": { "en": "That is a book.", "ar": "ذلك كتاب." }
+        "meaning": {
+          "en": "That is a book.",
+          "ar": "ذلك كتاب."
+        }
       },
       {
         "ja": "これはペンですか。",
         "romaji": "Kore wa pen desu ka.",
-        "meaning": { "en": "Is this a pen?", "ar": "هل هذا قلم؟" }
+        "meaning": {
+          "en": "Is this a pen?",
+          "ar": "هل هذا قلم؟"
+        }
       },
       {
         "ja": "はい、そうです。",
         "romaji": "Hai, sō desu.",
-        "meaning": { "en": "Yes, that's right.", "ar": "نعم، هذا صحيح." }
+        "meaning": {
+          "en": "Yes, that's right.",
+          "ar": "نعم، هذا صحيح."
+        }
       }
     ]
   },
@@ -338,19 +758,46 @@
     "type": "video",
     "durationMin": 20,
     "videoUrl": null,
-    "title": { "en": "Your first verbs: the polite ます form", "ar": "أفعالك الأولى: صيغة التأدّب ます" },
+    "title": {
+      "en": "Your first verbs: the polite ます form",
+      "ar": "أفعالك الأولى: صيغة التأدّب ます"
+    },
     "summary": {
       "en": "Polite verbs end in ます (masu). Learn three useful verbs and make simple sentences.",
       "ar": "تنتهي الأفعال المهذّبة بـ ます (masu). تعلّم ثلاثة أفعال مفيدة وكوّن جملًا بسيطة."
     },
     "items": [
-      { "ja": "たべます", "romaji": "tabemasu", "meaning": { "en": "to eat", "ar": "يأكل" } },
-      { "ja": "のみます", "romaji": "nomimasu", "meaning": { "en": "to drink", "ar": "يشرب" } },
-      { "ja": "いきます", "romaji": "ikimasu", "meaning": { "en": "to go", "ar": "يذهب" } },
+      {
+        "ja": "たべます",
+        "romaji": "tabemasu",
+        "meaning": {
+          "en": "to eat",
+          "ar": "يأكل"
+        }
+      },
+      {
+        "ja": "のみます",
+        "romaji": "nomimasu",
+        "meaning": {
+          "en": "to drink",
+          "ar": "يشرب"
+        }
+      },
+      {
+        "ja": "いきます",
+        "romaji": "ikimasu",
+        "meaning": {
+          "en": "to go",
+          "ar": "يذهب"
+        }
+      },
       {
         "ja": "みずをのみます。",
         "romaji": "Mizu o nomimasu.",
-        "meaning": { "en": "I drink water.", "ar": "أشرب الماء." }
+        "meaning": {
+          "en": "I drink water.",
+          "ar": "أشرب الماء."
+        }
       }
     ]
   },
@@ -361,7 +808,10 @@
     "type": "practice",
     "durationMin": 15,
     "videoUrl": null,
-    "title": { "en": "Review: a short conversation", "ar": "مراجعة: محادثة قصيرة" },
+    "title": {
+      "en": "Review: a short conversation",
+      "ar": "مراجعة: محادثة قصيرة"
+    },
     "summary": {
       "en": "Put everything together: greet, introduce yourself and ask a simple question.",
       "ar": "اجمع كل ما تعلّمته: ألقِ التحية، وعرّف بنفسك، واطرح سؤالًا بسيطًا."
@@ -370,22 +820,2608 @@
       {
         "ja": "こんにちは。はじめまして。",
         "romaji": "Konnichiwa. Hajimemashite.",
-        "meaning": { "en": "Hello. Nice to meet you.", "ar": "مرحبًا. تشرّفت بمعرفتك." }
+        "meaning": {
+          "en": "Hello. Nice to meet you.",
+          "ar": "مرحبًا. تشرّفت بمعرفتك."
+        }
       },
       {
         "ja": "わたしはサラです。",
         "romaji": "Watashi wa Sara desu.",
-        "meaning": { "en": "I am Sara.", "ar": "أنا سارة." }
+        "meaning": {
+          "en": "I am Sara.",
+          "ar": "أنا سارة."
+        }
       },
       {
         "ja": "これはなんですか。",
         "romaji": "Kore wa nan desu ka.",
-        "meaning": { "en": "What is this?", "ar": "ما هذا؟" }
+        "meaning": {
+          "en": "What is this?",
+          "ar": "ما هذا؟"
+        }
       },
       {
         "ja": "ありがとうございます。",
         "romaji": "Arigatō gozaimasu.",
-        "meaning": { "en": "Thank you.", "ar": "شكرًا." }
+        "meaning": {
+          "en": "Thank you.",
+          "ar": "شكرًا."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n5/core-particles",
+    "course": "japanese-n5",
+    "order": 1,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Core particles: は, を, に, で",
+      "ar": "أدوات الربط الأساسية: は وを وに وで"
+    },
+    "summary": {
+      "en": "Particles show the role of each word: topic (は), object (を), destination or time (に) and place of an action (で).",
+      "ar": "تبيّن أدوات الربط دور كل كلمة في الجملة: الموضوع (は)، والمفعول به (を)، والوجهة أو الزمن (に)، ومكان الفعل (で)."
+    },
+    "items": [
+      {
+        "ja": "私は学生です。",
+        "romaji": "Watashi wa gakusei desu.",
+        "meaning": {
+          "en": "I am a student.",
+          "ar": "أنا طالب."
+        }
+      },
+      {
+        "ja": "パンを食べます。",
+        "romaji": "Pan o tabemasu.",
+        "meaning": {
+          "en": "I eat bread.",
+          "ar": "آكل الخبز."
+        }
+      },
+      {
+        "ja": "学校に行きます。",
+        "romaji": "Gakkō ni ikimasu.",
+        "meaning": {
+          "en": "I go to school.",
+          "ar": "أذهب إلى المدرسة."
+        }
+      },
+      {
+        "ja": "図書館で勉強します。",
+        "romaji": "Toshokan de benkyō shimasu.",
+        "meaning": {
+          "en": "I study at the library.",
+          "ar": "أدرس في المكتبة."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n5/time-and-days",
+    "course": "japanese-n5",
+    "order": 2,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Time, days and dates",
+      "ar": "الوقت والأيام والتواريخ"
+    },
+    "summary": {
+      "en": "Talk about today, tomorrow and yesterday, name the days of the week and ask the time.",
+      "ar": "تحدّث عن اليوم والغد والأمس، وسمِّ أيام الأسبوع، واسأل عن الوقت."
+    },
+    "items": [
+      {
+        "ja": "今日",
+        "romaji": "kyō",
+        "meaning": {
+          "en": "today",
+          "ar": "اليوم"
+        }
+      },
+      {
+        "ja": "明日",
+        "romaji": "ashita",
+        "meaning": {
+          "en": "tomorrow",
+          "ar": "غدًا"
+        }
+      },
+      {
+        "ja": "昨日",
+        "romaji": "kinō",
+        "meaning": {
+          "en": "yesterday",
+          "ar": "أمس"
+        }
+      },
+      {
+        "ja": "月曜日",
+        "romaji": "getsuyōbi",
+        "meaning": {
+          "en": "Monday",
+          "ar": "الاثنين"
+        }
+      },
+      {
+        "ja": "今、何時ですか。",
+        "romaji": "Ima, nanji desu ka.",
+        "meaning": {
+          "en": "What time is it now?",
+          "ar": "كم الساعة الآن؟"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n5/adjectives",
+    "course": "japanese-n5",
+    "order": 3,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Describing things: い and な adjectives",
+      "ar": "الوصف: صفات い وصفات な"
+    },
+    "summary": {
+      "en": "Japanese has two kinds of adjectives. い-adjectives end in い; な-adjectives take な before a noun.",
+      "ar": "في اليابانية نوعان من الصفات: صفات تنتهي بـ い، وصفات تأخذ な قبل الاسم."
+    },
+    "items": [
+      {
+        "ja": "大きい",
+        "romaji": "ōkii",
+        "meaning": {
+          "en": "big",
+          "ar": "كبير"
+        }
+      },
+      {
+        "ja": "小さい",
+        "romaji": "chiisai",
+        "meaning": {
+          "en": "small",
+          "ar": "صغير"
+        }
+      },
+      {
+        "ja": "高い",
+        "romaji": "takai",
+        "meaning": {
+          "en": "expensive; high",
+          "ar": "غالٍ؛ مرتفع"
+        }
+      },
+      {
+        "ja": "静かな部屋",
+        "romaji": "shizuka na heya",
+        "meaning": {
+          "en": "a quiet room",
+          "ar": "غرفة هادئة"
+        }
+      },
+      {
+        "ja": "この本はおもしろいです。",
+        "romaji": "Kono hon wa omoshiroi desu.",
+        "meaning": {
+          "en": "This book is interesting.",
+          "ar": "هذا الكتاب ممتع."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n5/aru-iru",
+    "course": "japanese-n5",
+    "order": 4,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "There is / there are: あります and います",
+      "ar": "يوجد: あります وいます"
+    },
+    "summary": {
+      "en": "Use あります for objects and plants, and います for people and animals.",
+      "ar": "استخدم あります للأشياء والنباتات، وいます للأشخاص والحيوانات."
+    },
+    "items": [
+      {
+        "ja": "机の上に本があります。",
+        "romaji": "Tsukue no ue ni hon ga arimasu.",
+        "meaning": {
+          "en": "There is a book on the desk.",
+          "ar": "يوجد كتاب على المكتب."
+        }
+      },
+      {
+        "ja": "公園に犬がいます。",
+        "romaji": "Kōen ni inu ga imasu.",
+        "meaning": {
+          "en": "There is a dog in the park.",
+          "ar": "يوجد كلب في الحديقة."
+        }
+      },
+      {
+        "ja": "教室に先生がいます。",
+        "romaji": "Kyōshitsu ni sensei ga imasu.",
+        "meaning": {
+          "en": "The teacher is in the classroom.",
+          "ar": "المعلّم في الفصل."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n5/review",
+    "course": "japanese-n5",
+    "order": 5,
+    "type": "practice",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Practice: N5 sentences",
+      "ar": "تطبيق: جمل المستوى N5"
+    },
+    "summary": {
+      "en": "Read each sentence aloud, then translate it without looking at the meaning.",
+      "ar": "اقرأ كل جملة بصوت مرتفع، ثم ترجمها دون النظر إلى المعنى."
+    },
+    "items": [
+      {
+        "ja": "毎朝コーヒーを飲みます。",
+        "romaji": "Maiasa kōhī o nomimasu.",
+        "meaning": {
+          "en": "I drink coffee every morning.",
+          "ar": "أشرب القهوة كل صباح."
+        }
+      },
+      {
+        "ja": "日本語は難しくないです。",
+        "romaji": "Nihongo wa muzukashiku nai desu.",
+        "meaning": {
+          "en": "Japanese is not difficult.",
+          "ar": "اللغة اليابانية ليست صعبة."
+        }
+      },
+      {
+        "ja": "週末、友達と映画を見ました。",
+        "romaji": "Shūmatsu, tomodachi to eiga o mimashita.",
+        "meaning": {
+          "en": "On the weekend, I watched a movie with a friend.",
+          "ar": "في عطلة نهاية الأسبوع، شاهدت فيلمًا مع صديق."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n4/te-form",
+    "course": "japanese-n4",
+    "order": 1,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "The te-form: requests, sequences and rules",
+      "ar": "صيغة te: الطلبات وتسلسل الأفعال والقواعد"
+    },
+    "summary": {
+      "en": "The te-form links actions, makes polite requests with ください and expresses prohibition with はいけません.",
+      "ar": "تربط صيغة te بين الأفعال، وتُستخدم مع ください للطلب المهذّب، ومع はいけません للتعبير عن المنع."
+    },
+    "items": [
+      {
+        "ja": "窓を開けてください。",
+        "romaji": "Mado o akete kudasai.",
+        "meaning": {
+          "en": "Please open the window.",
+          "ar": "افتح النافذة من فضلك."
+        }
+      },
+      {
+        "ja": "朝ご飯を食べて、学校に行きます。",
+        "romaji": "Asagohan o tabete, gakkō ni ikimasu.",
+        "meaning": {
+          "en": "I eat breakfast and then go to school.",
+          "ar": "أتناول الفطور ثم أذهب إلى المدرسة."
+        }
+      },
+      {
+        "ja": "ここでたばこを吸ってはいけません。",
+        "romaji": "Koko de tabako o sutte wa ikemasen.",
+        "meaning": {
+          "en": "You must not smoke here.",
+          "ar": "يُمنع التدخين هنا."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n4/plain-form",
+    "course": "japanese-n4",
+    "order": 2,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Plain form and casual speech",
+      "ar": "الصيغة العادية والكلام غير الرسمي"
+    },
+    "summary": {
+      "en": "Friends and family speak in the plain form. Learn to recognize it and use it naturally.",
+      "ar": "يتحدث الأصدقاء وأفراد العائلة بالصيغة العادية. تعلّم التعرّف عليها واستخدامها بشكل طبيعي."
+    },
+    "items": [
+      {
+        "ja": "行く",
+        "romaji": "iku",
+        "meaning": {
+          "en": "to go (plain form of 行きます)",
+          "ar": "يذهب (الصيغة العادية لـ 行きます)"
+        }
+      },
+      {
+        "ja": "食べた",
+        "romaji": "tabeta",
+        "meaning": {
+          "en": "ate (plain past)",
+          "ar": "أكل (الماضي بالصيغة العادية)"
+        }
+      },
+      {
+        "ja": "明日、映画を見に行く？",
+        "romaji": "Ashita, eiga o mi ni iku?",
+        "meaning": {
+          "en": "Going to see a movie tomorrow? (casual)",
+          "ar": "هل ستذهب لمشاهدة فيلم غدًا؟ (غير رسمي)"
+        }
+      },
+      {
+        "ja": "うん、行く。",
+        "romaji": "Un, iku.",
+        "meaning": {
+          "en": "Yeah, I'm going.",
+          "ar": "نعم، سأذهب."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n4/experiences",
+    "course": "japanese-n4",
+    "order": 3,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Experiences: 〜たことがある",
+      "ar": "التجارب: 〜たことがある"
+    },
+    "summary": {
+      "en": "Use the past plain form + ことがある to say you have done something before.",
+      "ar": "استخدم صيغة الماضي العادية مع ことがある للتعبير عن أنك قمت بشيء من قبل."
+    },
+    "items": [
+      {
+        "ja": "富士山に登ったことがあります。",
+        "romaji": "Fujisan ni nobotta koto ga arimasu.",
+        "meaning": {
+          "en": "I have climbed Mount Fuji.",
+          "ar": "سبق لي أن تسلّقت جبل فوجي."
+        }
+      },
+      {
+        "ja": "すしを食べたことがありますか。",
+        "romaji": "Sushi o tabeta koto ga arimasu ka.",
+        "meaning": {
+          "en": "Have you ever eaten sushi?",
+          "ar": "هل سبق لك أن أكلت السوشي؟"
+        }
+      },
+      {
+        "ja": "一度もありません。",
+        "romaji": "Ichido mo arimasen.",
+        "meaning": {
+          "en": "Never, not even once.",
+          "ar": "ولا مرة واحدة."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n4/potential-form",
+    "course": "japanese-n4",
+    "order": 4,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Potential form: what you can do",
+      "ar": "صيغة الاستطاعة: ما تستطيع فعله"
+    },
+    "summary": {
+      "en": "The potential form expresses ability. The object usually takes が.",
+      "ar": "تعبّر صيغة الاستطاعة عن القدرة، ويأخذ المفعول به عادةً الأداة が."
+    },
+    "items": [
+      {
+        "ja": "日本語が話せます。",
+        "romaji": "Nihongo ga hanasemasu.",
+        "meaning": {
+          "en": "I can speak Japanese.",
+          "ar": "أستطيع التحدث باليابانية."
+        }
+      },
+      {
+        "ja": "漢字が読めます。",
+        "romaji": "Kanji ga yomemasu.",
+        "meaning": {
+          "en": "I can read kanji.",
+          "ar": "أستطيع قراءة الكانجي."
+        }
+      },
+      {
+        "ja": "泳げません。",
+        "romaji": "Oyogemasen.",
+        "meaning": {
+          "en": "I can't swim.",
+          "ar": "لا أستطيع السباحة."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n4/comparisons",
+    "course": "japanese-n4",
+    "order": 5,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Comparisons: より, のほうが, 一番",
+      "ar": "المقارنة: より وのほうが و一番"
+    },
+    "summary": {
+      "en": "Compare two things with より and のほうが, and say which is the most with 一番.",
+      "ar": "قارن بين شيئين باستخدام より وのほうが، وعبّر عن التفضيل المطلق باستخدام 一番."
+    },
+    "items": [
+      {
+        "ja": "東京は大阪より大きいです。",
+        "romaji": "Tōkyō wa Ōsaka yori ōkii desu.",
+        "meaning": {
+          "en": "Tokyo is bigger than Osaka.",
+          "ar": "طوكيو أكبر من أوساكا."
+        }
+      },
+      {
+        "ja": "夏と冬とどちらが好きですか。",
+        "romaji": "Natsu to fuyu to dochira ga suki desu ka.",
+        "meaning": {
+          "en": "Which do you like better, summer or winter?",
+          "ar": "أيهما تفضّل، الصيف أم الشتاء؟"
+        }
+      },
+      {
+        "ja": "夏のほうが好きです。",
+        "romaji": "Natsu no hō ga suki desu.",
+        "meaning": {
+          "en": "I like summer better.",
+          "ar": "أفضّل الصيف."
+        }
+      },
+      {
+        "ja": "一番",
+        "romaji": "ichiban",
+        "meaning": {
+          "en": "the most; number one",
+          "ar": "الأكثر؛ رقم واحد"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n3/appearance",
+    "course": "japanese-n3",
+    "order": 1,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Appearance and hearsay: 〜そう and 〜よう",
+      "ar": "المظهر والاستنتاج: 〜そう و〜よう"
+    },
+    "summary": {
+      "en": "〜そう describes how something looks; 〜よう expresses what seems to be the case.",
+      "ar": "تصف 〜そう كيف يبدو الشيء، بينما تعبّر 〜よう عمّا يبدو أنه الحال."
+    },
+    "items": [
+      {
+        "ja": "このケーキはおいしそうです。",
+        "romaji": "Kono kēki wa oishisō desu.",
+        "meaning": {
+          "en": "This cake looks delicious.",
+          "ar": "تبدو هذه الكعكة لذيذة."
+        }
+      },
+      {
+        "ja": "雪が降りそうです。",
+        "romaji": "Yuki ga furisō desu.",
+        "meaning": {
+          "en": "It looks like it is going to snow.",
+          "ar": "يبدو أنها ستثلج."
+        }
+      },
+      {
+        "ja": "彼は疲れているようです。",
+        "romaji": "Kare wa tsukarete iru yō desu.",
+        "meaning": {
+          "en": "He seems to be tired.",
+          "ar": "يبدو أنه متعب."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n3/conditionals",
+    "course": "japanese-n3",
+    "order": 2,
+    "type": "video",
+    "durationMin": 25,
+    "videoUrl": null,
+    "title": {
+      "en": "Conditionals: と, ば, たら, なら",
+      "ar": "الجمل الشرطية: と وば وたら وなら"
+    },
+    "summary": {
+      "en": "Japanese has four ways to say “if” or “when”, each with its own nuance.",
+      "ar": "في اليابانية أربع طرق للتعبير عن الشرط، ولكل منها دلالتها الخاصة."
+    },
+    "items": [
+      {
+        "ja": "春になると、桜が咲きます。",
+        "romaji": "Haru ni naru to, sakura ga sakimasu.",
+        "meaning": {
+          "en": "When spring comes, the cherry blossoms bloom.",
+          "ar": "عندما يحلّ الربيع، تتفتح أزهار الكرز."
+        }
+      },
+      {
+        "ja": "安ければ、買います。",
+        "romaji": "Yasukereba, kaimasu.",
+        "meaning": {
+          "en": "If it's cheap, I'll buy it.",
+          "ar": "إذا كان رخيصًا، فسأشتريه."
+        }
+      },
+      {
+        "ja": "駅に着いたら、電話してください。",
+        "romaji": "Eki ni tsuitara, denwa shite kudasai.",
+        "meaning": {
+          "en": "When you arrive at the station, please call me.",
+          "ar": "عندما تصل إلى المحطة، اتصل بي من فضلك."
+        }
+      },
+      {
+        "ja": "京都に行くなら、金閣寺を見てください。",
+        "romaji": "Kyōto ni iku nara, Kinkakuji o mite kudasai.",
+        "meaning": {
+          "en": "If you're going to Kyoto, go and see Kinkaku-ji.",
+          "ar": "إذا كنت ستذهب إلى كيوتو، فزُر معبد كينكاكوجي."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n3/passive-causative",
+    "course": "japanese-n3",
+    "order": 3,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Passive and causative",
+      "ar": "المبني للمجهول وصيغة الجعل"
+    },
+    "summary": {
+      "en": "The passive shows what happens to someone; the causative shows who makes or lets someone do something.",
+      "ar": "يبيّن المبني للمجهول ما يقع على شخص ما، وتبيّن صيغة الجعل من يجعل غيره يفعل شيئًا أو يسمح له به."
+    },
+    "items": [
+      {
+        "ja": "先生にほめられました。",
+        "romaji": "Sensei ni homeraremashita.",
+        "meaning": {
+          "en": "I was praised by the teacher.",
+          "ar": "أثنى عليّ المعلّم."
+        }
+      },
+      {
+        "ja": "雨に降られました。",
+        "romaji": "Ame ni furaremashita.",
+        "meaning": {
+          "en": "I got caught in the rain.",
+          "ar": "باغتني المطر."
+        }
+      },
+      {
+        "ja": "母は私に野菜を食べさせました。",
+        "romaji": "Haha wa watashi ni yasai o tabesasemashita.",
+        "meaning": {
+          "en": "My mother made me eat vegetables.",
+          "ar": "جعلتني أمي آكل الخضار."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n3/news-words",
+    "course": "japanese-n3",
+    "order": 4,
+    "type": "reading",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Reading practice: news vocabulary",
+      "ar": "تطبيق القراءة: مفردات الأخبار"
+    },
+    "summary": {
+      "en": "Headlines are short and use many kanji compounds. Learn the words you will meet most often.",
+      "ar": "العناوين الصحفية قصيرة وتستخدم كثيرًا من الكلمات المركّبة بالكانجي. تعلّم الكلمات الأكثر تكرارًا."
+    },
+    "items": [
+      {
+        "ja": "地震",
+        "romaji": "jishin",
+        "meaning": {
+          "en": "earthquake",
+          "ar": "زلزال"
+        }
+      },
+      {
+        "ja": "天気予報",
+        "romaji": "tenki yohō",
+        "meaning": {
+          "en": "weather forecast",
+          "ar": "النشرة الجوية"
+        }
+      },
+      {
+        "ja": "発表",
+        "romaji": "happyō",
+        "meaning": {
+          "en": "announcement",
+          "ar": "إعلان"
+        }
+      },
+      {
+        "ja": "増加",
+        "romaji": "zōka",
+        "meaning": {
+          "en": "increase",
+          "ar": "زيادة"
+        }
+      },
+      {
+        "ja": "政府",
+        "romaji": "seifu",
+        "meaning": {
+          "en": "government",
+          "ar": "الحكومة"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n2/nuance-patterns",
+    "course": "japanese-n2",
+    "order": 1,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Nuance: 〜からこそ, 〜わけではない, 〜とは限らない",
+      "ar": "الفروق الدقيقة: 〜からこそ و〜わけではない و〜とは限らない"
+    },
+    "summary": {
+      "en": "These patterns add emphasis or soften a statement, which is essential for natural upper-intermediate Japanese.",
+      "ar": "تضيف هذه الأنماط توكيدًا أو تلطّف العبارة، وهي أساسية في اليابانية الطبيعية فوق المتوسطة."
+    },
+    "items": [
+      {
+        "ja": "努力したからこそ、成功できた。",
+        "romaji": "Doryoku shita kara koso, seikō dekita.",
+        "meaning": {
+          "en": "It is precisely because I worked hard that I succeeded.",
+          "ar": "لأنني اجتهدت تحديدًا، تمكّنت من النجاح."
+        }
+      },
+      {
+        "ja": "嫌いなわけではない。",
+        "romaji": "Kirai na wake de wa nai.",
+        "meaning": {
+          "en": "It's not that I dislike it.",
+          "ar": "ليس الأمر أنني أكرهه."
+        }
+      },
+      {
+        "ja": "高いからといって、品質がいいとは限らない。",
+        "romaji": "Takai kara to itte, hinshitsu ga ii to wa kagiranai.",
+        "meaning": {
+          "en": "Just because it's expensive doesn't mean it's good quality.",
+          "ar": "كونه غاليًا لا يعني بالضرورة أن جودته عالية."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n2/formal-expressions",
+    "course": "japanese-n2",
+    "order": 2,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Formal written expressions",
+      "ar": "تعابير الكتابة الرسمية"
+    },
+    "summary": {
+      "en": "Articles, reports and announcements use fixed expressions. Recognize them to read faster.",
+      "ar": "تستخدم المقالات والتقارير والإعلانات تعابير ثابتة. تعرّف عليها لتقرأ بسرعة أكبر."
+    },
+    "items": [
+      {
+        "ja": "〜に関して",
+        "romaji": "~ ni kanshite",
+        "meaning": {
+          "en": "regarding ~",
+          "ar": "فيما يتعلق بـ ~"
+        }
+      },
+      {
+        "ja": "〜によって",
+        "romaji": "~ ni yotte",
+        "meaning": {
+          "en": "depending on ~; by means of ~",
+          "ar": "حسب ~؛ بواسطة ~"
+        }
+      },
+      {
+        "ja": "〜にもかかわらず",
+        "romaji": "~ ni mo kakawarazu",
+        "meaning": {
+          "en": "despite ~",
+          "ar": "على الرغم من ~"
+        }
+      },
+      {
+        "ja": "雨にもかかわらず、試合は行われた。",
+        "romaji": "Ame ni mo kakawarazu, shiai wa okonawareta.",
+        "meaning": {
+          "en": "Despite the rain, the match was held.",
+          "ar": "على الرغم من المطر، أُقيمت المباراة."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n2/society-vocabulary",
+    "course": "japanese-n2",
+    "order": 3,
+    "type": "reading",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Vocabulary: society and work",
+      "ar": "المفردات: المجتمع والعمل"
+    },
+    "summary": {
+      "en": "Key words for news, essays and professional conversations.",
+      "ar": "كلمات أساسية للأخبار والمقالات والمحادثات المهنية."
+    },
+    "items": [
+      {
+        "ja": "経済",
+        "romaji": "keizai",
+        "meaning": {
+          "en": "economy",
+          "ar": "الاقتصاد"
+        }
+      },
+      {
+        "ja": "環境",
+        "romaji": "kankyō",
+        "meaning": {
+          "en": "environment",
+          "ar": "البيئة"
+        }
+      },
+      {
+        "ja": "影響",
+        "romaji": "eikyō",
+        "meaning": {
+          "en": "influence; effect",
+          "ar": "تأثير"
+        }
+      },
+      {
+        "ja": "責任",
+        "romaji": "sekinin",
+        "meaning": {
+          "en": "responsibility",
+          "ar": "مسؤولية"
+        }
+      },
+      {
+        "ja": "解決",
+        "romaji": "kaiketsu",
+        "meaning": {
+          "en": "solution; resolution",
+          "ar": "حلّ"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n2/natural-speech",
+    "course": "japanese-n2",
+    "order": 4,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Natural speech: contractions",
+      "ar": "الكلام الطبيعي: الاختصارات"
+    },
+    "summary": {
+      "en": "At natural speed, many forms are shortened. Learn to recognize the most common ones.",
+      "ar": "في الكلام بالسرعة الطبيعية تُختصر صيغ كثيرة. تعلّم التعرّف على أكثرها شيوعًا."
+    },
+    "items": [
+      {
+        "ja": "忘れちゃった。",
+        "romaji": "Wasurechatta.",
+        "meaning": {
+          "en": "I (completely) forgot. (〜てしまった)",
+          "ar": "نسيت تمامًا. (〜てしまった)"
+        }
+      },
+      {
+        "ja": "何してる？",
+        "romaji": "Nani shiteru?",
+        "meaning": {
+          "en": "What are you doing? (〜ている)",
+          "ar": "ماذا تفعل؟ (〜ている)"
+        }
+      },
+      {
+        "ja": "もう行かなきゃ。",
+        "romaji": "Mō ikanakya.",
+        "meaning": {
+          "en": "I have to go now. (〜なければ)",
+          "ar": "يجب أن أذهب الآن. (〜なければ)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n1/advanced-patterns",
+    "course": "japanese-n1",
+    "order": 1,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Advanced patterns: 〜までもない, 〜を余儀なくされる",
+      "ar": "أنماط متقدمة: 〜までもない و〜を余儀なくされる"
+    },
+    "summary": {
+      "en": "Formal patterns that appear in editorials, speeches and the N1 exam.",
+      "ar": "أنماط رسمية تظهر في المقالات الافتتاحية والخطب واختبار N1."
+    },
+    "items": [
+      {
+        "ja": "言うまでもなく、健康は大切だ。",
+        "romaji": "Iu made mo naku, kenkō wa taisetsu da.",
+        "meaning": {
+          "en": "Needless to say, health is important.",
+          "ar": "غنيّ عن القول إن الصحة مهمة."
+        }
+      },
+      {
+        "ja": "説明するまでもない。",
+        "romaji": "Setsumei suru made mo nai.",
+        "meaning": {
+          "en": "There is no need to explain.",
+          "ar": "لا حاجة إلى الشرح."
+        }
+      },
+      {
+        "ja": "イベントは中止を余儀なくされた。",
+        "romaji": "Ibento wa chūshi o yogi naku sareta.",
+        "meaning": {
+          "en": "The event was forced to be cancelled.",
+          "ar": "اضطُرّوا إلى إلغاء الفعالية."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n1/literary-expressions",
+    "course": "japanese-n1",
+    "order": 2,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Literary expressions",
+      "ar": "التعابير الأدبية"
+    },
+    "summary": {
+      "en": "Expressive patterns used in writing and careful speech.",
+      "ar": "أنماط تعبيرية تُستخدم في الكتابة وفي الكلام المتأنّي."
+    },
+    "items": [
+      {
+        "ja": "笑わずにはいられなかった。",
+        "romaji": "Warawazu ni wa irarenakatta.",
+        "meaning": {
+          "en": "I couldn't help laughing.",
+          "ar": "لم أستطع منع نفسي من الضحك."
+        }
+      },
+      {
+        "ja": "大学生ともなると、自分で考えなければならない。",
+        "romaji": "Daigakusei to mo naru to, jibun de kangaenakereba naranai.",
+        "meaning": {
+          "en": "Once you are a university student, you have to think for yourself.",
+          "ar": "حين تصبح طالبًا جامعيًا، عليك أن تفكر بنفسك."
+        }
+      },
+      {
+        "ja": "〜に他ならない",
+        "romaji": "~ ni hoka naranai",
+        "meaning": {
+          "en": "is nothing other than ~",
+          "ar": "ليس سوى ~"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n1/abstract-vocabulary",
+    "course": "japanese-n1",
+    "order": 3,
+    "type": "reading",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Abstract vocabulary",
+      "ar": "المفردات المجرّدة"
+    },
+    "summary": {
+      "en": "Words for ideas, arguments and analysis, common in N1 reading passages.",
+      "ar": "كلمات للأفكار والحجج والتحليل، شائعة في نصوص القراءة في المستوى N1."
+    },
+    "items": [
+      {
+        "ja": "概念",
+        "romaji": "gainen",
+        "meaning": {
+          "en": "concept",
+          "ar": "مفهوم"
+        }
+      },
+      {
+        "ja": "矛盾",
+        "romaji": "mujun",
+        "meaning": {
+          "en": "contradiction",
+          "ar": "تناقض"
+        }
+      },
+      {
+        "ja": "傾向",
+        "romaji": "keikō",
+        "meaning": {
+          "en": "tendency; trend",
+          "ar": "ميل؛ اتجاه"
+        }
+      },
+      {
+        "ja": "抽象的",
+        "romaji": "chūshōteki",
+        "meaning": {
+          "en": "abstract",
+          "ar": "مجرّد"
+        }
+      },
+      {
+        "ja": "曖昧",
+        "romaji": "aimai",
+        "meaning": {
+          "en": "ambiguous; vague",
+          "ar": "غامض؛ مبهم"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-n1/editorial-reading",
+    "course": "japanese-n1",
+    "order": 4,
+    "type": "reading",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Reading editorials: the author's position",
+      "ar": "قراءة المقالات الافتتاحية: موقف الكاتب"
+    },
+    "summary": {
+      "en": "These endings reveal the author's opinion. Spotting them is the key to N1 reading questions.",
+      "ar": "تكشف هذه النهايات عن رأي الكاتب، والتعرّف عليها هو مفتاح أسئلة القراءة في المستوى N1."
+    },
+    "items": [
+      {
+        "ja": "〜と言わざるを得ない",
+        "romaji": "~ to iwazaru o enai",
+        "meaning": {
+          "en": "one has no choice but to say ~",
+          "ar": "لا يسعنا إلا أن نقول ~"
+        }
+      },
+      {
+        "ja": "〜べきである",
+        "romaji": "~ beki de aru",
+        "meaning": {
+          "en": "one should ~",
+          "ar": "ينبغي ~"
+        }
+      },
+      {
+        "ja": "〜のではないだろうか",
+        "romaji": "~ no de wa nai darō ka",
+        "meaning": {
+          "en": "isn't it the case that ~? (soft claim)",
+          "ar": "أليس الأمر ~؟ (رأي بصيغة ملطّفة)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "jlpt-preparation/how-the-jlpt-works",
+    "course": "jlpt-preparation",
+    "order": 1,
+    "type": "reading",
+    "durationMin": 10,
+    "videoUrl": null,
+    "title": {
+      "en": "How the JLPT works",
+      "ar": "كيف يعمل اختبار JLPT"
+    },
+    "summary": {
+      "en": "The test has five levels, from N5 (easiest) to N1 (hardest), and measures language knowledge, reading and listening.",
+      "ar": "للاختبار خمسة مستويات، من N5 (الأسهل) إلى N1 (الأصعب)، ويقيس المعرفة اللغوية والقراءة والاستماع."
+    },
+    "items": [
+      {
+        "ja": "日本語能力試験",
+        "romaji": "Nihongo Nōryoku Shiken",
+        "meaning": {
+          "en": "Japanese-Language Proficiency Test (JLPT)",
+          "ar": "اختبار الكفاءة في اللغة اليابانية (JLPT)"
+        }
+      },
+      {
+        "ja": "言語知識",
+        "romaji": "gengo chishiki",
+        "meaning": {
+          "en": "language knowledge (vocabulary, grammar)",
+          "ar": "المعرفة اللغوية (المفردات والقواعد)"
+        }
+      },
+      {
+        "ja": "読解",
+        "romaji": "dokkai",
+        "meaning": {
+          "en": "reading comprehension",
+          "ar": "فهم المقروء"
+        }
+      },
+      {
+        "ja": "聴解",
+        "romaji": "chōkai",
+        "meaning": {
+          "en": "listening comprehension",
+          "ar": "فهم المسموع"
+        }
+      },
+      {
+        "ja": "合格",
+        "romaji": "gōkaku",
+        "meaning": {
+          "en": "passing (an exam)",
+          "ar": "النجاح (في الاختبار)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "jlpt-preparation/vocabulary-questions",
+    "course": "jlpt-preparation",
+    "order": 2,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Strategy: vocabulary and kanji questions",
+      "ar": "الاستراتيجية: أسئلة المفردات والكانجي"
+    },
+    "summary": {
+      "en": "Know each question type and what it tests, then practice with a timer.",
+      "ar": "تعرّف على كل نوع من الأسئلة وما يقيسه، ثم تدرّب مع ضبط الوقت."
+    },
+    "items": [
+      {
+        "ja": "漢字読み",
+        "romaji": "kanji yomi",
+        "meaning": {
+          "en": "kanji reading",
+          "ar": "قراءة الكانجي"
+        }
+      },
+      {
+        "ja": "表記",
+        "romaji": "hyōki",
+        "meaning": {
+          "en": "writing (choosing the right kanji)",
+          "ar": "الكتابة (اختيار الكانجي الصحيح)"
+        }
+      },
+      {
+        "ja": "言い換え類義",
+        "romaji": "iikae ruigi",
+        "meaning": {
+          "en": "paraphrases (similar meaning)",
+          "ar": "إعادة الصياغة (المعنى المشابه)"
+        }
+      },
+      {
+        "ja": "用法",
+        "romaji": "yōhō",
+        "meaning": {
+          "en": "usage",
+          "ar": "الاستخدام"
+        }
+      }
+    ]
+  },
+  {
+    "id": "jlpt-preparation/reading-strategy",
+    "course": "jlpt-preparation",
+    "order": 3,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Strategy: reading comprehension",
+      "ar": "الاستراتيجية: فهم المقروء"
+    },
+    "summary": {
+      "en": "Read the question first, find the author's claim and the reason behind it.",
+      "ar": "اقرأ السؤال أولًا، ثم ابحث عن رأي الكاتب والسبب الذي يستند إليه."
+    },
+    "items": [
+      {
+        "ja": "筆者",
+        "romaji": "hissha",
+        "meaning": {
+          "en": "the author (of the text)",
+          "ar": "كاتب النص"
+        }
+      },
+      {
+        "ja": "主張",
+        "romaji": "shuchō",
+        "meaning": {
+          "en": "claim; argument",
+          "ar": "رأي؛ حجّة"
+        }
+      },
+      {
+        "ja": "理由",
+        "romaji": "riyū",
+        "meaning": {
+          "en": "reason",
+          "ar": "سبب"
+        }
+      },
+      {
+        "ja": "内容",
+        "romaji": "naiyō",
+        "meaning": {
+          "en": "content",
+          "ar": "المضمون"
+        }
+      }
+    ]
+  },
+  {
+    "id": "jlpt-preparation/listening-strategy",
+    "course": "jlpt-preparation",
+    "order": 4,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Strategy: listening",
+      "ar": "الاستراتيجية: الاستماع"
+    },
+    "summary": {
+      "en": "Each listening task type asks for something different. Take short notes while you listen.",
+      "ar": "يطلب كل نوع من مهام الاستماع شيئًا مختلفًا. دوّن ملاحظات قصيرة أثناء الاستماع."
+    },
+    "items": [
+      {
+        "ja": "課題理解",
+        "romaji": "kadai rikai",
+        "meaning": {
+          "en": "task-based comprehension",
+          "ar": "فهم المهمة"
+        }
+      },
+      {
+        "ja": "ポイント理解",
+        "romaji": "pointo rikai",
+        "meaning": {
+          "en": "comprehension of key points",
+          "ar": "فهم النقاط الرئيسية"
+        }
+      },
+      {
+        "ja": "即時応答",
+        "romaji": "sokuji ōtō",
+        "meaning": {
+          "en": "quick response",
+          "ar": "الاستجابة الفورية"
+        }
+      },
+      {
+        "ja": "メモを取る",
+        "romaji": "memo o toru",
+        "meaning": {
+          "en": "to take notes",
+          "ar": "تدوين الملاحظات"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-conversation/small-talk",
+    "course": "japanese-conversation",
+    "order": 1,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Small talk: the weather and the weekend",
+      "ar": "الأحاديث القصيرة: الطقس وعطلة نهاية الأسبوع"
+    },
+    "summary": {
+      "en": "Start a friendly conversation and keep it going with simple questions.",
+      "ar": "ابدأ محادثة ودّية وحافظ على استمرارها بأسئلة بسيطة."
+    },
+    "items": [
+      {
+        "ja": "いい天気ですね。",
+        "romaji": "Ii tenki desu ne.",
+        "meaning": {
+          "en": "Nice weather, isn't it?",
+          "ar": "الطقس جميل، أليس كذلك؟"
+        }
+      },
+      {
+        "ja": "週末は何をしましたか。",
+        "romaji": "Shūmatsu wa nani o shimashita ka.",
+        "meaning": {
+          "en": "What did you do on the weekend?",
+          "ar": "ماذا فعلت في عطلة نهاية الأسبوع؟"
+        }
+      },
+      {
+        "ja": "友達と買い物に行きました。",
+        "romaji": "Tomodachi to kaimono ni ikimashita.",
+        "meaning": {
+          "en": "I went shopping with a friend.",
+          "ar": "ذهبت للتسوّق مع صديق."
+        }
+      },
+      {
+        "ja": "それはいいですね。",
+        "romaji": "Sore wa ii desu ne.",
+        "meaning": {
+          "en": "That sounds nice.",
+          "ar": "هذا جميل."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-conversation/aizuchi",
+    "course": "japanese-conversation",
+    "order": 2,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Reacting naturally: aizuchi",
+      "ar": "التفاعل الطبيعي: ردود الفعل (aizuchi)"
+    },
+    "summary": {
+      "en": "Japanese listeners react often to show they are following. Use these short reactions.",
+      "ar": "يتفاعل المستمع الياباني كثيرًا ليُظهر أنه يتابع. استخدم ردود الفعل القصيرة هذه."
+    },
+    "items": [
+      {
+        "ja": "そうですね",
+        "romaji": "sō desu ne",
+        "meaning": {
+          "en": "that's right; let me see",
+          "ar": "هذا صحيح؛ دعني أفكر"
+        }
+      },
+      {
+        "ja": "なるほど",
+        "romaji": "naruhodo",
+        "meaning": {
+          "en": "I see",
+          "ar": "فهمت"
+        }
+      },
+      {
+        "ja": "本当ですか",
+        "romaji": "hontō desu ka",
+        "meaning": {
+          "en": "really?",
+          "ar": "حقًا؟"
+        }
+      },
+      {
+        "ja": "すごいですね",
+        "romaji": "sugoi desu ne",
+        "meaning": {
+          "en": "that's amazing",
+          "ar": "هذا رائع"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-conversation/hobbies",
+    "course": "japanese-conversation",
+    "order": 3,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Likes, hobbies and invitations",
+      "ar": "الاهتمامات والهوايات والدعوات"
+    },
+    "summary": {
+      "en": "Talk about what you enjoy and invite someone to do something together.",
+      "ar": "تحدّث عمّا تحبه وادعُ شخصًا للقيام بشيء معًا."
+    },
+    "items": [
+      {
+        "ja": "趣味は何ですか。",
+        "romaji": "Shumi wa nan desu ka.",
+        "meaning": {
+          "en": "What are your hobbies?",
+          "ar": "ما هواياتك؟"
+        }
+      },
+      {
+        "ja": "音楽を聞くのが好きです。",
+        "romaji": "Ongaku o kiku no ga suki desu.",
+        "meaning": {
+          "en": "I like listening to music.",
+          "ar": "أحب الاستماع إلى الموسيقى."
+        }
+      },
+      {
+        "ja": "料理をするのが好きです。",
+        "romaji": "Ryōri o suru no ga suki desu.",
+        "meaning": {
+          "en": "I like cooking.",
+          "ar": "أحب الطبخ."
+        }
+      },
+      {
+        "ja": "一緒に行きませんか。",
+        "romaji": "Issho ni ikimasen ka.",
+        "meaning": {
+          "en": "Would you like to go together?",
+          "ar": "هل تودّ أن نذهب معًا؟"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-conversation/clarification",
+    "course": "japanese-conversation",
+    "order": 4,
+    "type": "practice",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Asking for repetition and clarification",
+      "ar": "طلب الإعادة والتوضيح"
+    },
+    "summary": {
+      "en": "Never get lost in a conversation: ask politely for help.",
+      "ar": "لا تضِع في المحادثة أبدًا: اطلب المساعدة بأدب."
+    },
+    "items": [
+      {
+        "ja": "もう一度お願いします。",
+        "romaji": "Mō ichido onegai shimasu.",
+        "meaning": {
+          "en": "Once more, please.",
+          "ar": "مرة أخرى من فضلك."
+        }
+      },
+      {
+        "ja": "ゆっくり話してください。",
+        "romaji": "Yukkuri hanashite kudasai.",
+        "meaning": {
+          "en": "Please speak slowly.",
+          "ar": "تحدّث ببطء من فضلك."
+        }
+      },
+      {
+        "ja": "「〜」はどういう意味ですか。",
+        "romaji": "“~” wa dō iu imi desu ka.",
+        "meaning": {
+          "en": "What does “~” mean?",
+          "ar": "ما معنى «~»؟"
+        }
+      },
+      {
+        "ja": "すみません、よくわかりません。",
+        "romaji": "Sumimasen, yoku wakarimasen.",
+        "meaning": {
+          "en": "Sorry, I don't quite understand.",
+          "ar": "عذرًا، لا أفهم جيدًا."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-for-travel/getting-around",
+    "course": "japanese-for-travel",
+    "order": 1,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Getting around: stations, trains and taxis",
+      "ar": "التنقّل: المحطات والقطارات وسيارات الأجرة"
+    },
+    "summary": {
+      "en": "Ask for directions, buy a ticket and check that you are on the right train.",
+      "ar": "اسأل عن الاتجاهات، واشترِ تذكرة، وتأكد من أنك في القطار الصحيح."
+    },
+    "items": [
+      {
+        "ja": "駅はどこですか。",
+        "romaji": "Eki wa doko desu ka.",
+        "meaning": {
+          "en": "Where is the station?",
+          "ar": "أين المحطة؟"
+        }
+      },
+      {
+        "ja": "切符を一枚ください。",
+        "romaji": "Kippu o ichimai kudasai.",
+        "meaning": {
+          "en": "One ticket, please.",
+          "ar": "تذكرة واحدة من فضلك."
+        }
+      },
+      {
+        "ja": "この電車は京都に行きますか。",
+        "romaji": "Kono densha wa Kyōto ni ikimasu ka.",
+        "meaning": {
+          "en": "Does this train go to Kyoto?",
+          "ar": "هل يذهب هذا القطار إلى كيوتو؟"
+        }
+      },
+      {
+        "ja": "東京駅までお願いします。",
+        "romaji": "Tōkyō-eki made onegai shimasu.",
+        "meaning": {
+          "en": "To Tokyo Station, please. (taxi)",
+          "ar": "إلى محطة طوكيو من فضلك. (سيارة أجرة)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-for-travel/hotel",
+    "course": "japanese-for-travel",
+    "order": 2,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "At the hotel",
+      "ar": "في الفندق"
+    },
+    "summary": {
+      "en": "Check in, ask for the Wi-Fi password and leave your luggage.",
+      "ar": "سجّل وصولك، واسأل عن كلمة مرور الواي فاي، واترك أمتعتك."
+    },
+    "items": [
+      {
+        "ja": "予約しています。",
+        "romaji": "Yoyaku shite imasu.",
+        "meaning": {
+          "en": "I have a reservation.",
+          "ar": "لديّ حجز."
+        }
+      },
+      {
+        "ja": "チェックインをお願いします。",
+        "romaji": "Chekkuin o onegai shimasu.",
+        "meaning": {
+          "en": "Check-in, please.",
+          "ar": "أريد تسجيل الوصول من فضلك."
+        }
+      },
+      {
+        "ja": "Wi-Fiのパスワードは何ですか。",
+        "romaji": "Waifai no pasuwādo wa nan desu ka.",
+        "meaning": {
+          "en": "What is the Wi-Fi password?",
+          "ar": "ما كلمة مرور الواي فاي؟"
+        }
+      },
+      {
+        "ja": "荷物を預かってもらえますか。",
+        "romaji": "Nimotsu o azukatte moraemasu ka.",
+        "meaning": {
+          "en": "Could you keep my luggage?",
+          "ar": "هل يمكنكم الاحتفاظ بأمتعتي؟"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-for-travel/restaurant",
+    "course": "japanese-for-travel",
+    "order": 3,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "At the restaurant (including halal questions)",
+      "ar": "في المطعم (بما في ذلك الأسئلة عن الطعام الحلال)"
+    },
+    "summary": {
+      "en": "Order food, ask about ingredients such as pork or alcohol, and ask for the bill.",
+      "ar": "اطلب الطعام، واسأل عن المكوّنات مثل لحم الخنزير أو الكحول، واطلب الحساب."
+    },
+    "items": [
+      {
+        "ja": "二人です。",
+        "romaji": "Futari desu.",
+        "meaning": {
+          "en": "Two people. (table for two)",
+          "ar": "شخصان. (طاولة لشخصين)"
+        }
+      },
+      {
+        "ja": "これをください。",
+        "romaji": "Kore o kudasai.",
+        "meaning": {
+          "en": "This one, please.",
+          "ar": "هذا من فضلك."
+        }
+      },
+      {
+        "ja": "豚肉は入っていますか。",
+        "romaji": "Butaniku wa haitte imasu ka.",
+        "meaning": {
+          "en": "Does this contain pork?",
+          "ar": "هل يحتوي هذا على لحم الخنزير؟"
+        }
+      },
+      {
+        "ja": "お酒は入っていますか。",
+        "romaji": "Osake wa haitte imasu ka.",
+        "meaning": {
+          "en": "Does this contain alcohol?",
+          "ar": "هل يحتوي هذا على الكحول؟"
+        }
+      },
+      {
+        "ja": "ハラールの料理はありますか。",
+        "romaji": "Harāru no ryōri wa arimasu ka.",
+        "meaning": {
+          "en": "Do you have halal food?",
+          "ar": "هل لديكم طعام حلال؟"
+        }
+      },
+      {
+        "ja": "お会計をお願いします。",
+        "romaji": "Okaikei o onegai shimasu.",
+        "meaning": {
+          "en": "The bill, please.",
+          "ar": "الحساب من فضلك."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-for-travel/shopping",
+    "course": "japanese-for-travel",
+    "order": 4,
+    "type": "practice",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Shopping",
+      "ar": "التسوّق"
+    },
+    "summary": {
+      "en": "Ask prices, pay by card and decline a bag.",
+      "ar": "اسأل عن الأسعار، وادفع بالبطاقة، واعتذر عن أخذ كيس."
+    },
+    "items": [
+      {
+        "ja": "いくらですか。",
+        "romaji": "Ikura desu ka.",
+        "meaning": {
+          "en": "How much is it?",
+          "ar": "كم سعره؟"
+        }
+      },
+      {
+        "ja": "カードで払えますか。",
+        "romaji": "Kādo de haraemasu ka.",
+        "meaning": {
+          "en": "Can I pay by card?",
+          "ar": "هل يمكنني الدفع بالبطاقة؟"
+        }
+      },
+      {
+        "ja": "試着してもいいですか。",
+        "romaji": "Shichaku shite mo ii desu ka.",
+        "meaning": {
+          "en": "May I try it on?",
+          "ar": "هل يمكنني تجربته؟"
+        }
+      },
+      {
+        "ja": "袋はいりません。",
+        "romaji": "Fukuro wa irimasen.",
+        "meaning": {
+          "en": "I don't need a bag.",
+          "ar": "لا أحتاج إلى كيس."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-for-work/keigo-basics",
+    "course": "japanese-for-work",
+    "order": 1,
+    "type": "video",
+    "durationMin": 25,
+    "videoUrl": null,
+    "title": {
+      "en": "Keigo basics: respectful and humble verbs",
+      "ar": "أساسيات الكييغو: أفعال الاحترام والتواضع"
+    },
+    "summary": {
+      "en": "Use respectful verbs for other people's actions and humble verbs for your own.",
+      "ar": "استخدم أفعال الاحترام لأفعال الآخرين، وأفعال التواضع لأفعالك أنت."
+    },
+    "items": [
+      {
+        "ja": "いらっしゃいます",
+        "romaji": "irasshaimasu",
+        "meaning": {
+          "en": "to be / go / come (respectful)",
+          "ar": "يكون / يذهب / يأتي (احترام)"
+        }
+      },
+      {
+        "ja": "召し上がります",
+        "romaji": "meshiagarimasu",
+        "meaning": {
+          "en": "to eat / drink (respectful)",
+          "ar": "يأكل / يشرب (احترام)"
+        }
+      },
+      {
+        "ja": "参ります",
+        "romaji": "mairimasu",
+        "meaning": {
+          "en": "to go / come (humble)",
+          "ar": "أذهب / آتي (تواضع)"
+        }
+      },
+      {
+        "ja": "申します",
+        "romaji": "mōshimasu",
+        "meaning": {
+          "en": "to be called; to say (humble)",
+          "ar": "أُدعى؛ أقول (تواضع)"
+        }
+      },
+      {
+        "ja": "拝見します",
+        "romaji": "haiken shimasu",
+        "meaning": {
+          "en": "to look at; to see (humble)",
+          "ar": "أطّلع على؛ أرى (تواضع)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-for-work/self-introduction-at-work",
+    "course": "japanese-for-work",
+    "order": 2,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Introducing yourself at work",
+      "ar": "التعريف بنفسك في العمل"
+    },
+    "summary": {
+      "en": "A business introduction follows a fixed pattern. Exchange business cards with both hands.",
+      "ar": "للتعريف بالنفس في العمل صيغة ثابتة. تُتبادل بطاقات العمل باليدين."
+    },
+    "items": [
+      {
+        "ja": "初めまして、〇〇と申します。",
+        "romaji": "Hajimemashite, ○○ to mōshimasu.",
+        "meaning": {
+          "en": "Nice to meet you. My name is ○○.",
+          "ar": "تشرّفت بمعرفتكم، اسمي ○○."
+        }
+      },
+      {
+        "ja": "〇〇社から参りました。",
+        "romaji": "○○-sha kara mairimashita.",
+        "meaning": {
+          "en": "I am from ○○ company.",
+          "ar": "أتيت من شركة ○○."
+        }
+      },
+      {
+        "ja": "どうぞよろしくお願いいたします。",
+        "romaji": "Dōzo yoroshiku onegai itashimasu.",
+        "meaning": {
+          "en": "I look forward to working with you.",
+          "ar": "أتطلّع إلى العمل معكم."
+        }
+      },
+      {
+        "ja": "名刺",
+        "romaji": "meishi",
+        "meaning": {
+          "en": "business card",
+          "ar": "بطاقة العمل"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-for-work/business-emails",
+    "course": "japanese-for-work",
+    "order": 3,
+    "type": "reading",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Business emails",
+      "ar": "رسائل العمل الإلكترونية"
+    },
+    "summary": {
+      "en": "Japanese business emails open and close with set phrases.",
+      "ar": "تبدأ رسائل العمل اليابانية وتنتهي بعبارات ثابتة."
+    },
+    "items": [
+      {
+        "ja": "お世話になっております。",
+        "romaji": "Osewa ni natte orimasu.",
+        "meaning": {
+          "en": "Thank you for your continued support. (standard opening)",
+          "ar": "نشكركم على دعمكم المستمر. (افتتاحية معتادة)"
+        }
+      },
+      {
+        "ja": "ご確認をお願いいたします。",
+        "romaji": "Go-kakunin o onegai itashimasu.",
+        "meaning": {
+          "en": "Please kindly check / confirm.",
+          "ar": "يرجى التكرّم بالمراجعة / التأكيد."
+        }
+      },
+      {
+        "ja": "添付ファイル",
+        "romaji": "tenpu fairu",
+        "meaning": {
+          "en": "attached file",
+          "ar": "ملف مرفق"
+        }
+      },
+      {
+        "ja": "何卒よろしくお願い申し上げます。",
+        "romaji": "Nanitozo yoroshiku onegai mōshiagemasu.",
+        "meaning": {
+          "en": "Thank you very much in advance. (very formal closing)",
+          "ar": "مع خالص الشكر والتقدير. (خاتمة رسمية جدًا)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-for-work/meetings-and-calls",
+    "course": "japanese-for-work",
+    "order": 4,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Meetings and phone calls",
+      "ar": "الاجتماعات والمكالمات الهاتفية"
+    },
+    "summary": {
+      "en": "Polite phrases to ask someone to wait, apologize and promise to call back.",
+      "ar": "عبارات مهذّبة لطلب الانتظار والاعتذار والوعد بمعاودة الاتصال."
+    },
+    "items": [
+      {
+        "ja": "会議",
+        "romaji": "kaigi",
+        "meaning": {
+          "en": "meeting",
+          "ar": "اجتماع"
+        }
+      },
+      {
+        "ja": "少々お待ちください。",
+        "romaji": "Shōshō omachi kudasai.",
+        "meaning": {
+          "en": "Please wait a moment.",
+          "ar": "انتظر لحظة من فضلك."
+        }
+      },
+      {
+        "ja": "申し訳ございません。",
+        "romaji": "Mōshiwake gozaimasen.",
+        "meaning": {
+          "en": "I am very sorry.",
+          "ar": "أعتذر بشدة."
+        }
+      },
+      {
+        "ja": "折り返しお電話いたします。",
+        "romaji": "Orikaeshi odenwa itashimasu.",
+        "meaning": {
+          "en": "I will call you back.",
+          "ar": "سأعاود الاتصال بكم."
+        }
+      }
+    ]
+  },
+  {
+    "id": "kanji/radicals",
+    "course": "kanji",
+    "order": 1,
+    "type": "reading",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "How kanji work: building blocks",
+      "ar": "كيف يعمل الكانجي: اللبنات الأساسية"
+    },
+    "summary": {
+      "en": "Many kanji combine simpler parts. Recognizing them makes new characters easier to remember.",
+      "ar": "يتكوّن كثير من حروف الكانجي من أجزاء أبسط، والتعرّف عليها يسهّل تذكّر الحروف الجديدة."
+    },
+    "items": [
+      {
+        "ja": "木",
+        "romaji": "ki",
+        "meaning": {
+          "en": "tree",
+          "ar": "شجرة"
+        }
+      },
+      {
+        "ja": "林",
+        "romaji": "hayashi",
+        "meaning": {
+          "en": "grove (two trees)",
+          "ar": "بستان (شجرتان)"
+        }
+      },
+      {
+        "ja": "森",
+        "romaji": "mori",
+        "meaning": {
+          "en": "forest (three trees)",
+          "ar": "غابة (ثلاث أشجار)"
+        }
+      },
+      {
+        "ja": "休む",
+        "romaji": "yasumu",
+        "meaning": {
+          "en": "to rest (person 亻 + tree 木)",
+          "ar": "يستريح (شخص 亻 + شجرة 木)"
+        }
+      },
+      {
+        "ja": "明るい",
+        "romaji": "akarui",
+        "meaning": {
+          "en": "bright (sun 日 + moon 月)",
+          "ar": "مضيء (شمس 日 + قمر 月)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "kanji/on-kun-readings",
+    "course": "kanji",
+    "order": 2,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "On'yomi and kun'yomi readings",
+      "ar": "قراءتا on'yomi وkun'yomi"
+    },
+    "summary": {
+      "en": "Most kanji have a Japanese reading (kun) used alone and a Chinese-derived reading (on) used in compounds.",
+      "ar": "لمعظم حروف الكانجي قراءة يابانية (kun) تُستخدم منفردة، وقراءة مشتقة من الصينية (on) تُستخدم في الكلمات المركّبة."
+    },
+    "items": [
+      {
+        "ja": "山・富士山",
+        "romaji": "yama / Fujisan",
+        "meaning": {
+          "en": "mountain / Mount Fuji",
+          "ar": "جبل / جبل فوجي"
+        }
+      },
+      {
+        "ja": "人・日本人",
+        "romaji": "hito / Nihonjin",
+        "meaning": {
+          "en": "person / Japanese person",
+          "ar": "شخص / ياباني"
+        }
+      },
+      {
+        "ja": "水・水曜日",
+        "romaji": "mizu / suiyōbi",
+        "meaning": {
+          "en": "water / Wednesday",
+          "ar": "ماء / الأربعاء"
+        }
+      },
+      {
+        "ja": "日・日本",
+        "romaji": "hi / Nihon",
+        "meaning": {
+          "en": "sun, day / Japan",
+          "ar": "شمس، يوم / اليابان"
+        }
+      }
+    ]
+  },
+  {
+    "id": "kanji/numbers-and-time",
+    "course": "kanji",
+    "order": 3,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "N5 kanji: numbers and time",
+      "ar": "كانجي المستوى N5: الأعداد والوقت"
+    },
+    "summary": {
+      "en": "Essential kanji you will see on prices, dates and timetables.",
+      "ar": "حروف كانجي أساسية ستراها في الأسعار والتواريخ وجداول المواعيد."
+    },
+    "items": [
+      {
+        "ja": "一・十・百",
+        "romaji": "ichi / jū / hyaku",
+        "meaning": {
+          "en": "one / ten / hundred",
+          "ar": "واحد / عشرة / مئة"
+        }
+      },
+      {
+        "ja": "千・万",
+        "romaji": "sen / man",
+        "meaning": {
+          "en": "thousand / ten thousand",
+          "ar": "ألف / عشرة آلاف"
+        }
+      },
+      {
+        "ja": "年",
+        "romaji": "nen; toshi",
+        "meaning": {
+          "en": "year",
+          "ar": "سنة"
+        }
+      },
+      {
+        "ja": "月",
+        "romaji": "tsuki; getsu, gatsu",
+        "meaning": {
+          "en": "moon; month",
+          "ar": "قمر؛ شهر"
+        }
+      },
+      {
+        "ja": "時",
+        "romaji": "ji; toki",
+        "meaning": {
+          "en": "hour, o'clock; time",
+          "ar": "ساعة؛ وقت"
+        }
+      }
+    ]
+  },
+  {
+    "id": "kanji/stroke-order",
+    "course": "kanji",
+    "order": 4,
+    "type": "practice",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Writing practice: stroke order",
+      "ar": "تطبيق الكتابة: ترتيب الضربات"
+    },
+    "summary": {
+      "en": "General rules: top to bottom, left to right, and usually horizontal strokes before vertical ones. Write each kanji five times.",
+      "ar": "القواعد العامة: من الأعلى إلى الأسفل، ومن اليسار إلى اليمين، وغالبًا الضربات الأفقية قبل العمودية. اكتب كل حرف خمس مرات."
+    },
+    "items": [
+      {
+        "ja": "口",
+        "romaji": "kuchi",
+        "meaning": {
+          "en": "mouth",
+          "ar": "فم"
+        }
+      },
+      {
+        "ja": "目",
+        "romaji": "me",
+        "meaning": {
+          "en": "eye",
+          "ar": "عين"
+        }
+      },
+      {
+        "ja": "手",
+        "romaji": "te",
+        "meaning": {
+          "en": "hand",
+          "ar": "يد"
+        }
+      },
+      {
+        "ja": "田",
+        "romaji": "ta",
+        "meaning": {
+          "en": "rice field",
+          "ar": "حقل أرز"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-grammar/sentence-structure",
+    "course": "japanese-grammar",
+    "order": 1,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Sentence structure: the verb comes last",
+      "ar": "بنية الجملة: الفعل في آخر الجملة"
+    },
+    "summary": {
+      "en": "Japanese word order is subject – object – verb. Particles tell you the role of each word.",
+      "ar": "ترتيب الكلمات في اليابانية: الفاعل – المفعول به – الفعل، وتبيّن أدوات الربط دور كل كلمة."
+    },
+    "items": [
+      {
+        "ja": "私は日本語を勉強します。",
+        "romaji": "Watashi wa Nihongo o benkyō shimasu.",
+        "meaning": {
+          "en": "I study Japanese.",
+          "ar": "أدرس اللغة اليابانية."
+        }
+      },
+      {
+        "ja": "は",
+        "romaji": "wa",
+        "meaning": {
+          "en": "topic marker",
+          "ar": "أداة الموضوع"
+        }
+      },
+      {
+        "ja": "が",
+        "romaji": "ga",
+        "meaning": {
+          "en": "subject marker",
+          "ar": "أداة الفاعل"
+        }
+      },
+      {
+        "ja": "を",
+        "romaji": "o",
+        "meaning": {
+          "en": "object marker",
+          "ar": "أداة المفعول به"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-grammar/verb-groups",
+    "course": "japanese-grammar",
+    "order": 2,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Verb groups and the ます form",
+      "ar": "مجموعات الأفعال وصيغة ます"
+    },
+    "summary": {
+      "en": "Japanese verbs fall into three groups. Each forms its polite ます form in a regular way.",
+      "ar": "تنقسم الأفعال اليابانية إلى ثلاث مجموعات، ولكل منها طريقة منتظمة لتكوين صيغة ます المهذّبة."
+    },
+    "items": [
+      {
+        "ja": "書く → 書きます",
+        "romaji": "kaku → kakimasu",
+        "meaning": {
+          "en": "to write (group 1)",
+          "ar": "يكتب (المجموعة 1)"
+        }
+      },
+      {
+        "ja": "食べる → 食べます",
+        "romaji": "taberu → tabemasu",
+        "meaning": {
+          "en": "to eat (group 2)",
+          "ar": "يأكل (المجموعة 2)"
+        }
+      },
+      {
+        "ja": "する → します",
+        "romaji": "suru → shimasu",
+        "meaning": {
+          "en": "to do (irregular)",
+          "ar": "يفعل (فعل شاذ)"
+        }
+      },
+      {
+        "ja": "来る → 来ます",
+        "romaji": "kuru → kimasu",
+        "meaning": {
+          "en": "to come (irregular)",
+          "ar": "يأتي (فعل شاذ)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-grammar/permission-prohibition",
+    "course": "japanese-grammar",
+    "order": 3,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Permission and prohibition",
+      "ar": "الإذن والمنع"
+    },
+    "summary": {
+      "en": "Ask for permission with 〜てもいいですか and express rules with 〜てはいけません and 〜ないでください.",
+      "ar": "اطلب الإذن باستخدام 〜てもいいですか، وعبّر عن القواعد باستخدام 〜てはいけません و〜ないでください."
+    },
+    "items": [
+      {
+        "ja": "ここに座ってもいいですか。",
+        "romaji": "Koko ni suwatte mo ii desu ka.",
+        "meaning": {
+          "en": "May I sit here?",
+          "ar": "هل يمكنني الجلوس هنا؟"
+        }
+      },
+      {
+        "ja": "写真を撮ってもいいですか。",
+        "romaji": "Shashin o totte mo ii desu ka.",
+        "meaning": {
+          "en": "May I take a photo?",
+          "ar": "هل يمكنني التقاط صورة؟"
+        }
+      },
+      {
+        "ja": "ここで写真を撮ってはいけません。",
+        "romaji": "Koko de shashin o totte wa ikemasen.",
+        "meaning": {
+          "en": "You must not take photos here.",
+          "ar": "يُمنع التصوير هنا."
+        }
+      },
+      {
+        "ja": "入らないでください。",
+        "romaji": "Hairanaide kudasai.",
+        "meaning": {
+          "en": "Please do not enter.",
+          "ar": "يُرجى عدم الدخول."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-grammar/giving-receiving",
+    "course": "japanese-grammar",
+    "order": 4,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": {
+      "en": "Giving and receiving: あげる, くれる, もらう",
+      "ar": "العطاء والأخذ: あげる وくれる وもらう"
+    },
+    "summary": {
+      "en": "The verb changes depending on who gives and who receives.",
+      "ar": "يتغيّر الفعل بحسب من يعطي ومن يتلقّى."
+    },
+    "items": [
+      {
+        "ja": "私は友達に本をあげました。",
+        "romaji": "Watashi wa tomodachi ni hon o agemashita.",
+        "meaning": {
+          "en": "I gave a book to my friend.",
+          "ar": "أعطيت صديقي كتابًا."
+        }
+      },
+      {
+        "ja": "友達が私に花をくれました。",
+        "romaji": "Tomodachi ga watashi ni hana o kuremashita.",
+        "meaning": {
+          "en": "My friend gave me flowers.",
+          "ar": "أعطاني صديقي زهورًا."
+        }
+      },
+      {
+        "ja": "私は先生に辞書をもらいました。",
+        "romaji": "Watashi wa sensei ni jisho o moraimashita.",
+        "meaning": {
+          "en": "I received a dictionary from my teacher.",
+          "ar": "تلقّيت قاموسًا من معلّمي."
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-vocabulary/family",
+    "course": "japanese-vocabulary",
+    "order": 1,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Family",
+      "ar": "العائلة"
+    },
+    "summary": {
+      "en": "Japanese uses different words for your own family and for someone else's.",
+      "ar": "تستخدم اليابانية كلمات مختلفة للحديث عن عائلتك وعن عائلة شخص آخر."
+    },
+    "items": [
+      {
+        "ja": "家族",
+        "romaji": "kazoku",
+        "meaning": {
+          "en": "family",
+          "ar": "عائلة"
+        }
+      },
+      {
+        "ja": "父・お父さん",
+        "romaji": "chichi / otōsan",
+        "meaning": {
+          "en": "(my) father / (someone's) father",
+          "ar": "أبي / والد شخص آخر"
+        }
+      },
+      {
+        "ja": "母・お母さん",
+        "romaji": "haha / okāsan",
+        "meaning": {
+          "en": "(my) mother / (someone's) mother",
+          "ar": "أمي / والدة شخص آخر"
+        }
+      },
+      {
+        "ja": "兄",
+        "romaji": "ani",
+        "meaning": {
+          "en": "(my) older brother",
+          "ar": "أخي الأكبر"
+        }
+      },
+      {
+        "ja": "姉",
+        "romaji": "ane",
+        "meaning": {
+          "en": "(my) older sister",
+          "ar": "أختي الكبرى"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-vocabulary/food-and-drinks",
+    "course": "japanese-vocabulary",
+    "order": 2,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Food and drinks",
+      "ar": "الطعام والمشروبات"
+    },
+    "summary": {
+      "en": "Everyday words for meals, food and drinks.",
+      "ar": "كلمات يومية للوجبات والطعام والمشروبات."
+    },
+    "items": [
+      {
+        "ja": "食べ物",
+        "romaji": "tabemono",
+        "meaning": {
+          "en": "food",
+          "ar": "طعام"
+        }
+      },
+      {
+        "ja": "飲み物",
+        "romaji": "nomimono",
+        "meaning": {
+          "en": "drink",
+          "ar": "مشروب"
+        }
+      },
+      {
+        "ja": "水",
+        "romaji": "mizu",
+        "meaning": {
+          "en": "water",
+          "ar": "ماء"
+        }
+      },
+      {
+        "ja": "お茶",
+        "romaji": "ocha",
+        "meaning": {
+          "en": "(green) tea",
+          "ar": "شاي (أخضر)"
+        }
+      },
+      {
+        "ja": "ご飯",
+        "romaji": "gohan",
+        "meaning": {
+          "en": "cooked rice; meal",
+          "ar": "أرز مطبوخ؛ وجبة"
+        }
+      },
+      {
+        "ja": "野菜",
+        "romaji": "yasai",
+        "meaning": {
+          "en": "vegetables",
+          "ar": "خضار"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-vocabulary/around-town",
+    "course": "japanese-vocabulary",
+    "order": 3,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Around town",
+      "ar": "في المدينة"
+    },
+    "summary": {
+      "en": "Places you need to find in any Japanese town.",
+      "ar": "أماكن ستحتاج إلى إيجادها في أي مدينة يابانية."
+    },
+    "items": [
+      {
+        "ja": "駅",
+        "romaji": "eki",
+        "meaning": {
+          "en": "station",
+          "ar": "محطة"
+        }
+      },
+      {
+        "ja": "病院",
+        "romaji": "byōin",
+        "meaning": {
+          "en": "hospital",
+          "ar": "مستشفى"
+        }
+      },
+      {
+        "ja": "銀行",
+        "romaji": "ginkō",
+        "meaning": {
+          "en": "bank",
+          "ar": "مصرف"
+        }
+      },
+      {
+        "ja": "郵便局",
+        "romaji": "yūbinkyoku",
+        "meaning": {
+          "en": "post office",
+          "ar": "مكتب البريد"
+        }
+      },
+      {
+        "ja": "店",
+        "romaji": "mise",
+        "meaning": {
+          "en": "shop",
+          "ar": "متجر"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-vocabulary/feelings",
+    "course": "japanese-vocabulary",
+    "order": 4,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Feelings",
+      "ar": "المشاعر"
+    },
+    "summary": {
+      "en": "Describe how you feel.",
+      "ar": "صِف ما تشعر به."
+    },
+    "items": [
+      {
+        "ja": "嬉しい",
+        "romaji": "ureshii",
+        "meaning": {
+          "en": "happy; glad",
+          "ar": "سعيد؛ مسرور"
+        }
+      },
+      {
+        "ja": "悲しい",
+        "romaji": "kanashii",
+        "meaning": {
+          "en": "sad",
+          "ar": "حزين"
+        }
+      },
+      {
+        "ja": "楽しい",
+        "romaji": "tanoshii",
+        "meaning": {
+          "en": "fun; enjoyable",
+          "ar": "ممتع"
+        }
+      },
+      {
+        "ja": "疲れた",
+        "romaji": "tsukareta",
+        "meaning": {
+          "en": "tired",
+          "ar": "متعب"
+        }
+      },
+      {
+        "ja": "心配",
+        "romaji": "shinpai",
+        "meaning": {
+          "en": "worry",
+          "ar": "قلق"
+        }
+      }
+    ]
+  },
+  {
+    "id": "japanese-vocabulary/review-method",
+    "course": "japanese-vocabulary",
+    "order": 5,
+    "type": "practice",
+    "durationMin": 10,
+    "videoUrl": null,
+    "title": {
+      "en": "How to remember vocabulary",
+      "ar": "كيف تتذكّر المفردات"
+    },
+    "summary": {
+      "en": "Review new words after one day, then three days, then one week. Say each word aloud in a sentence.",
+      "ar": "راجع الكلمات الجديدة بعد يوم، ثم بعد ثلاثة أيام، ثم بعد أسبوع. انطق كل كلمة بصوت مرتفع ضمن جملة."
+    },
+    "items": [
+      {
+        "ja": "毎日",
+        "romaji": "mainichi",
+        "meaning": {
+          "en": "every day",
+          "ar": "كل يوم"
+        }
+      },
+      {
+        "ja": "復習",
+        "romaji": "fukushū",
+        "meaning": {
+          "en": "review",
+          "ar": "مراجعة"
+        }
+      },
+      {
+        "ja": "覚える",
+        "romaji": "oboeru",
+        "meaning": {
+          "en": "to memorize; to remember",
+          "ar": "يحفظ؛ يتذكّر"
+        }
+      },
+      {
+        "ja": "忘れる",
+        "romaji": "wasureru",
+        "meaning": {
+          "en": "to forget",
+          "ar": "ينسى"
+        }
       }
     ]
   }

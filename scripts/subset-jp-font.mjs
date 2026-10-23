@@ -20,6 +20,9 @@ const OUT_DIR = join(root, 'public/fonts');
 const OUT = join(OUT_DIR, 'noto-serif-jp-subset.woff2');
 const SCAN = ['src', 'scripts'];
 const EXTENSIONS = new Set(['.astro', '.ts', '.tsx', '.json', '.md', '.mjs', '.css']);
+// Lesson vocabulary is shown in the system Japanese font (not this decorative serif), so it is
+// excluded to keep the subset small for the marketing pages.
+const EXCLUDE = new Set(['lessons.json']);
 // Code-point ranges: CJK symbols & punctuation, hiragana, katakana, CJK ideographs, full-width forms.
 const RANGES = [
   [0x3000, 0x303f],
@@ -34,7 +37,7 @@ async function* files(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) yield* files(full);
-    else if (EXTENSIONS.has(extname(entry.name))) yield full;
+    else if (EXTENSIONS.has(extname(entry.name)) && !EXCLUDE.has(entry.name)) yield full;
   }
 }
 

@@ -131,10 +131,14 @@ const description = t('courseDetail.metaDescription', {
         <h2 id="example-title" class="relative text-sm font-semibold text-sakura">
           {t('courseDetail.example')}
         </h2>
-        <p lang="ja" class="font-jp relative mt-4 text-3xl leading-snug sm:text-4xl">
+        <p
+          lang="ja"
+          dir="ltr"
+          class="font-jp relative mt-4 text-start text-3xl leading-snug sm:text-4xl rtl:text-end"
+        >
           {course.example.ja}
         </p>
-        <p lang="ja-Latn" class="relative mt-3 text-stone-300 italic">
+        <p lang="ja-Latn" dir="ltr" class="relative mt-3 text-start text-stone-300 italic rtl:text-end">
           {course.example.romaji}
         </p>
         <p class="relative mt-1 text-washi">{course.example.meaning[lang]}</p>

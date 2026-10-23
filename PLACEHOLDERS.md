@@ -56,12 +56,12 @@ consented reviews (`placeholder: false`, `quote`, `name`, `country`). No Review/
 
 ## Student space (`src/content/lessons.json`)
 
-| Item                         | Status                                                                                                          |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Lesson videos                | `videoUrl: null` → "The video for this lesson will be published soon."                                          |
-| PDF materials & exercises    | Placeholder note on every lesson page                                                                           |
-| Lessons                      | Written for **Hiragana & Katakana** (8) and **Beginner Japanese** (6) only; other courses show "being prepared" |
-| Lesson outlines & vocabulary | Checked for correctness; review with the teacher                                                                |
+| Item                         | Status                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Lesson videos                | `videoUrl: null` → "The video for this lesson will be published soon."                                                     |
+| PDF materials & exercises    | Placeholder note on every lesson page                                                                                      |
+| Lessons                      | 65 short lessons across all 14 courses (4–8 each): outlines + key vocabulary only; extend with the teacher's full syllabus |
+| Lesson outlines & vocabulary | Checked for correctness; review with the teacher                                                                           |
 
 ## FAQ answers needing business confirmation (`src/content/faqs.json`)
 

@@ -109,7 +109,7 @@ Choices made while building V1, with the reasoning, so they can be revisited.
     the active plan is in the course's `plans`; live classes require Premium or above.
 39. **Forms post to `/api/learning/*` and `/api/admin/*`** and redirect back, so the student space works
     without JavaScript (only time-zone formatting and the admin date conversion use small scripts).
-40. **Only two courses have lessons** (Hiragana & Katakana, Beginner Japanese), with short, verified
-    outlines and vocabulary. Full lesson content (videos, PDFs, exercises) must come from the teacher.
+40. **Every course has a short starter syllabus** (65 lessons, 4–8 per course) with verified example
+    sentences and vocabulary in ar/en. Full lesson content (videos, PDFs, exercises) must come from the teacher.
 41. **E2E tests use their own local database** (`.wrangler/e2e-state`) and a throwaway admin, so they never
     pollute `pnpm dev` data.

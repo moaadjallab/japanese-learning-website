@@ -106,7 +106,7 @@ const { previous, next, position } = lessonNeighbours(lessons, lesson.id);
               <tbody class="divide-y divide-line">
                 {lesson.items.map((item) => (
                   <tr>
-                    <td lang="ja" class="font-jp p-4 text-2xl">
+                    <td lang="ja" dir="ltr" class="p-4 text-start text-xl rtl:text-end">
                       {item.ja}
                     </td>
                     <td lang="ja-Latn" dir="ltr" class="p-4 text-start text-fg-muted italic rtl:text-end">
