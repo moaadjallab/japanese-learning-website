@@ -80,7 +80,10 @@ src/
     domain/types.ts         ← Course, Plan, Faq, level & category ids…
     catalog/filter.ts       ← search / filter / URL-sync logic (unit-tested)
     validation/schemas.ts   ← Zod schemas shared by browser and API
-    auth/                   ← AuthService (V1: 501 stubs), types (Role, User, Session), route guard
+    auth/                   ← AuthService client, types (Role, User, Session), route guard;
+                              server/ = D1 sessions, password hashing, auth emails
+    learning/               ← student space: access rules, page loader, D1 queries (progress, live)
+    admin/                  ← admin-only D1 queries (manual plans, live-class scheduling, users)
     payments/               ← PaymentProvider interface + adapters (no fake payments)
     email/                  ← EmailProvider (Resend adapter; console adapter in dev)
     security/               ← security headers/CSP, rate limiter, Turnstile

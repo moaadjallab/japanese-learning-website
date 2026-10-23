@@ -17,7 +17,7 @@ import {
   cancelSubscriptions,
   createLiveSession,
   deleteLiveSession,
-} from '@/lib/learning/server';
+} from '@/lib/admin/server';
 import { getCourse } from '@/lib/repositories/courses';
 import { routes } from '@/lib/routes';
 
