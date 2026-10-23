@@ -1,6 +1,6 @@
-# Admin area (V2 — not built in V1)
+# Admin area
 
-Planned route: `/[lang]/admin/` (on-demand).
+Built (minimal): `src/pages/[lang]/admin.astro` + `src/pages/api/admin/[action].ts` — activate/end plans
+manually and schedule live classes. Guarded by `AREA_ROLES.admin`.
 
-- Guard with `guardRoute(session, AREA_ROLES.admin, lang)`.
-- Planned features: users & roles, teachers, courses, plans & prices, subscriptions, content moderation.
+Next: manage roles and teachers, edit course/lesson content, subscriptions overview once payments exist.

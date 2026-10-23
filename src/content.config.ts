@@ -5,7 +5,14 @@
  */
 import { defineCollection, z } from 'astro:content';
 import { file, glob } from 'astro/loaders';
-import { CATEGORY_IDS, LEVEL_IDS, PLAN_IDS, COMPARISON_KEYS, FAQ_CATEGORY_IDS } from '@/lib/domain/types';
+import {
+  CATEGORY_IDS,
+  COMPARISON_KEYS,
+  FAQ_CATEGORY_IDS,
+  LESSON_TYPES,
+  LEVEL_IDS,
+  PLAN_IDS,
+} from '@/lib/domain/types';
 
 const localized = <T extends z.ZodTypeAny>(schema: T) => z.object({ en: schema, ar: schema });
 
@@ -76,6 +83,23 @@ const testimonials = defineCollection({
   }),
 });
 
+const lessons = defineCollection({
+  loader: file('src/content/lessons.json'),
+  schema: z.object({
+    /** Course slug from courses.json. */
+    course: z.string(),
+    order: z.number().int(),
+    type: z.enum(LESSON_TYPES),
+    durationMin: z.number().int().positive(),
+    /** Embeddable https video URL (YouTube/Vimeo/Cloudflare Stream). null = not recorded yet. */
+    videoUrl: z.string().url().startsWith('https://').nullable(),
+    title: localized(z.string()),
+    summary: localized(z.string()),
+    /** Key vocabulary / characters shown on the lesson page. */
+    items: z.array(z.object({ ja: z.string(), romaji: z.string(), meaning: localized(z.string()) })),
+  }),
+});
+
 const legal = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/legal' }),
   schema: z.object({
@@ -85,4 +109,4 @@ const legal = defineCollection({
   }),
 });
 
-export const collections = { courses, plans, faqs, testimonials, legal };
+export const collections = { courses, lessons, plans, faqs, testimonials, legal };

@@ -1,0 +1,83 @@
+---
+/**
+ * Student space layout: page header + tab navigation (Overview, My courses, Live classes,
+ * Account, and Admin for administrators). Also localizes <time data-local-time> elements to the
+ * visitor's time zone.
+ */
+import BaseLayout from './BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import { useTranslations } from '@/i18n';
+import type { Locale } from '@/i18n/config';
+import type { User } from '@/lib/auth/types';
+import { routes } from '@/lib/routes';
+
+interface Props {
+  lang: Locale;
+  user: User;
+  title: string;
+  heading: string;
+  subtitle?: string;
+  active: 'overview' | 'courses' | 'live' | 'account' | 'admin';
+}
+const { lang, user, title, heading, subtitle, active } = Astro.props;
+const t = useTranslations(lang);
+const tabs = [
+  { key: 'overview', href: routes.dashboard(lang), label: t('dashboard.nav.overview') },
+  { key: 'courses', href: routes.dashboardCourses(lang), label: t('dashboard.nav.courses') },
+  { key: 'live', href: routes.dashboardLive(lang), label: t('dashboard.nav.live') },
+  { key: 'account', href: routes.account(lang), label: t('dashboard.nav.account') },
+  ...(user.roles.includes('admin')
+    ? [{ key: 'admin', href: routes.admin(lang), label: t('dashboard.nav.admin') }]
+    : []),
+] as const;
+---
+
+<BaseLayout lang={lang} title={title} description={t('dashboard.meta.description')} noindex>
+  <section class="relative isolate border-b border-line bg-surface-sunken">
+    <div
+      class="pattern-seigaiha pointer-events-none absolute inset-0 -z-10 opacity-[0.04]"
+      aria-hidden="true"
+    ></div>
+    <Container size="wide" class="pt-10 sm:pt-12">
+      <h1 class="text-3xl font-bold sm:text-4xl">{heading}</h1>
+      {subtitle && <p class="mt-2 text-fg-muted">{subtitle}</p>}
+      <nav aria-label={t('dashboard.navLabel')} class="-mb-px mt-8 overflow-x-auto">
+        <ul class="flex min-w-max gap-1">
+          {tabs.map((tab) => (
+            <li>
+              <a
+                href={tab.href}
+                aria-current={tab.key === active ? 'page' : undefined}
+                class:list={[
+                  'inline-flex rounded-t-xl border-x border-t px-4 py-2.5 text-sm font-semibold transition-colors',
+                  tab.key === active
+                    ? 'border-line bg-surface text-fg'
+                    : 'border-transparent text-fg-muted hover:text-fg',
+                ]}
+              >
+                {tab.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </Container>
+  </section>
+  <Container size="wide" class="py-10 sm:py-12">
+    <slot />
+  </Container>
+</BaseLayout>
+
+<script>
+  // Render UTC timestamps in the visitor's own time zone and language.
+  const lang = document.documentElement.lang || 'en';
+  document.querySelectorAll<HTMLTimeElement>('time[data-local-time]').forEach((el) => {
+    const date = new Date(el.dateTime);
+    if (Number.isNaN(date.getTime())) return;
+    el.textContent = new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', {
+      dateStyle: el.dataset.localTime === 'date' ? 'long' : 'full',
+      timeStyle: el.dataset.localTime === 'date' ? undefined : 'short',
+      numberingSystem: 'latn',
+    }).format(date);
+  });
+</script>

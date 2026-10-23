@@ -104,6 +104,27 @@ export interface Testimonial {
   course?: string;
 }
 
+export const LESSON_TYPES = ['video', 'reading', 'practice'] as const;
+export type LessonType = (typeof LESSON_TYPES)[number];
+
+export interface Lesson {
+  /** "<course-slug>/<lesson-slug>" */
+  id: string;
+  /** Lesson slug used in URLs (part after the slash). */
+  slug: string;
+  course: string;
+  order: number;
+  type: LessonType;
+  durationMin: number;
+  videoUrl: string | null;
+  title: Localized<string>;
+  summary: Localized<string>;
+  items: { ja: string; romaji: string; meaning: Localized<string> }[];
+}
+
+/** Plans in increasing order of access. */
+export const PLAN_RANK: Record<PlanId, number> = { basic: 1, premium: 2, private: 3 };
+
 export const isPlanId = (value: unknown): value is PlanId =>
   typeof value === 'string' && (PLAN_IDS as readonly string[]).includes(value);
 export const isLevelId = (value: unknown): value is LevelId =>

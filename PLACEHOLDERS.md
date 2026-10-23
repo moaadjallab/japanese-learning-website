@@ -54,6 +54,15 @@ consented reviews (`placeholder: false`, `quote`, `name`, `country`). No Review/
 | Overviews / descriptions    | Written for V1; review with the teacher                                      |
 | Japanese examples           | Checked for correctness (kana/kanji, romaji, translations)                   |
 
+## Student space (`src/content/lessons.json`)
+
+| Item                         | Status                                                                                                          |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Lesson videos                | `videoUrl: null` → "The video for this lesson will be published soon."                                          |
+| PDF materials & exercises    | Placeholder note on every lesson page                                                                           |
+| Lessons                      | Written for **Hiragana & Katakana** (8) and **Beginner Japanese** (6) only; other courses show "being prepared" |
+| Lesson outlines & vocabulary | Checked for correctness; review with the teacher                                                                |
+
 ## FAQ answers needing business confirmation (`src/content/faqs.json`)
 
 Marked with `"placeholder"` in the JSON:

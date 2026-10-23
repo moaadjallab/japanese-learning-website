@@ -55,7 +55,7 @@ Without `RESEND_API_KEY`, emails are printed in the dev-server terminal (with th
 
 ## Next steps
 
-- Student learning space (V2 LMS) behind `guardRoute(session, AREA_ROLES.student, lang)`.
-- Teacher and admin areas (`src/features/teacher`, `src/features/admin`).
+- Student space and a minimal admin page are built (`src/pages/[lang]/dashboard/`, `src/pages/[lang]/admin.astro`).
+- Teacher area and a fuller admin (roles, teachers, course content) — `src/features/teacher`, `src/features/admin`.
 - Optional: Turnstile on register/forgot-password, 2FA for teachers/admins, social sign-in.
 - If you prefer a library later, Better Auth can replace `src/lib/auth/server/` behind the same API.

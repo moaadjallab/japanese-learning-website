@@ -1,0 +1,392 @@
+[
+  {
+    "id": "hiragana-katakana/intro-writing-systems",
+    "course": "hiragana-katakana",
+    "order": 1,
+    "type": "reading",
+    "durationMin": 10,
+    "videoUrl": null,
+    "title": { "en": "The three Japanese writing systems", "ar": "أنظمة الكتابة اليابانية الثلاثة" },
+    "summary": {
+      "en": "Japanese mixes three scripts: hiragana for grammar and native words, katakana for foreign words, and kanji for meaning. In this course you master the first two.",
+      "ar": "تجمع اليابانية بين ثلاثة أنظمة كتابة: الهيراغانا للقواعد والكلمات الأصلية، والكاتاكانا للكلمات الأجنبية، والكانجي للمعاني. في هذه الدورة ستتقن النظامين الأولين."
+    },
+    "items": [
+      {
+        "ja": "ひらがな",
+        "romaji": "hiragana",
+        "meaning": { "en": "hiragana (phonetic script)", "ar": "الهيراغانا (كتابة صوتية)" }
+      },
+      {
+        "ja": "カタカナ",
+        "romaji": "katakana",
+        "meaning": {
+          "en": "katakana (phonetic script for foreign words)",
+          "ar": "الكاتاكانا (كتابة صوتية للكلمات الأجنبية)"
+        }
+      },
+      {
+        "ja": "漢字",
+        "romaji": "kanji",
+        "meaning": { "en": "kanji (Chinese characters)", "ar": "الكانجي (الحروف الصينية)" }
+      }
+    ]
+  },
+  {
+    "id": "hiragana-katakana/hiragana-a-row",
+    "course": "hiragana-katakana",
+    "order": 2,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Hiragana: the vowels (a, i, u, e, o)",
+      "ar": "الهيراغانا: الأصوات المتحركة (a، i، u، e، o)"
+    },
+    "summary": {
+      "en": "The five vowels are the foundation of every Japanese syllable. Learn their shapes, sounds and stroke order.",
+      "ar": "الأصوات المتحركة الخمسة هي أساس كل مقطع صوتي في اليابانية. تعلّم أشكالها وأصواتها وترتيب ضرباتها."
+    },
+    "items": [
+      { "ja": "あ", "romaji": "a", "meaning": { "en": "a (as in “father”)", "ar": "a (كالفتحة الطويلة)" } },
+      { "ja": "い", "romaji": "i", "meaning": { "en": "i (as in “machine”)", "ar": "i (كالكسرة الطويلة)" } },
+      {
+        "ja": "う",
+        "romaji": "u",
+        "meaning": { "en": "u (as in “food”, lips relaxed)", "ar": "u (كالضمة مع شفتين مرتخيتين)" }
+      },
+      { "ja": "え", "romaji": "e", "meaning": { "en": "e (as in “bed”)", "ar": "e (بين الفتحة والكسرة)" } },
+      { "ja": "お", "romaji": "o", "meaning": { "en": "o (as in “more”)", "ar": "o (ضمة مفتوحة)" } }
+    ]
+  },
+  {
+    "id": "hiragana-katakana/hiragana-ka-row",
+    "course": "hiragana-katakana",
+    "order": 3,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Hiragana: the K row (ka, ki, ku, ke, ko)",
+      "ar": "الهيراغانا: صف الكاف (ka، ki، ku، ke، ko)"
+    },
+    "summary": {
+      "en": "Combine the K sound with the five vowels and read your first words.",
+      "ar": "اجمع صوت الكاف مع الأصوات المتحركة الخمسة واقرأ كلماتك الأولى."
+    },
+    "items": [
+      { "ja": "か", "romaji": "ka", "meaning": { "en": "ka", "ar": "ka" } },
+      { "ja": "き", "romaji": "ki", "meaning": { "en": "ki", "ar": "ki" } },
+      { "ja": "く", "romaji": "ku", "meaning": { "en": "ku", "ar": "ku" } },
+      { "ja": "け", "romaji": "ke", "meaning": { "en": "ke", "ar": "ke" } },
+      { "ja": "こ", "romaji": "ko", "meaning": { "en": "ko", "ar": "ko" } }
+    ]
+  },
+  {
+    "id": "hiragana-katakana/hiragana-sa-row",
+    "course": "hiragana-katakana",
+    "order": 4,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Hiragana: the S row (sa, shi, su, se, so)",
+      "ar": "الهيراغانا: صف السين (sa، shi، su، se، so)"
+    },
+    "summary": {
+      "en": "Note the irregular sound “shi”. This row appears in many everyday words.",
+      "ar": "انتبه إلى الصوت غير المنتظم «shi». يظهر هذا الصف في كثير من الكلمات اليومية."
+    },
+    "items": [
+      { "ja": "さ", "romaji": "sa", "meaning": { "en": "sa", "ar": "sa" } },
+      { "ja": "し", "romaji": "shi", "meaning": { "en": "shi (not “si”)", "ar": "shi (وليس si)" } },
+      { "ja": "す", "romaji": "su", "meaning": { "en": "su", "ar": "su" } },
+      { "ja": "せ", "romaji": "se", "meaning": { "en": "se", "ar": "se" } },
+      { "ja": "そ", "romaji": "so", "meaning": { "en": "so", "ar": "so" } }
+    ]
+  },
+  {
+    "id": "hiragana-katakana/hiragana-ta-row",
+    "course": "hiragana-katakana",
+    "order": 5,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Hiragana: the T row (ta, chi, tsu, te, to)",
+      "ar": "الهيراغانا: صف التاء (ta، chi، tsu، te، to)"
+    },
+    "summary": {
+      "en": "Two irregular sounds here: “chi” and “tsu”. Practice them slowly.",
+      "ar": "يتضمن هذا الصف صوتين غير منتظمين: «chi» و«tsu». تدرّب عليهما ببطء."
+    },
+    "items": [
+      { "ja": "た", "romaji": "ta", "meaning": { "en": "ta", "ar": "ta" } },
+      { "ja": "ち", "romaji": "chi", "meaning": { "en": "chi (not “ti”)", "ar": "chi (وليس ti)" } },
+      { "ja": "つ", "romaji": "tsu", "meaning": { "en": "tsu (not “tu”)", "ar": "tsu (وليس tu)" } },
+      { "ja": "て", "romaji": "te", "meaning": { "en": "te", "ar": "te" } },
+      { "ja": "と", "romaji": "to", "meaning": { "en": "to", "ar": "to" } }
+    ]
+  },
+  {
+    "id": "hiragana-katakana/hiragana-na-row",
+    "course": "hiragana-katakana",
+    "order": 6,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": {
+      "en": "Hiragana: the N row (na, ni, nu, ne, no)",
+      "ar": "الهيراغانا: صف النون (na، ni، nu، ne، no)"
+    },
+    "summary": {
+      "en": "A regular row. の (no) is one of the most frequent characters in Japanese.",
+      "ar": "صف منتظم. يُعدّ الحرف の (no) من أكثر الحروف استخدامًا في اليابانية."
+    },
+    "items": [
+      { "ja": "な", "romaji": "na", "meaning": { "en": "na", "ar": "na" } },
+      { "ja": "に", "romaji": "ni", "meaning": { "en": "ni", "ar": "ni" } },
+      { "ja": "ぬ", "romaji": "nu", "meaning": { "en": "nu", "ar": "nu" } },
+      { "ja": "ね", "romaji": "ne", "meaning": { "en": "ne", "ar": "ne" } },
+      { "ja": "の", "romaji": "no", "meaning": { "en": "no", "ar": "no" } }
+    ]
+  },
+  {
+    "id": "hiragana-katakana/katakana-vowels-k-row",
+    "course": "hiragana-katakana",
+    "order": 7,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": { "en": "Katakana: vowels and the K row", "ar": "الكاتاكانا: الأصوات المتحركة وصف الكاف" },
+    "summary": {
+      "en": "Katakana has the same sounds as hiragana, with sharper shapes. It is used for foreign words and names.",
+      "ar": "للكاتاكانا الأصوات نفسها التي للهيراغانا، لكن بأشكال أكثر حدّة. وتُستخدم للكلمات والأسماء الأجنبية."
+    },
+    "items": [
+      { "ja": "ア", "romaji": "a", "meaning": { "en": "a", "ar": "a" } },
+      { "ja": "イ", "romaji": "i", "meaning": { "en": "i", "ar": "i" } },
+      { "ja": "ウ", "romaji": "u", "meaning": { "en": "u", "ar": "u" } },
+      { "ja": "エ", "romaji": "e", "meaning": { "en": "e", "ar": "e" } },
+      { "ja": "オ", "romaji": "o", "meaning": { "en": "o", "ar": "o" } },
+      { "ja": "カ", "romaji": "ka", "meaning": { "en": "ka", "ar": "ka" } },
+      { "ja": "キ", "romaji": "ki", "meaning": { "en": "ki", "ar": "ki" } },
+      { "ja": "ク", "romaji": "ku", "meaning": { "en": "ku", "ar": "ku" } },
+      { "ja": "ケ", "romaji": "ke", "meaning": { "en": "ke", "ar": "ke" } },
+      { "ja": "コ", "romaji": "ko", "meaning": { "en": "ko", "ar": "ko" } }
+    ]
+  },
+  {
+    "id": "hiragana-katakana/practice-first-words",
+    "course": "hiragana-katakana",
+    "order": 8,
+    "type": "practice",
+    "durationMin": 10,
+    "videoUrl": null,
+    "title": { "en": "Practice: read your first words", "ar": "تطبيق: اقرأ كلماتك الأولى" },
+    "summary": {
+      "en": "Read these words using only the characters you have learned. Cover the romaji and test yourself.",
+      "ar": "اقرأ هذه الكلمات باستخدام الحروف التي تعلّمتها فقط. غطِّ الكتابة اللاتينية واختبر نفسك."
+    },
+    "items": [
+      { "ja": "あさ", "romaji": "asa", "meaning": { "en": "morning", "ar": "صباح" } },
+      { "ja": "いえ", "romaji": "ie", "meaning": { "en": "house", "ar": "بيت" } },
+      { "ja": "かさ", "romaji": "kasa", "meaning": { "en": "umbrella", "ar": "مظلة" } },
+      { "ja": "ねこ", "romaji": "neko", "meaning": { "en": "cat", "ar": "قطة" } },
+      { "ja": "すし", "romaji": "sushi", "meaning": { "en": "sushi", "ar": "سوشي" } },
+      { "ja": "ケーキ", "romaji": "kēki", "meaning": { "en": "cake", "ar": "كعكة" } }
+    ]
+  },
+  {
+    "id": "beginner-japanese/greetings",
+    "course": "beginner-japanese",
+    "order": 1,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": { "en": "Everyday greetings", "ar": "تحيات الحياة اليومية" },
+    "summary": {
+      "en": "Greet people politely at different times of the day and say thank you.",
+      "ar": "ألقِ التحية بأدب في أوقات مختلفة من اليوم وعبّر عن الشكر."
+    },
+    "items": [
+      {
+        "ja": "おはようございます",
+        "romaji": "ohayō gozaimasu",
+        "meaning": { "en": "Good morning (polite)", "ar": "صباح الخير (بأسلوب مهذّب)" }
+      },
+      {
+        "ja": "こんにちは",
+        "romaji": "konnichiwa",
+        "meaning": { "en": "Hello / Good afternoon", "ar": "مرحبًا / طاب يومك" }
+      },
+      { "ja": "こんばんは", "romaji": "konbanwa", "meaning": { "en": "Good evening", "ar": "مساء الخير" } },
+      {
+        "ja": "ありがとうございます",
+        "romaji": "arigatō gozaimasu",
+        "meaning": { "en": "Thank you (polite)", "ar": "شكرًا (بأسلوب مهذّب)" }
+      },
+      {
+        "ja": "すみません",
+        "romaji": "sumimasen",
+        "meaning": { "en": "Excuse me / Sorry", "ar": "عفوًا / المعذرة" }
+      }
+    ]
+  },
+  {
+    "id": "beginner-japanese/self-introduction",
+    "course": "beginner-japanese",
+    "order": 2,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": { "en": "Introducing yourself", "ar": "التعريف بنفسك" },
+    "summary": {
+      "en": "Say who you are, where you are from, and end your introduction politely.",
+      "ar": "قل من أنت ومن أين أتيت، واختم تعريفك بنفسك بأسلوب مهذّب."
+    },
+    "items": [
+      {
+        "ja": "はじめまして。",
+        "romaji": "Hajimemashite.",
+        "meaning": { "en": "Nice to meet you.", "ar": "تشرّفت بمعرفتك." }
+      },
+      {
+        "ja": "わたしは〜です。",
+        "romaji": "Watashi wa ~ desu.",
+        "meaning": { "en": "I am ~.", "ar": "أنا ~." }
+      },
+      {
+        "ja": "モロッコからきました。",
+        "romaji": "Morokko kara kimashita.",
+        "meaning": { "en": "I come from Morocco.", "ar": "أتيت من المغرب." }
+      },
+      {
+        "ja": "よろしくおねがいします。",
+        "romaji": "Yoroshiku onegai shimasu.",
+        "meaning": {
+          "en": "Pleased to meet you (lit. please treat me well).",
+          "ar": "سعيد بالتعرّف إليك (حرفيًا: أرجو حسن المعاملة)."
+        }
+      }
+    ]
+  },
+  {
+    "id": "beginner-japanese/numbers-1-10",
+    "course": "beginner-japanese",
+    "order": 3,
+    "type": "video",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": { "en": "Numbers from 1 to 10", "ar": "الأعداد من 1 إلى 10" },
+    "summary": {
+      "en": "Count from one to ten. Some numbers have two common readings.",
+      "ar": "عُدّ من واحد إلى عشرة. لبعض الأعداد قراءتان شائعتان."
+    },
+    "items": [
+      { "ja": "いち", "romaji": "ichi", "meaning": { "en": "1", "ar": "1" } },
+      { "ja": "に", "romaji": "ni", "meaning": { "en": "2", "ar": "2" } },
+      { "ja": "さん", "romaji": "san", "meaning": { "en": "3", "ar": "3" } },
+      { "ja": "よん／し", "romaji": "yon / shi", "meaning": { "en": "4", "ar": "4" } },
+      { "ja": "ご", "romaji": "go", "meaning": { "en": "5", "ar": "5" } },
+      { "ja": "ろく", "romaji": "roku", "meaning": { "en": "6", "ar": "6" } },
+      { "ja": "なな／しち", "romaji": "nana / shichi", "meaning": { "en": "7", "ar": "7" } },
+      { "ja": "はち", "romaji": "hachi", "meaning": { "en": "8", "ar": "8" } },
+      { "ja": "きゅう／く", "romaji": "kyū / ku", "meaning": { "en": "9", "ar": "9" } },
+      { "ja": "じゅう", "romaji": "jū", "meaning": { "en": "10", "ar": "10" } }
+    ]
+  },
+  {
+    "id": "beginner-japanese/this-and-that",
+    "course": "beginner-japanese",
+    "order": 4,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": { "en": "Asking questions: “What is this?”", "ar": "طرح الأسئلة: «ما هذا؟»" },
+    "summary": {
+      "en": "Use これ (this) and それ (that), and turn a sentence into a question with か.",
+      "ar": "استخدم これ (هذا) وそれ (ذلك)، وحوّل الجملة إلى سؤال بإضافة か."
+    },
+    "items": [
+      {
+        "ja": "これはなんですか。",
+        "romaji": "Kore wa nan desu ka.",
+        "meaning": { "en": "What is this?", "ar": "ما هذا؟" }
+      },
+      {
+        "ja": "それはほんです。",
+        "romaji": "Sore wa hon desu.",
+        "meaning": { "en": "That is a book.", "ar": "ذلك كتاب." }
+      },
+      {
+        "ja": "これはペンですか。",
+        "romaji": "Kore wa pen desu ka.",
+        "meaning": { "en": "Is this a pen?", "ar": "هل هذا قلم؟" }
+      },
+      {
+        "ja": "はい、そうです。",
+        "romaji": "Hai, sō desu.",
+        "meaning": { "en": "Yes, that's right.", "ar": "نعم، هذا صحيح." }
+      }
+    ]
+  },
+  {
+    "id": "beginner-japanese/masu-verbs",
+    "course": "beginner-japanese",
+    "order": 5,
+    "type": "video",
+    "durationMin": 20,
+    "videoUrl": null,
+    "title": { "en": "Your first verbs: the polite ます form", "ar": "أفعالك الأولى: صيغة التأدّب ます" },
+    "summary": {
+      "en": "Polite verbs end in ます (masu). Learn three useful verbs and make simple sentences.",
+      "ar": "تنتهي الأفعال المهذّبة بـ ます (masu). تعلّم ثلاثة أفعال مفيدة وكوّن جملًا بسيطة."
+    },
+    "items": [
+      { "ja": "たべます", "romaji": "tabemasu", "meaning": { "en": "to eat", "ar": "يأكل" } },
+      { "ja": "のみます", "romaji": "nomimasu", "meaning": { "en": "to drink", "ar": "يشرب" } },
+      { "ja": "いきます", "romaji": "ikimasu", "meaning": { "en": "to go", "ar": "يذهب" } },
+      {
+        "ja": "みずをのみます。",
+        "romaji": "Mizu o nomimasu.",
+        "meaning": { "en": "I drink water.", "ar": "أشرب الماء." }
+      }
+    ]
+  },
+  {
+    "id": "beginner-japanese/review",
+    "course": "beginner-japanese",
+    "order": 6,
+    "type": "practice",
+    "durationMin": 15,
+    "videoUrl": null,
+    "title": { "en": "Review: a short conversation", "ar": "مراجعة: محادثة قصيرة" },
+    "summary": {
+      "en": "Put everything together: greet, introduce yourself and ask a simple question.",
+      "ar": "اجمع كل ما تعلّمته: ألقِ التحية، وعرّف بنفسك، واطرح سؤالًا بسيطًا."
+    },
+    "items": [
+      {
+        "ja": "こんにちは。はじめまして。",
+        "romaji": "Konnichiwa. Hajimemashite.",
+        "meaning": { "en": "Hello. Nice to meet you.", "ar": "مرحبًا. تشرّفت بمعرفتك." }
+      },
+      {
+        "ja": "わたしはサラです。",
+        "romaji": "Watashi wa Sara desu.",
+        "meaning": { "en": "I am Sara.", "ar": "أنا سارة." }
+      },
+      {
+        "ja": "これはなんですか。",
+        "romaji": "Kore wa nan desu ka.",
+        "meaning": { "en": "What is this?", "ar": "ما هذا؟" }
+      },
+      {
+        "ja": "ありがとうございます。",
+        "romaji": "Arigatō gozaimasu.",
+        "meaning": { "en": "Thank you.", "ar": "شكرًا." }
+      }
+    ]
+  }
+]

@@ -2,6 +2,7 @@
  * Account flows against the local D1 database (applied by the Playwright webServer command).
  * Each run uses a fresh email address.
  */
+import { gotoHydrated } from './helpers';
 import { expect, test } from '@playwright/test';
 
 const unique = () => `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@nihongo.test`;
@@ -12,7 +13,7 @@ test.describe('accounts', () => {
     const email = unique();
 
     // Register (Arabic UI).
-    await page.goto('/ar/register/');
+    await gotoHydrated(page, '/ar/register/');
     const form = page.getByTestId('register-form');
     await form.getByLabel('الاسم الكامل').fill('طالب تجريبي');
     await form.getByLabel('البريد الإلكتروني').fill(email);
@@ -21,9 +22,10 @@ test.describe('accounts', () => {
     await form.getByLabel('مستوى اللغة اليابانية').selectOption('n5');
     await form.getByRole('button', { name: 'إنشاء حساب' }).click();
 
-    // Lands on the account page, signed in.
-    await expect(page).toHaveURL(/\/ar\/account\/$/);
+    // Lands in the student space, signed in; the account tab shows the profile.
+    await expect(page).toHaveURL(/\/ar\/dashboard\/$/);
     await expect(page.getByRole('heading', { level: 1 })).toContainText('طالب تجريبي');
+    await page.goto('/ar/account/');
     await expect(page.getByText(email)).toBeVisible();
     await expect(page.getByText('غير مؤكَّد بعد')).toBeVisible();
 
@@ -37,6 +39,7 @@ test.describe('accounts', () => {
     await expect(page).toHaveURL(/\/ar\/$/);
     await page.goto('/ar/account/');
     await expect(page).toHaveURL(/\/ar\/login\/\?next=/);
+    await page.waitForFunction(() => document.querySelectorAll('astro-island[ssr]').length === 0);
 
     // Wrong password → generic error; right password → back to the requested page.
     const login = page.getByTestId('login-form');
@@ -46,7 +49,7 @@ test.describe('accounts', () => {
     await expect(login.getByRole('alert')).toContainText('البريد الإلكتروني أو كلمة المرور غير صحيحة');
     await login.getByLabel(/^كلمة المرور/).fill(PASSWORD);
     await login.getByRole('button', { name: 'تسجيل الدخول' }).click();
-    await expect(page).toHaveURL(/\/ar\/account\/$/);
+    await expect(page).toHaveURL(/\/ar\/account\/$/); // honors ?next=
   });
 
   test('duplicate email is rejected with a clear message', async ({ page, request }) => {
@@ -61,7 +64,7 @@ test.describe('accounts', () => {
     };
     expect((await request.post('/api/auth/register', { data: body })).status()).toBe(200);
 
-    await page.goto('/en/register/');
+    await gotoHydrated(page, '/en/register/');
     const form = page.getByTestId('register-form');
     await form.getByLabel('Full Name').fill('Second User');
     await form.getByLabel('Email').fill(email);
@@ -73,7 +76,7 @@ test.describe('accounts', () => {
   });
 
   test('forgot password never reveals whether an account exists', async ({ page }) => {
-    await page.goto('/en/forgot-password/');
+    await gotoHydrated(page, '/en/forgot-password/');
     const form = page.getByTestId('forgot-form');
     await form.getByLabel('Email').fill('nobody-here@nihongo.test');
     await form.getByRole('button', { name: 'Send reset link' }).click();
@@ -81,7 +84,7 @@ test.describe('accounts', () => {
   });
 
   test('reset link without a valid token is refused', async ({ page }) => {
-    await page.goto('/en/reset-password/?token=invalid-token-value-0123456789');
+    await gotoHydrated(page, '/en/reset-password/?token=invalid-token-value-0123456789');
     const form = page.getByTestId('reset-form');
     await form.getByLabel(/^New password/).fill('another2026');
     await form.getByLabel('Confirm new password').fill('another2026');

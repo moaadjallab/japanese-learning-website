@@ -1,44 +1,38 @@
 ---
-/**
- * "My account" (on demand, signed-in users only): profile, roles, subscription status, logout.
- * Deliberately small — the learning space (LMS) comes in a later version.
- */
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import PageHeader from '@/components/sections/PageHeader.astro';
-import Container from '@/components/ui/Container.astro';
+/** "Account" tab of the student space: profile, roles, subscription status, logout. */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import LocalTime from '@/components/learning/LocalTime.astro';
 import Icon from '@/components/icons/Icon.astro';
 import { badgeClass, buttonClass } from '@/components/ui/styles';
-import { getDictionary, isLocale, useTranslations } from '@/i18n';
-import { AREA_ROLES, guardRoute } from '@/lib/auth/guard';
+import { getDictionary, useTranslations } from '@/i18n';
+import { loadStudentContext } from '@/lib/learning/page';
+import { getPlans } from '@/lib/repositories/plans';
 import { routes } from '@/lib/routes';
 
 export const prerender = false;
 
-if (!isLocale(Astro.params.lang)) return Astro.redirect(routes.account('en'));
-const lang = Astro.params.lang;
-const decision = guardRoute(Astro.locals.session, AREA_ROLES.student, lang);
-if (!decision.allowed) {
-  const next = encodeURIComponent(Astro.url.pathname);
-  return Astro.redirect(`${decision.redirectTo}?next=${next}`);
-}
-const user = Astro.locals.session!.user;
+const ctx = await loadStudentContext(Astro);
+if (ctx instanceof Response) return ctx;
+const { lang, user, subscription } = ctx;
 const t = useTranslations(lang);
 const dict = getDictionary(lang);
+const planName = subscription
+  ? (await getPlans()).find((p) => p.id === subscription.plan)?.name[lang]
+  : undefined;
 const verificationSent = Astro.url.searchParams.get('verification') === 'sent';
 const row =
   'flex flex-col gap-1 border-b border-line py-4 last:border-0 sm:flex-row sm:items-center sm:justify-between';
 ---
 
-<BaseLayout lang={lang} title={t('account.meta.title')} description={t('account.meta.description')} noindex>
-  <PageHeader
-    lang={lang}
-    eyebrow={t('account.eyebrow')}
-    title={t('account.greeting', { name: user.fullName })}
-    subtitle={t('account.subtitle')}
-    accent="ようこそ"
-  />
-
-  <Container class="grid gap-6 py-12 sm:py-16 lg:grid-cols-[1.4fr_1fr]">
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={t('account.meta.title')}
+  heading={t('account.greeting', { name: user.fullName })}
+  subtitle={t('account.subtitle')}
+  active="account"
+>
+  <div class="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
     <section
       aria-labelledby="profile-title"
       class="rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line sm:p-8"
@@ -100,29 +94,39 @@ const row =
         <h2 id="sub-title" class="text-lg font-bold">
           {t('account.subscriptionTitle')}
         </h2>
-        <p class="mt-2 text-fg-muted">{t('account.noSubscription')}</p>
-        <a href={routes.pricing(lang)} class={buttonClass('primary', 'md', 'mt-5 w-full')}>
-          {t('account.choosePlan')}
-        </a>
+        {subscription ? (
+          <>
+            <p class="mt-2 text-xl font-bold">
+              {t('dashboard.plan.active', { plan: planName ?? subscription.plan })}
+            </p>
+            {subscription.currentPeriodEnd && (
+              <p class="mt-1 text-sm text-fg-muted">
+                {t('dashboard.plan.until', { date: '' })}
+                <LocalTime iso={subscription.currentPeriodEnd} lang={lang} mode="date" />
+              </p>
+            )}
+          </>
+        ) : (
+          <>
+            <p class="mt-2 text-fg-muted">{t('account.noSubscription')}</p>
+            <a href={routes.pricing(lang)} class={buttonClass('primary', 'md', 'mt-5 w-full')}>
+              {t('account.choosePlan')}
+            </a>
+          </>
+        )}
       </section>
-      <section aria-labelledby="my-courses-title" class="rounded-card bg-sakura-soft p-6 ring-1 ring-sakura">
-        <h2 id="my-courses-title" class="text-lg font-bold">
-          {t('account.coursesTitle')}
-        </h2>
-        <p class="mt-2 text-fg-muted">{t('account.coursesSoon')}</p>
-        <a
-          href={routes.courses(lang)}
-          class="mt-4 inline-flex items-center gap-1.5 font-semibold text-primary underline-offset-4 hover:underline"
-        >
-          {t('account.browseCourses')}
-          <Icon name="arrow-right" size={16} />
-        </a>
-      </section>
+      <a
+        href={routes.dashboardCourses(lang)}
+        class="flex items-center justify-between rounded-card bg-sakura-soft p-6 font-semibold ring-1 ring-sakura hover:ring-primary"
+      >
+        {t('account.coursesTitle')}
+        <Icon name="arrow-right" size={18} />
+      </a>
       <form method="post" action={`/api/auth/logout?lang=${lang}`} data-logout-form>
         <button type="submit" class={buttonClass('ghost', 'md', 'w-full ring-1 ring-line')}>
           {t('account.logout')}
         </button>
       </form>
     </div>
-  </Container>
-</BaseLayout>
+  </div>
+</DashboardLayout>

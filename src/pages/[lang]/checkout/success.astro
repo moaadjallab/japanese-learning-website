@@ -58,8 +58,7 @@ if (!isPreview) {
       </h1>
       <p class="mt-5 text-lg text-fg-muted">{t('success.body')}</p>
       <p class="mt-2 text-fg-muted">{t('success.nextSteps')}</p>
-      <!-- V2: link to the student dashboard (routes.dashboard). V1 has no dashboard yet. -->
-      <a href={routes.courses(lang)} class={buttonClass('primary', 'lg', 'mt-10')}>
+      <a href={routes.dashboard(lang)} class={buttonClass('primary', 'lg', 'mt-10')}>
         {t('success.cta')}
         <Icon name="arrow-right" size={18} />
       </a>

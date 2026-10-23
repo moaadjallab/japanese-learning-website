@@ -19,6 +19,6 @@ export const authCommonLabels = (lang: Locale): AuthCommonLabels => {
     errorInvalidCredentials: d.auth.errors.invalidCredentials,
     errorEmailTaken: d.auth.errors.emailTaken,
     errorRateLimited: d.auth.errors.rateLimited,
-    accountHref: routes.account(lang),
+    accountHref: routes.dashboard(lang),
   };
 };

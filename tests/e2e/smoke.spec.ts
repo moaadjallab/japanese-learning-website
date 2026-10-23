@@ -1,3 +1,4 @@
+import { gotoHydrated } from './helpers';
 import { expect, test } from '@playwright/test';
 
 test.describe('i18n & layout', () => {
@@ -69,7 +70,7 @@ test.describe('i18n & layout', () => {
 
 test.describe('course catalog', () => {
   test('filters by level, syncs the URL and shows an empty state', async ({ page }) => {
-    await page.goto('/en/courses/');
+    await gotoHydrated(page, '/en/courses/');
     const count = page.getByTestId('result-count');
     await expect(count).toHaveText('14 courses');
 
@@ -91,7 +92,7 @@ test.describe('course catalog', () => {
   });
 
   test('applies filters from the URL (Arabic)', async ({ page }) => {
-    await page.goto('/ar/courses/?category=travel');
+    await gotoHydrated(page, '/ar/courses/?category=travel');
     await expect(page.getByLabel('الفئة')).toHaveValue('travel');
     await expect(page.getByTestId('course-results').locator('article')).toHaveCount(1);
   });
@@ -111,7 +112,7 @@ test.describe('course catalog', () => {
 
 test.describe('forms', () => {
   test('contact form validates and never fakes success', async ({ page }) => {
-    await page.goto('/en/contact/');
+    await gotoHydrated(page, '/en/contact/');
     const form = page.getByTestId('contact-form');
     await form.getByRole('button', { name: 'Send Message' }).click();
 
@@ -134,7 +135,7 @@ test.describe('forms', () => {
   });
 
   test('register validates all fields (accessible errors, password toggle)', async ({ page }) => {
-    await page.goto('/en/register/');
+    await gotoHydrated(page, '/en/register/');
     const form = page.getByTestId('register-form');
     await form.getByRole('button', { name: 'Create Account' }).click();
     await expect(form.getByLabel('Full Name')).toHaveAttribute('aria-invalid', 'true');

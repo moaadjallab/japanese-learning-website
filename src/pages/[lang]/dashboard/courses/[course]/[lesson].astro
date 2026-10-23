@@ -1,0 +1,161 @@
+---
+/** Student space — a lesson: video (when published), key vocabulary, completion, navigation. */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { badgeClass, buttonClass } from '@/components/ui/styles';
+import { getDictionary, useTranslations } from '@/i18n';
+import { canAccessCourse, lessonNeighbours } from '@/lib/learning/access';
+import { loadStudentContext } from '@/lib/learning/page';
+import { getCompletedLessons, touchLesson } from '@/lib/learning/server';
+import { getCourse } from '@/lib/repositories/courses';
+import { getCourseLessons } from '@/lib/repositories/lessons';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro);
+if (ctx instanceof Response) return ctx;
+const { lang, user, db, subscription } = ctx;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+
+const course = await getCourse(String(Astro.params.course));
+if (!course || !canAccessCourse(subscription?.plan ?? null, course.plans)) {
+  return Astro.redirect(routes.dashboardCourses(lang));
+}
+const lessons = await getCourseLessons(course.slug);
+const lesson = lessons.find((l) => l.slug === Astro.params.lesson);
+if (!lesson) return Astro.redirect(routes.dashboardCourse(lang, course.slug));
+
+await touchLesson(db, user.id, course.slug, lesson.id);
+const completed = await getCompletedLessons(db, user.id, course.slug);
+const isDone = completed.has(lesson.id);
+const { previous, next, position } = lessonNeighbours(lessons, lesson.id);
+---
+
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={lesson.title[lang]}
+  heading={lesson.title[lang]}
+  subtitle={course.title[lang]}
+  active="courses"
+>
+  <div class="mb-6 flex flex-wrap items-center gap-3 text-sm">
+    <a
+      href={routes.dashboardCourse(lang, course.slug)}
+      class="inline-flex items-center gap-1.5 font-semibold text-fg-muted hover:text-fg"
+    >
+      <Icon name="arrow-right" size={16} class="rotate-180" />
+      {t('dashboard.lesson.back')}
+    </a>
+    <span class="text-stone-300" aria-hidden="true">
+      |
+    </span>
+    <span class="text-fg-muted">
+      {t('dashboard.lesson.position', { current: position, total: lessons.length })}
+    </span>
+    <span class={badgeClass('accent')}>{dict.dashboard.lesson.types[lesson.type]}</span>
+    <span class={badgeClass('neutral')}>{t('dashboard.lesson.minutes', { count: lesson.durationMin })}</span>
+    {isDone && <span class={badgeClass('primary')}>{t('dashboard.lesson.completed')}</span>}
+  </div>
+
+  <div class="grid gap-8 lg:grid-cols-[1fr_18rem]">
+    <article class="min-w-0 space-y-8">
+      {lesson.type === 'video' &&
+        (lesson.videoUrl ? (
+          <div class="aspect-video overflow-hidden rounded-card bg-ink">
+            <iframe
+              src={lesson.videoUrl}
+              title={t('dashboard.lesson.videoTitle', { title: lesson.title[lang] })}
+              class="h-full w-full"
+              loading="lazy"
+              allow="encrypted-media; picture-in-picture; fullscreen"
+              referrerpolicy="strict-origin-when-cross-origin"
+            />
+          </div>
+        ) : (
+          <div class="flex aspect-video flex-col items-center justify-center gap-3 rounded-card bg-ink p-6 text-center text-stone-300">
+            <Icon name="video" size={40} class="text-sakura" />
+            <p>{t('dashboard.lesson.videoPending')}</p>
+          </div>
+        ))}
+
+      <p class="text-lg text-fg">{lesson.summary[lang]}</p>
+
+      {lesson.items.length > 0 && (
+        <section aria-labelledby="items-title">
+          <h2 id="items-title" class="mb-4 text-xl font-bold">
+            {t('dashboard.lesson.keyItems')}
+          </h2>
+          <div class="overflow-x-auto rounded-card bg-surface-raised ring-1 ring-line">
+            <table class="w-full text-start">
+              <thead class="border-b border-line text-sm text-fg-muted">
+                <tr>
+                  <th scope="col" class="p-4 text-start font-semibold">
+                    {t('dashboard.lesson.japanese')}
+                  </th>
+                  <th scope="col" class="p-4 text-start font-semibold">
+                    {t('dashboard.lesson.reading')}
+                  </th>
+                  <th scope="col" class="p-4 text-start font-semibold">
+                    {t('dashboard.lesson.meaning')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-line">
+                {lesson.items.map((item) => (
+                  <tr>
+                    <td lang="ja" class="font-jp p-4 text-2xl">
+                      {item.ja}
+                    </td>
+                    <td lang="ja-Latn" dir="ltr" class="p-4 text-start text-fg-muted italic rtl:text-end">
+                      {item.romaji}
+                    </td>
+                    <td class="p-4">{item.meaning[lang]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      <p class="rounded-xl border border-dashed border-stone-300 bg-washi p-4 text-sm text-fg-muted">
+        {t('dashboard.lesson.materialsPending')}
+      </p>
+    </article>
+
+    <aside class="space-y-4 lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] lg:self-start">
+      <form method="post" action={`/api/learning/progress?lang=${lang}`}>
+        <input type="hidden" name="course" value={course.slug} />
+        <input type="hidden" name="lesson" value={lesson.slug} />
+        <input type="hidden" name="completed" value={isDone ? '0' : '1'} />
+        <button type="submit" class={buttonClass(isDone ? 'secondary' : 'primary', 'lg', 'w-full')}>
+          <Icon name="check" size={18} />
+          {isDone ? t('dashboard.lesson.markIncomplete') : t('dashboard.lesson.markComplete')}
+        </button>
+      </form>
+      <nav aria-label={t('dashboard.courses.lessonList')} class="grid gap-2">
+        {previous && (
+          <a
+            href={routes.dashboardLesson(lang, course.slug, previous.slug)}
+            class={buttonClass('ghost', 'md', 'w-full justify-start ring-1 ring-line')}
+          >
+            <Icon name="arrow-right" size={16} class="rotate-180" />
+            <span class="truncate">{t('dashboard.lesson.previous')}</span>
+          </a>
+        )}
+        {next && (
+          <a
+            href={routes.dashboardLesson(lang, course.slug, next.slug)}
+            class={buttonClass('ghost', 'md', 'w-full justify-between ring-1 ring-line')}
+          >
+            <span class="truncate">{t('dashboard.lesson.next')}</span>
+            <Icon name="arrow-right" size={16} />
+          </a>
+        )}
+      </nav>
+    </aside>
+  </div>
+</DashboardLayout>

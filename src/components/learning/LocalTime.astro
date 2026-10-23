@@ -1,0 +1,26 @@
+---
+/**
+ * A UTC timestamp rendered server-side in UTC, then re-rendered in the visitor's time zone by
+ * DashboardLayout's script.
+ */
+import { LOCALE_META, type Locale } from '@/i18n/config';
+
+interface Props {
+  iso: string;
+  lang: Locale;
+  mode?: 'datetime' | 'date';
+  class?: string;
+}
+const { iso, lang, mode = 'datetime', class: className } = Astro.props;
+const fallback = new Intl.DateTimeFormat(LOCALE_META[lang].intl, {
+  dateStyle: mode === 'date' ? 'long' : 'full',
+  timeStyle: mode === 'date' ? undefined : 'short',
+  timeZone: 'UTC',
+  numberingSystem: 'latn',
+}).format(new Date(iso));
+---
+
+<time datetime={iso} data-local-time={mode} class={className}>
+  {fallback}
+  {mode === 'datetime' ? ' UTC' : ''}
+</time>

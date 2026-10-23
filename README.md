@@ -11,8 +11,11 @@ language school. Single conversion goal: **Visitor → Subscription**.
   Forgot password, Checkout, Payment success, 4 legal drafts, 404
 - **Accounts:** real email + password accounts on Cloudflare D1 (register, login, logout, email verification,
   password reset, "My account" page, roles student/teacher/admin). See [AUTH_PLAN.md](AUTH_PLAN.md).
-- **Not in V1 (by design):** LMS, dashboards, video player, quizzes, progress, certificates, real
-  payments. The architecture is ready for them (see `AUTH_PLAN.md`, `PAYMENTS_PLAN.md`).
+- **Student space** (`/[lang]/dashboard/`): plan status, my courses, lessons with key vocabulary and
+  progress tracking, live-class schedule. **Admin page** (`/[lang]/admin/`): activate plans manually and
+  schedule live classes.
+- **Not built yet:** online payments (plans are activated manually by an admin), quizzes, certificates,
+  teacher area. The architecture is ready for them (see `AUTH_PLAN.md`, `PAYMENTS_PLAN.md`).
 
 Other docs: [DEPLOY.md](DEPLOY.md) · [AUTH_PLAN.md](AUTH_PLAN.md) · [PAYMENTS_PLAN.md](PAYMENTS_PLAN.md) ·
 [PLACEHOLDERS.md](PLACEHOLDERS.md) · [DECISIONS.md](DECISIONS.md) · [SPEC.md](SPEC.md)
@@ -128,6 +131,18 @@ or replace with real images of the same name).
 All UI strings live in **`src/i18n/en.ts`** and **`src/i18n/ar.ts`**. TypeScript enforces that Arabic has
 exactly the same keys as English, and a unit test checks that `{placeholders}` match. Never hardcode text
 in components; use `t('section.key')` or `getDictionary(lang)`.
+
+### Lessons, live classes and student access
+
+- **Lessons:** `src/content/lessons.json` (one entry per lesson: `course`, `order`, `type`, `durationMin`,
+  `videoUrl`, localized `title`/`summary`, and key vocabulary `items`). Courses without lessons show
+  "lessons are being prepared". Set `videoUrl` to an embed URL (YouTube no-cookie, Vimeo or Cloudflare
+  Stream) to show the video.
+- **Giving a student access:** sign in as admin → **Admin** tab → find the student → choose a plan and a
+  number of months → **Activate**. Access rules: a course is open when the plan is listed in the course's
+  `plans`; live classes need Premium (or Private for private sessions).
+- **Live classes:** Admin tab → **Schedule a class** (time is entered in your time zone and shown to each
+  student in theirs).
 
 ### FAQ, testimonials, legal pages
 

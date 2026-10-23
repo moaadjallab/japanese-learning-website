@@ -1,0 +1,345 @@
+---
+/**
+ * Minimal administration (admin role): activate/end plans manually while online payments are
+ * not connected, and schedule live classes. Forms post to /api/admin/*.
+ */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import LocalTime from '@/components/learning/LocalTime.astro';
+import { badgeClass, buttonClass, inputClass, labelClass } from '@/components/ui/styles';
+import { getDictionary, useTranslations } from '@/i18n';
+import { loadStudentContext } from '@/lib/learning/page';
+import { getUpcomingLiveSessions, listUsersForAdmin } from '@/lib/learning/server';
+import { getCourses } from '@/lib/repositories/courses';
+import { getPlans } from '@/lib/repositories/plans';
+import { AREA_ROLES } from '@/lib/auth/guard';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro, AREA_ROLES.admin);
+if (ctx instanceof Response) return ctx;
+const { lang, user, db } = ctx;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+
+const q = (Astro.url.searchParams.get('q') ?? '').slice(0, 100);
+const [users, sessions, courses, plans] = await Promise.all([
+  listUsersForAdmin(db, q),
+  getUpcomingLiveSessions(db),
+  getCourses(),
+  getPlans(),
+]);
+const doneKey = {
+  subscription: 'subscription',
+  cancel: 'cancel',
+  'live-create': 'liveCreate',
+  'live-delete': 'liveDelete',
+  invalid: 'invalid',
+}[Astro.url.searchParams.get('done') ?? ''] as keyof typeof dict.admin.done | undefined;
+const action = (name: string) => `/api/admin/${name}?lang=${lang}`;
+const cell = 'p-3 text-start align-middle';
+---
+
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={t('admin.meta.title')}
+  heading={t('admin.title')}
+  subtitle={t('admin.subtitle')}
+  active="admin"
+>
+  {doneKey && (
+    <p
+      role="status"
+      class:list={[
+        'mb-6 rounded-xl p-4 text-sm ring-1',
+        doneKey === 'invalid'
+          ? 'bg-sakura-soft text-vermilion-dark ring-sakura'
+          : 'bg-[#eef6f0] text-success ring-[#cfe5d6]',
+      ]}
+    >
+      {dict.admin.done[doneKey]}
+    </p>
+  )}
+
+  <!-- Students & subscriptions -->
+  <section aria-labelledby="users-title" class="mb-12">
+    <h2 id="users-title" class="text-xl font-bold">
+      {t('admin.usersTitle')}
+    </h2>
+    <p class="mt-1 text-sm text-fg-muted">{t('admin.manualNote')}</p>
+    <form method="get" class="mt-4 flex max-w-lg gap-2" role="search">
+      <label for="admin-q" class="sr-only">
+        {t('admin.search')}
+      </label>
+      <input
+        id="admin-q"
+        name="q"
+        type="search"
+        value={q}
+        placeholder={t('admin.search')}
+        class={inputClass}
+      />
+      <button type="submit" class={buttonClass('secondary', 'md', 'shrink-0')}>
+        {t('admin.searchButton')}
+      </button>
+    </form>
+
+    <div class="mt-4 overflow-x-auto rounded-card bg-surface-raised ring-1 ring-line">
+      <table class="w-full min-w-[56rem] text-sm">
+        <thead class="border-b border-line text-fg-muted">
+          <tr>
+            <th scope="col" class={cell}>
+              {t('admin.name')}
+            </th>
+            <th scope="col" class={cell}>
+              {t('admin.email')}
+            </th>
+            <th scope="col" class={cell}>
+              {t('admin.roles')}
+            </th>
+            <th scope="col" class={cell}>
+              {t('admin.plan')}
+            </th>
+            <th scope="col" class={cell}>
+              {t('admin.until')}
+            </th>
+            <th scope="col" class={cell}>
+              {t('admin.actions')}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-line">
+          {users.length === 0 && (
+            <tr>
+              <td colspan="6" class="p-6 text-center text-fg-muted">
+                {t('admin.noUsers')}
+              </td>
+            </tr>
+          )}
+          {users.map((u) => (
+            <tr data-testid="admin-user-row" data-email={u.email}>
+              <td class:list={[cell, 'font-medium']}>{u.fullName}</td>
+              <td class={cell} dir="ltr">
+                {u.email}
+              </td>
+              <td class={cell}>
+                <span class="flex flex-wrap gap-1">
+                  {u.roles.map((r) => (
+                    <span class={badgeClass(r === 'admin' ? 'ink' : 'neutral')}>
+                      {dict.account.roleLabels[r]}
+                    </span>
+                  ))}
+                </span>
+              </td>
+              <td class={cell}>
+                {u.plan ? (
+                  <span class={badgeClass('accent')}>{plans.find((p) => p.id === u.plan)?.name[lang]}</span>
+                ) : (
+                  <span class="text-fg-muted">{t('admin.noPlan')}</span>
+                )}
+              </td>
+              <td class={cell}>
+                {u.periodEnd ? <LocalTime iso={u.periodEnd} lang={lang} mode="date" /> : '—'}
+              </td>
+              <td class={cell}>
+                <div class="flex flex-wrap items-center gap-2">
+                  <form method="post" action={action('subscription')} class="flex items-center gap-1.5">
+                    <input type="hidden" name="userId" value={u.id} />
+                    <label class="sr-only" for={`plan-${u.id}`}>
+                      {t('admin.plan')}
+                    </label>
+                    <select
+                      id={`plan-${u.id}`}
+                      name="plan"
+                      class="rounded-lg border border-line bg-surface-raised px-2 py-1.5"
+                    >
+                      {plans.map((p) => (
+                        <option value={p.id} selected={p.id === (u.plan ?? 'premium')}>
+                          {p.name[lang]}
+                        </option>
+                      ))}
+                    </select>
+                    <label class="sr-only" for={`months-${u.id}`}>
+                      {t('admin.months')}
+                    </label>
+                    <input
+                      id={`months-${u.id}`}
+                      name="months"
+                      type="number"
+                      min="1"
+                      max="24"
+                      value="1"
+                      class="w-16 rounded-lg border border-line bg-surface-raised px-2 py-1.5"
+                    />
+                    <span class="text-fg-muted" aria-hidden="true">
+                      {t('admin.months')}
+                    </span>
+                    <button type="submit" class={buttonClass('primary', 'sm')}>
+                      {t('admin.activate')}
+                    </button>
+                  </form>
+                  {u.plan && (
+                    <form method="post" action={action('cancel')}>
+                      <input type="hidden" name="userId" value={u.id} />
+                      <button type="submit" class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}>
+                        {t('admin.cancel')}
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Live classes -->
+  <section aria-labelledby="live-admin-title" class="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
+    <div>
+      <h2 id="live-admin-title" class="text-xl font-bold">
+        {t('admin.createLive')}
+      </h2>
+      <form
+        method="post"
+        action={action('live-create')}
+        class="mt-4 space-y-4 rounded-card bg-surface-raised p-6 ring-1 ring-line"
+        data-live-form
+      >
+        <div class="space-y-2">
+          <label for="live-title-en" class={labelClass}>
+            {t('admin.titleEn')}
+          </label>
+          <input
+            id="live-title-en"
+            name="titleEn"
+            required
+            minlength="3"
+            maxlength="150"
+            dir="ltr"
+            class={inputClass}
+          />
+        </div>
+        <div class="space-y-2">
+          <label for="live-title-ar" class={labelClass}>
+            {t('admin.titleAr')}
+          </label>
+          <input
+            id="live-title-ar"
+            name="titleAr"
+            required
+            minlength="3"
+            maxlength="150"
+            dir="rtl"
+            lang="ar"
+            class={inputClass}
+          />
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="space-y-2">
+            <label for="live-starts" class={labelClass}>
+              {t('admin.startsAt')}
+            </label>
+            <input id="live-starts" type="datetime-local" required class={inputClass} data-local-input />
+            <input type="hidden" name="startsAt" data-utc-output />
+          </div>
+          <div class="space-y-2">
+            <label for="live-duration" class={labelClass}>
+              {t('admin.duration')}
+            </label>
+            <input
+              id="live-duration"
+              name="durationMin"
+              type="number"
+              min="10"
+              max="300"
+              value="60"
+              required
+              class={inputClass}
+            />
+          </div>
+        </div>
+        <div class="space-y-2">
+          <label for="live-url" class={labelClass}>
+            {t('admin.meetingUrl')}
+          </label>
+          <input
+            id="live-url"
+            name="meetingUrl"
+            type="url"
+            pattern="https://.*"
+            dir="ltr"
+            class={inputClass}
+          />
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="space-y-2">
+            <label for="live-course" class={labelClass}>
+              {t('admin.course')}
+            </label>
+            <select id="live-course" name="courseId" class={inputClass}>
+              <option value="">{t('admin.noCourse')}</option>
+              {courses.map((c) => (
+                <option value={c.slug}>{c.title[lang]}</option>
+              ))}
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label for="live-plan" class={labelClass}>
+              {t('admin.minPlan')}
+            </label>
+            <select id="live-plan" name="minPlan" class={inputClass}>
+              {plans
+                .filter((p) => p.id !== 'basic')
+                .map((p) => (
+                  <option value={p.id}>{p.name[lang]}</option>
+                ))}
+            </select>
+          </div>
+        </div>
+        <button type="submit" class={buttonClass('primary', 'md', 'w-full')}>
+          {t('admin.submitLive')}
+        </button>
+      </form>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-bold">{t('admin.upcoming')}</h2>
+      {sessions.length === 0 ? (
+        <p class="mt-4 text-fg-muted">{t('admin.noLive')}</p>
+      ) : (
+        <ul class="mt-4 space-y-3">
+          {sessions.map((s) => (
+            <li class="flex items-center justify-between gap-4 rounded-card bg-surface-raised p-4 ring-1 ring-line">
+              <div class="min-w-0">
+                <p class="truncate font-semibold">{s.title[lang]}</p>
+                <p class="text-sm text-fg-muted">
+                  <LocalTime iso={s.startsAt} lang={lang} /> ·{' '}
+                  {t('dashboard.live.duration', { count: s.durationMin })} ·{' '}
+                  {plans.find((p) => p.id === s.minPlan)?.name[lang]}
+                </p>
+              </div>
+              <form method="post" action={action('live-delete')}>
+                <input type="hidden" name="id" value={s.id} />
+                <button type="submit" class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}>
+                  {t('admin.delete')}
+                </button>
+              </form>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</DashboardLayout>
+
+<script>
+  // datetime-local has no time zone: convert the admin's local time to UTC before submitting.
+  const form = document.querySelector<HTMLFormElement>('[data-live-form]');
+  form?.addEventListener('submit', () => {
+    const local = form.querySelector<HTMLInputElement>('[data-local-input]');
+    const out = form.querySelector<HTMLInputElement>('[data-utc-output]');
+    if (local?.value && out) out.value = new Date(local.value).toISOString();
+  });
+</script>

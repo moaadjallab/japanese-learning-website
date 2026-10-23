@@ -1,0 +1,181 @@
+---
+/** Student space — overview: plan, continue learning, stats, next live class. */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import ProgressBar from '@/components/learning/ProgressBar.astro';
+import LocalTime from '@/components/learning/LocalTime.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { badgeClass, buttonClass } from '@/components/ui/styles';
+import { useTranslations } from '@/i18n';
+import { canJoinLive, nextLesson, progressPercent } from '@/lib/learning/access';
+import { loadStudentContext } from '@/lib/learning/page';
+import { getCompletedLessons, getEnrollments, getUpcomingLiveSessions } from '@/lib/learning/server';
+import { getCourses } from '@/lib/repositories/courses';
+import { getLessons } from '@/lib/repositories/lessons';
+import { getPlans } from '@/lib/repositories/plans';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro);
+if (ctx instanceof Response) return ctx;
+const { lang, user, db, subscription } = ctx;
+const t = useTranslations(lang);
+
+const [courses, lessons, plans, enrollments, completed, live] = await Promise.all([
+  getCourses(),
+  getLessons(),
+  getPlans(),
+  getEnrollments(db, user.id),
+  getCompletedLessons(db, user.id),
+  getUpcomingLiveSessions(db, 20),
+]);
+const planName = subscription ? plans.find((p) => p.id === subscription.plan)?.name[lang] : undefined;
+
+// Most recently active enrolled course with lessons → "continue learning".
+const current = enrollments
+  .map((e) => courses.find((c) => c.slug === e.courseId))
+  .find((course) => course && lessons.some((l) => l.course === course.slug));
+const currentLessons = current ? lessons.filter((l) => l.course === current.slug) : [];
+const currentDone = currentLessons.filter((l) => completed.has(l.id)).length;
+const resume = current ? nextLesson(currentLessons, completed) : undefined;
+
+const joinable = live.filter((s) => canJoinLive(subscription?.plan ?? null, s.minPlan));
+const nextLive = (joinable.length ? joinable : live)[0];
+const stats = [
+  { label: t('dashboard.stats.courses'), value: enrollments.length, icon: 'layers' },
+  { label: t('dashboard.stats.lessons'), value: completed.size, icon: 'check' },
+  { label: t('dashboard.stats.live'), value: joinable.length, icon: 'video' },
+] as const;
+---
+
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={t('dashboard.meta.title')}
+  heading={t('dashboard.greeting', { name: user.fullName })}
+  subtitle={t('dashboard.subtitle')}
+  active="overview"
+>
+  <div class="grid gap-6 lg:grid-cols-3">
+    <!-- Plan -->
+    <section
+      aria-labelledby="plan-title"
+      class="rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line"
+    >
+      <h2 id="plan-title" class="text-sm font-semibold text-fg-muted">
+        {t('dashboard.plan.title')}
+      </h2>
+      {subscription ? (
+        <>
+          <p class="mt-2 text-2xl font-bold" data-testid="active-plan">
+            {t('dashboard.plan.active', { plan: planName ?? subscription.plan })}
+          </p>
+          {subscription.currentPeriodEnd && (
+            <p class="mt-1 text-sm text-fg-muted">
+              {t('dashboard.plan.until', { date: '' })}
+              <LocalTime iso={subscription.currentPeriodEnd} lang={lang} mode="date" />
+            </p>
+          )}
+        </>
+      ) : (
+        <>
+          <p class="mt-2 text-xl font-bold">{t('dashboard.plan.none')}</p>
+          <p class="mt-1 text-sm text-fg-muted">{t('dashboard.plan.noneBody')}</p>
+          <a href={routes.pricing(lang)} class={buttonClass('primary', 'md', 'mt-5 w-full')}>
+            {t('dashboard.plan.cta')}
+          </a>
+        </>
+      )}
+    </section>
+
+    <!-- Continue learning -->
+    <section
+      aria-labelledby="continue-title"
+      class="rounded-card bg-ink p-6 text-washi shadow-soft lg:col-span-2"
+    >
+      <h2 id="continue-title" class="text-sm font-semibold text-sakura">
+        {t('dashboard.continue.title')}
+      </h2>
+      {current && resume ? (
+        <div class="mt-3 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div class="min-w-0 flex-1">
+            <p class="text-2xl font-bold">{current.title[lang]}</p>
+            <p class="mt-1 text-stone-300">{resume.title[lang]}</p>
+            <ProgressBar
+              value={progressPercent(currentDone, currentLessons.length)}
+              label={t('dashboard.courses.progress', {
+                percent: progressPercent(currentDone, currentLessons.length),
+              })}
+              class="mt-4 bg-stone-700"
+            />
+            <p class="mt-2 text-sm text-stone-300">
+              {t('dashboard.courses.progress', {
+                percent: progressPercent(currentDone, currentLessons.length),
+              })}
+            </p>
+          </div>
+          <a
+            href={routes.dashboardLesson(lang, current.slug, resume.slug)}
+            class={buttonClass('primary', 'lg', 'shrink-0')}
+          >
+            {t('dashboard.continue.resume')}
+            <Icon name="arrow-right" size={18} />
+          </a>
+        </div>
+      ) : (
+        <div class="mt-3">
+          <p class="text-lg">{t('dashboard.continue.empty')}</p>
+          <a href={routes.dashboardCourses(lang)} class={buttonClass('inverse', 'md', 'mt-5')}>
+            {t('dashboard.continue.browse')}
+          </a>
+        </div>
+      )}
+    </section>
+  </div>
+
+  <!-- Stats -->
+  <ul class="mt-6 grid gap-4 sm:grid-cols-3">
+    {stats.map((s) => (
+      <li class="flex items-center gap-4 rounded-card bg-surface-raised p-5 ring-1 ring-line">
+        <span class="inline-flex size-11 items-center justify-center rounded-2xl bg-sakura-soft text-primary">
+          <Icon name={s.icon} size={20} />
+        </span>
+        <span>
+          <span class="block text-2xl font-bold">{s.value}</span>
+          <span class="block text-sm text-fg-muted">{s.label}</span>
+        </span>
+      </li>
+    ))}
+  </ul>
+
+  <!-- Next live class -->
+  {nextLive && (
+    <section
+      aria-labelledby="next-live-title"
+      class="mt-6 rounded-card bg-surface-raised p-6 ring-1 ring-line"
+    >
+      <h2 id="next-live-title" class="text-sm font-semibold text-fg-muted">
+        {t('dashboard.nav.live')}
+      </h2>
+      <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-lg font-semibold">{nextLive.title[lang]}</p>
+          <p class="text-sm text-fg-muted">
+            <LocalTime iso={nextLive.startsAt} lang={lang} /> ·{' '}
+            {t('dashboard.live.duration', { count: nextLive.durationMin })}
+          </p>
+        </div>
+        <a href={routes.dashboardLive(lang)} class={buttonClass('secondary', 'md')}>
+          {t('dashboard.nav.live')}
+        </a>
+      </div>
+      {!canJoinLive(subscription?.plan ?? null, nextLive.minPlan) && (
+        <p class:list={[badgeClass('neutral'), 'mt-3']}>
+          {t('dashboard.live.requiresPlan', {
+            plan: plans.find((p) => p.id === nextLive.minPlan)?.name[lang] ?? '',
+          })}
+        </p>
+      )}
+    </section>
+  )}
+</DashboardLayout>

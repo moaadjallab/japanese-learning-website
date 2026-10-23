@@ -1,0 +1,146 @@
+---
+/** Student space — my courses: in progress, available in the plan, and locked (higher plan). */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import ProgressBar from '@/components/learning/ProgressBar.astro';
+import { badgeClass, buttonClass } from '@/components/ui/styles';
+import { getDictionary, useTranslations } from '@/i18n';
+import { levelRangeLabel } from '@/lib/catalog/filter';
+import type { Course } from '@/lib/domain/types';
+import { canAccessCourse, cheapestPlanFor, progressPercent } from '@/lib/learning/access';
+import { loadStudentContext } from '@/lib/learning/page';
+import { getCompletedLessons, getEnrollments } from '@/lib/learning/server';
+import { getCourses } from '@/lib/repositories/courses';
+import { getLessons } from '@/lib/repositories/lessons';
+import { getPlans } from '@/lib/repositories/plans';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro);
+if (ctx instanceof Response) return ctx;
+const { lang, user, db, subscription } = ctx;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+
+const [courses, lessons, plans, enrollments, completed] = await Promise.all([
+  getCourses(),
+  getLessons(),
+  getPlans(),
+  getEnrollments(db, user.id),
+  getCompletedLessons(db, user.id),
+]);
+const plan = subscription?.plan ?? null;
+const enrolledIds = new Set(enrollments.map((e) => e.courseId));
+const stats = (course: Course) => {
+  const list = lessons.filter((l) => l.course === course.slug);
+  const done = list.filter((l) => completed.has(l.id)).length;
+  return { total: list.length, done, percent: progressPercent(done, list.length) };
+};
+const inProgress = enrollments
+  .map((e) => courses.find((c) => c.slug === e.courseId))
+  .filter((c): c is Course => Boolean(c) && canAccessCourse(plan, c!.plans));
+const available = courses.filter((c) => canAccessCourse(plan, c.plans) && !enrolledIds.has(c.slug));
+const locked = courses.filter((c) => !canAccessCourse(plan, c.plans));
+const planName = (id: string | null) => plans.find((p) => p.id === id)?.name[lang] ?? '';
+const card = 'flex h-full flex-col rounded-card bg-surface-raised p-5 ring-1 ring-line';
+---
+
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={t('dashboard.courses.title')}
+  heading={t('dashboard.courses.title')}
+  subtitle={t('dashboard.courses.subtitle')}
+  active="courses"
+>
+  {inProgress.length > 0 && (
+    <section aria-labelledby="progress-title" class="mb-12">
+      <h2 id="progress-title" class="mb-4 text-xl font-bold">
+        {t('dashboard.courses.inProgress')}
+      </h2>
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {inProgress.map((course) => {
+          const s = stats(course);
+          return (
+            <li class={card}>
+              <div class="flex items-start justify-between gap-3">
+                <h3 class="text-lg font-semibold">{course.title[lang]}</h3>
+                {s.total > 0 && s.done === s.total && (
+                  <span class={badgeClass('accent')}>{t('dashboard.courses.completedBadge')}</span>
+                )}
+              </div>
+              <p class="mt-1 text-sm text-fg-muted">{levelRangeLabel(course.levels, dict.levels)}</p>
+              <ProgressBar
+                value={s.percent}
+                label={t('dashboard.courses.progress', { percent: s.percent })}
+                class="mt-4"
+              />
+              <p class="mt-2 text-sm text-fg-muted">
+                {t('dashboard.courses.progress', { percent: s.percent })}
+              </p>
+              <a
+                href={routes.dashboardCourse(lang, course.slug)}
+                class={buttonClass('primary', 'sm', 'mt-auto self-start')}
+              >
+                {t('dashboard.courses.continue')}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )}
+
+  {available.length > 0 && (
+    <section aria-labelledby="available-title" class="mb-12">
+      <h2 id="available-title" class="mb-4 text-xl font-bold">
+        {t('dashboard.courses.available')}
+      </h2>
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {available.map((course) => (
+          <li class={card}>
+            <h3 class="text-lg font-semibold">{course.title[lang]}</h3>
+            <p class="mt-1 text-sm text-fg-muted">{levelRangeLabel(course.levels, dict.levels)}</p>
+            <p class="mt-3 line-clamp-2 flex-1 text-sm text-fg-muted">{course.description[lang]}</p>
+            <p class="mt-3 text-xs text-fg-muted">
+              {t('dashboard.courses.lessonsCount', { count: stats(course).total })}
+            </p>
+            <form method="post" action={`/api/learning/enroll?lang=${lang}`} class="mt-4">
+              <input type="hidden" name="course" value={course.slug} />
+              <button type="submit" class={buttonClass('secondary', 'sm')}>
+                {t('dashboard.courses.start')}
+              </button>
+            </form>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {locked.length > 0 && (
+    <section aria-labelledby="locked-title">
+      <h2 id="locked-title" class="mb-4 text-xl font-bold">
+        {t('dashboard.courses.locked')}
+      </h2>
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {locked.map((course) => (
+          <li class:list={[card, 'bg-surface-sunken']}>
+            <h3 class="flex items-center gap-2 text-lg font-semibold text-fg-muted">
+              <span aria-hidden="true">🔒</span>
+              {course.title[lang]}
+            </h3>
+            <p class="mt-2 flex-1 text-sm text-fg-muted">
+              {t('dashboard.courses.lockedBody', { plan: planName(cheapestPlanFor(course.plans)) })}
+            </p>
+            <a
+              href={routes.pricing(lang)}
+              class="mt-4 self-start text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              {t('dashboard.courses.upgrade')}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</DashboardLayout>

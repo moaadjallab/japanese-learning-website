@@ -59,7 +59,7 @@ const items = mainNav.map((item) => ({
       <a
         href={routes.login(lang)}
         data-auth-link
-        data-account-href={routes.account(lang)}
+        data-account-href={routes.dashboard(lang)}
         data-account-label={t('nav.account')}
         class="rounded-full px-2 py-2 text-sm font-semibold text-fg hover:text-primary"
         aria-current={isActivePath(current, routes.login(lang)) ? 'page' : undefined}
@@ -129,7 +129,7 @@ const items = mainNav.map((item) => ({
         <a
           href={routes.login(lang)}
           data-auth-link
-          data-account-href={routes.account(lang)}
+          data-account-href={routes.dashboard(lang)}
           data-account-label={t('nav.account')}
           class={buttonClass('secondary', 'lg', 'w-full')}
         >

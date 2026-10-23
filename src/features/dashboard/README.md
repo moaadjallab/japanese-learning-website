@@ -1,8 +1,6 @@
-# Student dashboard (V2 — not built in V1)
+# Student space
 
-Planned route: `/[lang]/dashboard/` (on-demand, `prerender = false`).
+Built: `src/pages/[lang]/dashboard/` (overview, my courses, course, lesson, live classes) and the account tab
+`src/pages/[lang]/account.astro`. Logic: `src/lib/learning/` (access rules, D1 queries, page loader).
 
-- Guard with `guardRoute(session, AREA_ROLES.student, lang)` from `src/lib/auth/guard.ts`.
-- Planned features: my courses, video lessons, exercises, quizzes, progress tracking, certificates, live-class schedule.
-- Data: D1 tables `enrollments`, `subscriptions`, `courses` (see `db/migrations/0001_initial_schema.sql`).
-- The "Go to My Courses" button on the payment success page will link here (`routes.dashboard`).
+Next ideas: quizzes, certificates, downloadable PDFs per lesson, notifications before live classes.

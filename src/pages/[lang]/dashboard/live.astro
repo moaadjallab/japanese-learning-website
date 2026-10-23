@@ -1,0 +1,105 @@
+---
+/** Student space — upcoming live classes. Join links only for plans that include live classes. */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import LocalTime from '@/components/learning/LocalTime.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { badgeClass, buttonClass } from '@/components/ui/styles';
+import { useTranslations } from '@/i18n';
+import { canJoinLive } from '@/lib/learning/access';
+import { loadStudentContext } from '@/lib/learning/page';
+import { getUpcomingLiveSessions } from '@/lib/learning/server';
+import { getCourses } from '@/lib/repositories/courses';
+import { getPlans } from '@/lib/repositories/plans';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro);
+if (ctx instanceof Response) return ctx;
+const { lang, user, db, subscription } = ctx;
+const t = useTranslations(lang);
+
+const [sessions, courses, plans] = await Promise.all([getUpcomingLiveSessions(db), getCourses(), getPlans()]);
+const now = Date.now();
+const isLive = (startsAt: string, minutes: number) => {
+  const start = new Date(startsAt).getTime();
+  return start <= now && now < start + minutes * 60_000;
+};
+---
+
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={t('dashboard.live.title')}
+  heading={t('dashboard.live.title')}
+  subtitle={t('dashboard.live.subtitle')}
+  active="live"
+>
+  {sessions.length === 0 ? (
+    <p class="rounded-card bg-surface-raised p-6 text-fg-muted ring-1 ring-line" data-testid="live-empty">
+      {t('dashboard.live.empty')}
+    </p>
+  ) : (
+    <ul class="space-y-4" data-testid="live-list">
+      {sessions.map((session) => {
+        const allowed = canJoinLive(subscription?.plan ?? null, session.minPlan);
+        const course = courses.find((c) => c.slug === session.courseId);
+        const live = isLive(session.startsAt, session.durationMin);
+        return (
+          <li class="flex flex-col gap-4 rounded-card bg-surface-raised p-5 ring-1 ring-line sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex gap-4">
+              <span class="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-sakura-soft text-primary">
+                <Icon name="video" size={22} />
+              </span>
+              <div>
+                <p class="flex flex-wrap items-center gap-2 font-semibold">
+                  {session.title[lang]}
+                  {live && <span class={badgeClass('primary')}>{t('dashboard.live.nowLive')}</span>}
+                </p>
+                <p class="text-sm text-fg-muted">
+                  <LocalTime iso={session.startsAt} lang={lang} /> ·{' '}
+                  {t('dashboard.live.duration', { count: session.durationMin })}
+                </p>
+                <p class="text-sm text-fg-muted">
+                  {course ? course.title[lang] : t('dashboard.live.general')}
+                </p>
+              </div>
+            </div>
+            <div class="shrink-0">
+              {allowed ? (
+                session.meetingUrl ? (
+                  <a
+                    href={session.meetingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={buttonClass(live ? 'primary' : 'secondary', 'md')}
+                  >
+                    {t('dashboard.live.join')}
+                    <Icon name="external" size={16} />
+                    <span class="sr-only">{t('common.opensNewTab')}</span>
+                  </a>
+                ) : (
+                  <span class="text-sm text-fg-muted">{t('dashboard.live.linkSoon')}</span>
+                )
+              ) : (
+                <div class="flex flex-col items-start gap-1 sm:items-end">
+                  <span class={badgeClass('neutral')}>
+                    {t('dashboard.live.requiresPlan', {
+                      plan: plans.find((p) => p.id === session.minPlan)?.name[lang] ?? '',
+                    })}
+                  </span>
+                  <a
+                    href={routes.pricing(lang)}
+                    class="text-sm font-semibold text-primary underline-offset-4 hover:underline"
+                  >
+                    {t('dashboard.live.upgrade')}
+                  </a>
+                </div>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  )}
+</DashboardLayout>

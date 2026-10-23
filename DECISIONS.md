@@ -96,3 +96,20 @@ Choices made while building V1, with the reasoning, so they can be revisited.
     the header show "My account" without a request on every page. The real session cookie stays HttpOnly.
 35. **Local test admin via `pnpm db:seed:local`.** The script only targets the local database, and stores
     generated credentials in the git-ignored `.dev.vars` instead of the repository.
+
+## Student space (added after V1)
+
+36. **Courses and lessons stay in content files; progress lives in D1.** Lessons are editorial content
+    (versioned, reviewed, bilingual) while enrollments, progress, subscriptions and live classes are user
+    data. Migration 0002 recreates `enrollments` without a foreign key to the unused `courses` table.
+37. **Manual plan activation until payments exist.** Admins activate a plan for N months (`provider =
+'manual'`); the same `subscriptions` table will be fed by payment webhooks later, so access rules
+    don't change.
+38. **Access rules are pure functions** (`src/lib/learning/access.ts`, unit-tested): a course is open when
+    the active plan is in the course's `plans`; live classes require Premium or above.
+39. **Forms post to `/api/learning/*` and `/api/admin/*`** and redirect back, so the student space works
+    without JavaScript (only time-zone formatting and the admin date conversion use small scripts).
+40. **Only two courses have lessons** (Hiragana & Katakana, Beginner Japanese), with short, verified
+    outlines and vocabulary. Full lesson content (videos, PDFs, exercises) must come from the teacher.
+41. **E2E tests use their own local database** (`.wrangler/e2e-state`) and a throwaway admin, so they never
+    pollute `pnpm dev` data.

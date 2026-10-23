@@ -34,8 +34,15 @@ export const routes = {
   checkout: (lang: Locale, plan?: PlanId) => withLocale(lang, '/checkout/') + (plan ? `?plan=${plan}` : ''),
   checkoutSuccess: (lang: Locale) => withLocale(lang, '/checkout/success/'),
   legal: (lang: Locale, doc: LegalDoc) => withLocale(lang, `/legal/${doc}/`),
-  /** Future (V2): student dashboard. Not built in V1 — see src/features/dashboard/README.md. */
+  /** Student space (on demand, signed-in users). */
   dashboard: (lang: Locale) => withLocale(lang, '/dashboard/'),
+  dashboardCourses: (lang: Locale) => withLocale(lang, '/dashboard/courses/'),
+  dashboardCourse: (lang: Locale, course: string) => withLocale(lang, `/dashboard/courses/${course}/`),
+  dashboardLesson: (lang: Locale, course: string, lesson: string) =>
+    withLocale(lang, `/dashboard/courses/${course}/${lesson}/`),
+  dashboardLive: (lang: Locale) => withLocale(lang, '/dashboard/live/'),
+  /** Minimal administration (admin role). */
+  admin: (lang: Locale) => withLocale(lang, '/admin/'),
 } as const;
 
 /** Strip the locale prefix: "/ar/courses/kanji/" → "/courses/kanji/". */

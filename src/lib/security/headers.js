@@ -7,6 +7,8 @@ export const THIRD_PARTY = Object.freeze({
   turnstile: 'https://challenges.cloudflare.com',
   analyticsScript: 'https://static.cloudflareinsights.com',
   analyticsBeacon: 'https://cloudflareinsights.com',
+  // Lesson video embeds (src/content/lessons.json → videoUrl).
+  video: 'https://www.youtube-nocookie.com https://player.vimeo.com https://*.cloudflarestream.com',
 });
 
 /**
@@ -26,7 +28,7 @@ export const buildCsp = (scriptHashes = []) =>
     "img-src 'self' data:",
     "font-src 'self'",
     `connect-src 'self' ${THIRD_PARTY.analyticsBeacon}`,
-    `frame-src ${THIRD_PARTY.turnstile}`,
+    `frame-src ${THIRD_PARTY.turnstile} ${THIRD_PARTY.video}`,
     "base-uri 'self'",
     "form-action 'self'",
     "frame-ancestors 'none'",
