@@ -23,7 +23,7 @@
     {
       "binding": "DB",
       "database_name": "nihongo-academy",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "bfee88f5-9a06-40ae-b812-7ba5ff37000a",
       "migrations_dir": "db/migrations",
     },
   ],
