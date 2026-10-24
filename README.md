@@ -160,6 +160,24 @@ is added in production). The full list is in [PLACEHOLDERS.md](PLACEHOLDERS.md).
 
 ---
 
+## Promo video (Remotion)
+
+`video/` is a separate Remotion project (its own `package.json`, not part of the site build) that renders a
+32-second vertical promo (1080×1920, 30 fps) in English and Arabic (RTL). It reads its text from the
+website's own content (`src/i18n`, `src/content/courses.json`, `src/content/plans.json`, `src/config/site.ts`),
+so it stays in sync with the site and never shows prices or claims the site doesn't make.
+
+```bash
+cd video
+pnpm install
+pnpm studio      # preview and tweak in the browser
+pnpm render      # → video/out/promo-en.mp4 and video/out/promo-ar.mp4
+```
+
+Scenes live in `video/src/scenes/Scenes.tsx` and the timing in `video/src/Promo.tsx`. Renders in `video/out/` are gitignored.
+
+---
+
 ## Quality gates
 
 - **CI** (`.github/workflows/ci.yml`): lint → typecheck → unit tests → build → Playwright smoke + axe.

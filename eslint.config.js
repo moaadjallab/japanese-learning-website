@@ -5,7 +5,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import globals from 'globals';
 
 export default tseslint.config(
-  { ignores: ['dist/', '.astro/', 'node_modules/', 'playwright-report/', 'test-results/', '.wrangler/'] },
+  { ignores: ['dist/', '.astro/', 'node_modules/', 'playwright-report/', 'test-results/', '.wrangler/', 'video/'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...astro.configs.recommended,

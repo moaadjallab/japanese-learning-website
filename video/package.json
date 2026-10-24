@@ -1,0 +1,25 @@
+{
+  "name": "nihongo-academy-promo",
+  "private": true,
+  "type": "module",
+  "description": "Remotion promo video for the website (separate from the site build).",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render:en": "remotion render src/index.ts promo-en out/promo-en.mp4",
+    "render:ar": "remotion render src/index.ts promo-ar out/promo-ar.mp4",
+    "render": "pnpm render:en && pnpm render:ar",
+    "still": "remotion still src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.538",
+    "@remotion/google-fonts": "^4.0.538",
+    "@remotion/transitions": "^4.0.538",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.538"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

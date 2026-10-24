@@ -36,3 +36,6 @@ screenshots/*
 
 # graphify knowledge-graph output (regenerate with: graphify update .)
 graphify-out/
+
+# Remotion promo renders (regenerate with: cd video && pnpm render)
+video/out/
