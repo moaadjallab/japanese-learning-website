@@ -22,8 +22,9 @@ const plans = await getPlans();
 ---
 
 <ul class="grid items-stretch gap-5 lg:grid-cols-3 lg:gap-6">
-  {plans.map((plan) => (
+  {plans.map((plan, i) => (
     <li
+      style={`--i:${i}`}
       class:list={[
         'reveal relative flex flex-col rounded-card p-6 sm:p-8',
         plan.highlighted

@@ -27,8 +27,8 @@ const testimonials = await getTestimonials();
   tone="sunken"
 >
   <ul class="grid gap-5 md:grid-cols-3">
-    {testimonials.map((item) => (
-      <li class="reveal">
+    {testimonials.map((item, i) => (
+      <li style={`--i:${i}`} class="reveal">
         <figure
           class="flex h-full flex-col rounded-card bg-surface-raised p-6 shadow-soft ring-1 ring-line"
           {...(item.placeholder ? ph('testimonial') : {})}

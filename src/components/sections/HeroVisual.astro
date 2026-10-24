@@ -12,12 +12,13 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+// d / delay drive the gentle sway animation (see .hv-petal in global.css).
 const petals = [
-  { x: 92, y: 96, r: -20, s: 1 },
-  { x: 404, y: 72, r: 35, s: 0.8 },
-  { x: 438, y: 248, r: 10, s: 1.1 },
-  { x: 60, y: 300, r: 60, s: 0.7 },
-  { x: 350, y: 362, r: -40, s: 0.9 },
+  { x: 92, y: 96, r: -20, s: 1, d: 6.5, delay: 0 },
+  { x: 404, y: 72, r: 35, s: 0.8, d: 8, delay: -2 },
+  { x: 438, y: 248, r: 10, s: 1.1, d: 7, delay: -4 },
+  { x: 60, y: 300, r: 60, s: 0.7, d: 9, delay: -1 },
+  { x: 350, y: 362, r: -40, s: 0.9, d: 7.5, delay: -3 },
 ];
 ---
 
@@ -44,12 +45,14 @@ const petals = [
     <!-- Soft card backdrop -->
     <rect x="20" y="20" width="460" height="400" rx="36" fill="#F3D6DC" fill-opacity="0.45"></rect>
     <!-- Sun -->
-    <circle cx="300" cy="170" r="104" fill="url(#hero-sun)"></circle>
+    <circle class="hv-sun" cx="300" cy="170" r="104" fill="url(#hero-sun)"></circle>
     <!-- Mountains -->
-    <path d="M20 330 L140 238 L210 286 L300 214 L420 316 L480 286 V420 H20 Z" fill="#E7DFD4"></path>
-    <path d="M20 360 L120 300 L200 338 L290 288 L400 352 L480 330 V420 H20 Z" fill="#D9CFC1"></path>
+    <g class="hv-mountains">
+      <path d="M20 330 L140 238 L210 286 L300 214 L420 316 L480 286 V420 H20 Z" fill="#E7DFD4"></path>
+      <path d="M20 360 L120 300 L200 338 L290 288 L400 352 L480 330 V420 H20 Z" fill="#D9CFC1"></path>
+    </g>
     <!-- Torii-inspired gate (abstract) -->
-    <g fill="#1B1B1F">
+    <g class="hv-gate" fill="#1B1B1F">
       <path d="M118 150 Q250 128 382 150 L386 166 Q250 148 114 166 Z"></path>
       <rect x="132" y="176" width="236" height="11" rx="2"></rect>
       <rect x="160" y="160" width="14" height="230" rx="3"></rect>
@@ -60,13 +63,15 @@ const petals = [
     <!-- Sakura petals -->
     <g fill="#E8A6B4">
       {petals.map((p) => (
-        <use href="#hero-petal" transform={`translate(${p.x} ${p.y}) rotate(${p.r}) scale(${p.s})`} />
+        <g transform={`translate(${p.x} ${p.y}) rotate(${p.r}) scale(${p.s})`}>
+          <use href="#hero-petal" class="hv-petal" style={`--d:${p.d}s;--delay:${p.delay}s`} />
+        </g>
       ))}
     </g>
   </svg>
 
   <!-- Word-of-the-day card (real content, translated) -->
-  <div class="absolute bottom-[6%] start-0 w-56 rounded-2xl bg-surface-raised/95 p-4 shadow-lift ring-1 ring-line backdrop-blur sm:start-[-4%]">
+  <div class="hv-card absolute bottom-[6%] start-0 w-56 rounded-2xl bg-surface-raised/95 p-4 shadow-lift ring-1 ring-line backdrop-blur sm:start-[-4%]">
     <p class="text-xs font-semibold text-primary">{t('home.hero.sampleWord')}</p>
     <p class="mt-1 flex items-baseline gap-2">
       <span lang="ja" class="font-jp text-3xl text-fg">
@@ -88,7 +93,7 @@ const petals = [
   <p
     lang="ja"
     aria-hidden="true"
-    class="font-jp absolute end-[2%] top-[8%] text-lg tracking-[0.5em] text-ink/70 [writing-mode:vertical-rl]"
+    class="hv-vertical font-jp absolute end-[2%] top-[8%] text-lg tracking-[0.5em] text-ink/70 [writing-mode:vertical-rl]"
   >
     日本語を学ぶ
   </p>

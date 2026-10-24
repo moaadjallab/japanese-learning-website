@@ -5,8 +5,9 @@
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'inverse' | 'link';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
+// Micro-interactions: a direction-aware arrow nudge on hover and a short press-down on click.
 const buttonBase =
-  'inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-[background-color,color,box-shadow,transform] duration-200 ease-out-soft disabled:cursor-not-allowed disabled:opacity-60 aria-disabled:cursor-not-allowed aria-disabled:opacity-60';
+  'inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-[background-color,color,box-shadow,transform,scale] duration-200 ease-out-soft active:scale-[0.98] [&_.flip-rtl]:transition-[translate] [&_.flip-rtl]:duration-300 hover:[&_.flip-rtl]:translate-x-1 rtl:hover:[&_.flip-rtl]:-translate-x-1 disabled:cursor-not-allowed disabled:opacity-60 aria-disabled:cursor-not-allowed aria-disabled:opacity-60';
 
 const buttonVariants: Record<ButtonVariant, string> = {
   primary:

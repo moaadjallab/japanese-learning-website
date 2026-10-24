@@ -14,6 +14,15 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const dict = getDictionary(lang);
+// Decorative falling petals: horizontal start (%), size (px), fall duration, delay, sideways drift.
+const fallingPetals = [
+  { x: 8, size: 12, d: 17, delay: -2, sway: 70 },
+  { x: 22, size: 9, d: 21, delay: -11, sway: -40 },
+  { x: 41, size: 14, d: 15, delay: -6, sway: 90 },
+  { x: 58, size: 10, d: 19, delay: -14, sway: -60 },
+  { x: 73, size: 13, d: 16, delay: -9, sway: 50 },
+  { x: 89, size: 9, d: 22, delay: -4, sway: -80 },
+];
 ---
 
 <section class="relative isolate overflow-hidden" aria-labelledby="hero-title">
@@ -25,26 +34,44 @@ const dict = getDictionary(lang);
     class="pointer-events-none absolute -top-40 end-[-10%] -z-10 size-[36rem] rounded-full bg-sakura/50 blur-3xl"
     aria-hidden="true"
   ></div>
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    {fallingPetals.map((p) => (
+      <span
+        class="sakura-fall"
+        style={`--x:${p.x}%;--size:${p.size}px;--d:${p.d}s;--delay:${p.delay}s;--sway:${p.sway}px`}
+      >
+        <svg viewBox="-8 -21 16 22" fill="#E8A6B4" fill-opacity="0.75">
+          <path d="M0 0c-6-6-7-15-2-20l2 3 2-3c5 5 4 14-2 20z"></path>
+        </svg>
+      </span>
+    ))}
+  </div>
   <Container
     size="wide"
     class="grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:py-24"
   >
     <div class="max-w-xl">
-      <p class="inline-flex items-center gap-2 rounded-full bg-surface-raised px-3 py-1.5 text-sm font-semibold text-fg ring-1 ring-line">
+      <p class="motion-enter inline-flex items-center gap-2 rounded-full bg-surface-raised px-3 py-1.5 text-sm font-semibold text-fg ring-1 ring-line">
         <span lang="ja" class="font-jp text-primary" aria-hidden="true">
           日本語
         </span>
         <span class="h-3.5 w-px bg-line" aria-hidden="true"></span>
         {t('home.hero.eyebrow')}
       </p>
-      <h1 id="hero-title" class="mt-6 text-4xl leading-[1.1] font-bold sm:text-5xl lg:text-6xl">
+      <h1
+        id="hero-title"
+        style="--i:1"
+        class="motion-rise mt-6 text-4xl leading-[1.1] font-bold sm:text-5xl lg:text-6xl"
+      >
         {t('home.hero.title')}{' '}
         <span aria-hidden="true" class="whitespace-nowrap">
           🇯🇵
         </span>
       </h1>
-      <p class="mt-6 text-lg text-fg-muted sm:text-xl">{t('home.hero.subtitle')}</p>
-      <div class="mt-9 flex flex-col gap-3 min-[420px]:flex-row">
+      <p style="--i:2" class="motion-enter mt-6 text-lg text-fg-muted sm:text-xl">
+        {t('home.hero.subtitle')}
+      </p>
+      <div style="--i:3" class="motion-enter mt-9 flex flex-col gap-3 min-[420px]:flex-row">
         <Button href={routes.pricing(lang)} size="lg">
           {t('common.startLearning')}
           <Icon name="arrow-right" size={18} />
@@ -53,7 +80,7 @@ const dict = getDictionary(lang);
           {t('common.viewPlans')}
         </Button>
       </div>
-      <ul class="mt-9 grid gap-3 text-sm text-fg sm:grid-cols-3 sm:gap-4">
+      <ul style="--i:4" class="motion-enter mt-9 grid gap-3 text-sm text-fg sm:grid-cols-3 sm:gap-4">
         {dict.home.hero.highlights.map((item) => (
           <li class="flex items-center gap-2">
             <span class="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-sakura text-vermilion-dark">
