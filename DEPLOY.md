@@ -23,7 +23,7 @@ Configuration lives in [`wrangler.jsonc`](wrangler.jsonc).
 
 1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Import a repository** → select the repo.
 2. Settings:
-   - **Project name:** `nihongo-academy-web` (must match `name` in `wrangler.jsonc`)
+   - **Project name:** `japanese-learning-website` (must match `name` in `wrangler.jsonc`)
    - **Build command:** `pnpm build`
    - **Deploy command:** `npx wrangler deploy`
    - **Root directory:** `/`

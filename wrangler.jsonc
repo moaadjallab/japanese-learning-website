@@ -2,7 +2,7 @@
 // Docs: https://developers.cloudflare.com/workers/wrangler/configuration/
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "nihongo-academy-web",
+  "name": "japanese-learning-website",
   "main": "./dist/_worker.js/index.js",
   "compatibility_date": "2025-09-01",
   "compatibility_flags": ["nodejs_compat"],
