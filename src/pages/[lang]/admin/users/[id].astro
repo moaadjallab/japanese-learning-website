@@ -1,0 +1,369 @@
+---
+/**
+ * One account, for administrators: profile, roles, plan (activate / end, history), course
+ * progress, and account tools (verify email, sign out everywhere, suspend / restore).
+ * Forms post to /api/admin/* with from=user so the admin comes back here.
+ */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import LocalTime from '@/components/learning/LocalTime.astro';
+import { badgeClass, buttonClass, cardClass } from '@/components/ui/styles';
+import { getDictionary, useTranslations } from '@/i18n';
+import { loadStudentContext } from '@/lib/learning/page';
+import { getUserDetailForAdmin } from '@/lib/admin/server';
+import { percent } from '@/lib/admin/helpers';
+import { AREA_ROLES } from '@/lib/auth/guard';
+import { ROLES } from '@/lib/auth/types';
+import { getCourses } from '@/lib/repositories/courses';
+import { getLessons } from '@/lib/repositories/lessons';
+import { getPlans } from '@/lib/repositories/plans';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro, AREA_ROLES.admin);
+if (ctx instanceof Response) return ctx;
+const { lang, user: me, db } = ctx;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+
+const userId = String(Astro.params.id ?? '').slice(0, 100);
+const [target, courses, lessons, plans] = await Promise.all([
+  getUserDetailForAdmin(db, userId),
+  getCourses(),
+  getLessons(),
+  getPlans(),
+]);
+if (!target) Astro.response.status = 404;
+
+const doneParam = Astro.url.searchParams.get('done') ?? '';
+const doneKey = Object.hasOwn(dict.admin.done, doneParam)
+  ? (doneParam as keyof typeof dict.admin.done)
+  : undefined;
+const isError = doneKey === 'invalid' || doneKey === 'selfDemote' || doneKey === 'selfSuspend';
+const action = (name: string) => `/api/admin/${name}?lang=${lang}`;
+const planName = (id: string | null) => plans.find((p) => p.id === id)?.name[lang] ?? '—';
+const courseTitle = (slug: string) => courses.find((c) => c.slug === slug)?.title[lang] ?? slug;
+const lessonTotal = (slug: string) => lessons.filter((l) => l.course === slug).length;
+const statusLabel = (s: string) => dict.admin.statusLabels[s as keyof typeof dict.admin.statusLabels] ?? s;
+const isSelf = target?.id === me.id;
+const cell = 'p-3 text-start align-middle';
+---
+
+<DashboardLayout
+  lang={lang}
+  user={me}
+  title={target ? `${target.fullName} · ${t('admin.meta.title')}` : t('admin.meta.title')}
+  heading={target ? target.fullName : t('admin.user.notFound')}
+  subtitle={target?.email}
+  active="admin"
+>
+  <a
+    href={routes.admin(lang)}
+    class="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+  >
+    <span class="flip-rtl" aria-hidden="true">
+      ←
+    </span>
+    {t('admin.back')}
+  </a>
+
+  {doneKey && (
+    <p
+      role="status"
+      class:list={[
+        'mb-6 rounded-xl p-4 text-sm ring-1',
+        isError
+          ? 'bg-sakura-soft text-vermilion-dark ring-sakura'
+          : 'bg-[#eef6f0] text-success ring-[#cfe5d6]',
+      ]}
+    >
+      {dict.admin.done[doneKey]}
+    </p>
+  )}
+
+  {target && (
+    <div class="grid gap-6 lg:grid-cols-2">
+      <!-- Profile -->
+      <section aria-labelledby="profile-title" class:list={[cardClass, 'p-6']}>
+        <h2 id="profile-title" class="flex flex-wrap items-center gap-2 text-lg font-bold">
+          {t('admin.user.profile')}
+          {target.suspended && <span class={badgeClass('primary')}>{t('admin.suspendedBadge')}</span>}
+        </h2>
+        <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 text-sm">
+          <dt class="text-fg-muted">{t('admin.email')}</dt>
+          <dd dir="ltr" class="text-start break-all">
+            {target.email}
+          </dd>
+          <dt class="text-fg-muted">{t('admin.user.emailStatus')}</dt>
+          <dd>
+            <span class={badgeClass(target.emailVerified ? 'accent' : 'neutral')}>
+              {target.emailVerified ? t('admin.user.verified') : t('admin.user.notVerified')}
+            </span>
+          </dd>
+          <dt class="text-fg-muted">{t('admin.user.joined')}</dt>
+          <dd>
+            <LocalTime iso={target.createdAt} lang={lang} mode="date" />
+          </dd>
+          <dt class="text-fg-muted">{t('admin.user.language')}</dt>
+          <dd>{target.preferredLanguage === 'ar' ? 'العربية' : 'English'}</dd>
+          <dt class="text-fg-muted">{t('admin.user.level')}</dt>
+          <dd>{dict.levels[target.japaneseLevel]}</dd>
+          <dt class="text-fg-muted">{t('admin.user.activeSessions')}</dt>
+          <dd class="tabular-nums">{target.activeSessions}</dd>
+        </dl>
+      </section>
+
+      <!-- Roles -->
+      <section aria-labelledby="roles-title" class:list={[cardClass, 'p-6']}>
+        <h2 id="roles-title" class="text-lg font-bold">
+          {t('admin.user.rolesTitle')}
+        </h2>
+        <p class="mt-1 text-sm text-fg-muted">{t('admin.user.rolesHint')}</p>
+        <form method="post" action={action('roles')} class="mt-4 space-y-3">
+          <input type="hidden" name="userId" value={target.id} />
+          <input type="hidden" name="from" value="user" />
+          <fieldset class="flex flex-wrap gap-3">
+            <legend class="sr-only">{t('admin.user.rolesTitle')}</legend>
+            {ROLES.map((role) => (
+              <label class="inline-flex items-center gap-2 rounded-xl px-3 py-2 ring-1 ring-line">
+                <input
+                  type="checkbox"
+                  name="roles"
+                  value={role}
+                  checked={target.roles.includes(role)}
+                  disabled={role === 'student' || (isSelf && role === 'admin')}
+                  class="size-4 accent-[var(--color-primary)]"
+                />
+                {dict.account.roleLabels[role]}
+              </label>
+            ))}
+          </fieldset>
+          {isSelf && <input type="hidden" name="roles" value="admin" />}
+          <button type="submit" class={buttonClass('secondary', 'sm')}>
+            {t('admin.user.saveRoles')}
+          </button>
+        </form>
+      </section>
+
+      <!-- Plan -->
+      <section aria-labelledby="plan-title" class:list={[cardClass, 'p-6 lg:col-span-2']}>
+        <h2 id="plan-title" class="text-lg font-bold">
+          {t('admin.user.subscriptionTitle')}
+        </h2>
+        <p class="mt-2 flex flex-wrap items-center gap-2 text-sm">
+          {target.plan ? (
+            <>
+              <span class={badgeClass('accent')}>{planName(target.plan)}</span>
+              {target.periodEnd && (
+                <span class="text-fg-muted">
+                  {t('admin.until')} <LocalTime iso={target.periodEnd} lang={lang} mode="date" />
+                </span>
+              )}
+            </>
+          ) : (
+            <span class="text-fg-muted">{t('admin.noPlan')}</span>
+          )}
+        </p>
+        {!target.suspended && (
+          <div class="mt-4 flex flex-wrap items-center gap-2">
+            <form method="post" action={action('subscription')} class="flex flex-wrap items-center gap-2">
+              <input type="hidden" name="userId" value={target.id} />
+              <input type="hidden" name="from" value="user" />
+              <label class="sr-only" for="user-plan">
+                {t('admin.plan')}
+              </label>
+              <select
+                id="user-plan"
+                name="plan"
+                class="rounded-lg border border-line bg-surface-raised px-2 py-1.5"
+              >
+                {plans.map((p) => (
+                  <option value={p.id} selected={p.id === (target.plan ?? 'premium')}>
+                    {p.name[lang]}
+                  </option>
+                ))}
+              </select>
+              <label class="sr-only" for="user-months">
+                {t('admin.months')}
+              </label>
+              <input
+                id="user-months"
+                name="months"
+                type="number"
+                min="1"
+                max="24"
+                value="1"
+                class="w-16 rounded-lg border border-line bg-surface-raised px-2 py-1.5"
+              />
+              <span class="text-sm text-fg-muted" aria-hidden="true">
+                {t('admin.months')}
+              </span>
+              <button type="submit" class={buttonClass('primary', 'sm')}>
+                {t('admin.activate')}
+              </button>
+            </form>
+            {target.plan && (
+              <form method="post" action={action('cancel')}>
+                <input type="hidden" name="userId" value={target.id} />
+                <input type="hidden" name="from" value="user" />
+                <button type="submit" class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}>
+                  {t('admin.cancel')}
+                </button>
+              </form>
+            )}
+          </div>
+        )}
+
+        <h3 class="mt-6 font-semibold">{t('admin.user.history')}</h3>
+        {target.subscriptions.length === 0 ? (
+          <p class="mt-2 text-sm text-fg-muted">{t('admin.user.noHistory')}</p>
+        ) : (
+          <div class="relative mt-2 overflow-x-auto">
+            <table class="w-full min-w-[36rem] text-sm">
+              <thead class="border-b border-line text-fg-muted">
+                <tr>
+                  <th scope="col" class={cell}>
+                    {t('admin.plan')}
+                  </th>
+                  <th scope="col" class={cell}>
+                    {t('admin.user.status')}
+                  </th>
+                  <th scope="col" class={cell}>
+                    {t('admin.user.provider')}
+                  </th>
+                  <th scope="col" class={cell}>
+                    {t('admin.user.period')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-line">
+                {target.subscriptions.map((s) => (
+                  <tr>
+                    <td class={cell}>{planName(s.plan)}</td>
+                    <td class={cell}>{statusLabel(s.status)}</td>
+                    <td class={cell} dir="ltr">
+                      {s.provider}
+                    </td>
+                    <td class={cell}>
+                      {s.start ? <LocalTime iso={s.start} lang={lang} mode="date" /> : '—'} →{' '}
+                      {s.end ? <LocalTime iso={s.end} lang={lang} mode="date" /> : '—'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      <!-- Progress -->
+      <section aria-labelledby="progress-title" class:list={[cardClass, 'p-6 lg:col-span-2']}>
+        <h2 id="progress-title" class="text-lg font-bold">
+          {t('admin.user.progressTitle')}
+        </h2>
+        {target.progress.length === 0 ? (
+          <p class="mt-2 text-sm text-fg-muted">{t('admin.user.noProgress')}</p>
+        ) : (
+          <ul class="mt-4 space-y-4">
+            {target.progress.map((p) => {
+              const total = lessonTotal(p.courseId);
+              const pct = percent(p.completed, total);
+              return (
+                <li data-testid="admin-progress">
+                  <div class="flex flex-wrap items-baseline justify-between gap-2 text-sm">
+                    <span class="font-semibold">{courseTitle(p.courseId)}</span>
+                    <span class="text-fg-muted">
+                      {t('admin.user.lessons', { done: p.completed, total })}
+                      {p.lastActivityAt && (
+                        <>
+                          {' · '}
+                          {t('admin.user.lastActivity')}{' '}
+                          <LocalTime iso={p.lastActivityAt} lang={lang} mode="date" />
+                        </>
+                      )}
+                    </span>
+                  </div>
+                  <div
+                    class="mt-2 h-2 overflow-hidden rounded-full bg-stone-100"
+                    role="progressbar"
+                    aria-label={courseTitle(p.courseId)}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow={pct}
+                  >
+                    <div class="h-full rounded-full bg-primary" style={`width:${pct}%`}></div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+
+      <!-- Account tools -->
+      <section aria-labelledby="account-tools-title" class:list={[cardClass, 'p-6 lg:col-span-2']}>
+        <h2 id="account-tools-title" class="text-lg font-bold">
+          {t('admin.user.accountTitle')}
+        </h2>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {!target.emailVerified && (
+            <form method="post" action={action('verify-email')}>
+              <input type="hidden" name="userId" value={target.id} />
+              <input type="hidden" name="from" value="user" />
+              <button type="submit" class={buttonClass('secondary', 'sm')}>
+                {t('admin.user.verifyEmail')}
+              </button>
+            </form>
+          )}
+          {target.activeSessions > 0 && (
+            <form method="post" action={action('signout')}>
+              <input type="hidden" name="userId" value={target.id} />
+              <input type="hidden" name="from" value="user" />
+              <button type="submit" class={buttonClass('secondary', 'sm')}>
+                {t('admin.user.signOutAll')}
+              </button>
+            </form>
+          )}
+          {target.suspended ? (
+            <form method="post" action={action('restore')}>
+              <input type="hidden" name="userId" value={target.id} />
+              <input type="hidden" name="from" value="user" />
+              <button type="submit" class={buttonClass('primary', 'sm')}>
+                {t('admin.user.restore')}
+              </button>
+            </form>
+          ) : (
+            !isSelf && (
+              <form method="post" action={action('suspend')} data-confirm={t('admin.user.suspendHint')}>
+                <input type="hidden" name="userId" value={target.id} />
+                <input type="hidden" name="from" value="user" />
+                <button
+                  type="submit"
+                  class={buttonClass(
+                    'ghost',
+                    'sm',
+                    'text-vermilion-dark ring-1 ring-sakura hover:bg-sakura-soft',
+                  )}
+                >
+                  {t('admin.user.suspend')}
+                </button>
+              </form>
+            )
+          )}
+        </div>
+        {!target.suspended && !isSelf && (
+          <p class="mt-3 text-sm text-fg-muted">{t('admin.user.suspendHint')}</p>
+        )}
+      </section>
+    </div>
+  )}
+</DashboardLayout>
+
+<script>
+  // Ask before suspending an account (the form still works without JavaScript).
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      if (!window.confirm(form.dataset.confirm ?? '')) event.preventDefault();
+    });
+  });
+</script>

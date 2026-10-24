@@ -43,6 +43,8 @@ export const routes = {
   dashboardLive: (lang: Locale) => withLocale(lang, '/dashboard/live/'),
   /** Minimal administration (admin role). */
   admin: (lang: Locale) => withLocale(lang, '/admin/'),
+  adminUser: (lang: Locale, userId: string) =>
+    withLocale(lang, `/admin/users/${encodeURIComponent(userId)}/`),
 } as const;
 
 /** Strip the locale prefix: "/ar/courses/kanji/" → "/courses/kanji/". */

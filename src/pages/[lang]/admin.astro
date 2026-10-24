@@ -1,14 +1,19 @@
 ---
 /**
- * Minimal administration (admin role): activate/end plans manually while online payments are
- * not connected, and schedule live classes. Forms post to /api/admin/*.
+ * Administration (admin role): overview counts, account list with filters and CSV export,
+ * manual plan activation while online payments are not connected, and live-class scheduling.
+ * Per-account tools (roles, suspension, progress) live in admin/users/[id].astro.
+ * Forms post to /api/admin/*.
  */
 import DashboardLayout from '@/layouts/DashboardLayout.astro';
 import LocalTime from '@/components/learning/LocalTime.astro';
 import { badgeClass, buttonClass, inputClass, labelClass } from '@/components/ui/styles';
 import { getDictionary, useTranslations } from '@/i18n';
+import { LOCALE_META } from '@/i18n/config';
 import { loadStudentContext } from '@/lib/learning/page';
-import { listUsersForAdmin } from '@/lib/admin/server';
+import { getAdminStats, listUsersForAdmin } from '@/lib/admin/server';
+import { USER_FILTERS, parseUserFilter } from '@/lib/admin/helpers';
+import { routes } from '@/lib/routes';
 import { getUpcomingLiveSessions } from '@/lib/learning/server';
 import { getCourses } from '@/lib/repositories/courses';
 import { getPlans } from '@/lib/repositories/plans';
@@ -23,19 +28,40 @@ const t = useTranslations(lang);
 const dict = getDictionary(lang);
 
 const q = (Astro.url.searchParams.get('q') ?? '').slice(0, 100);
-const [users, sessions, courses, plans] = await Promise.all([
-  listUsersForAdmin(db, q),
+const filter = parseUserFilter(Astro.url.searchParams.get('filter'));
+const [stats, users, sessions, courses, plans] = await Promise.all([
+  getAdminStats(db),
+  listUsersForAdmin(db, { search: q, filter }),
   getUpcomingLiveSessions(db),
   getCourses(),
   getPlans(),
 ]);
-const doneKey = {
-  subscription: 'subscription',
-  cancel: 'cancel',
-  'live-create': 'liveCreate',
-  'live-delete': 'liveDelete',
-  invalid: 'invalid',
-}[Astro.url.searchParams.get('done') ?? ''] as keyof typeof dict.admin.done | undefined;
+const doneParam = Astro.url.searchParams.get('done') ?? '';
+const doneKey = Object.hasOwn(dict.admin.done, doneParam)
+  ? (doneParam as keyof typeof dict.admin.done)
+  : undefined;
+const isError = doneKey === 'invalid' || doneKey === 'selfDemote' || doneKey === 'selfSuspend';
+const filterHref = (f: string) => {
+  const params = new URLSearchParams();
+  if (f !== 'all') params.set('filter', f);
+  if (q) params.set('q', q);
+  const qs = params.toString();
+  return `${routes.admin(lang)}${qs ? `?${qs}` : ''}#users-title`;
+};
+const activeSubs = Object.values(stats.activeByPlan).reduce((a, b) => a + b, 0);
+const statCards = [
+  { label: t('admin.stats.students'), value: stats.students },
+  { label: t('admin.stats.newThisWeek'), value: stats.newThisWeek },
+  {
+    label: t('admin.stats.activeSubs'),
+    value: activeSubs,
+    detail: plans.map((p) => `${p.name[lang]} ${stats.activeByPlan[p.id]}`).join(' · '),
+  },
+  { label: t('admin.stats.upcomingClasses'), value: stats.upcomingClasses },
+  { label: t('admin.stats.lessonsThisWeek'), value: stats.lessonsThisWeek },
+  { label: t('admin.stats.suspended'), value: stats.suspended },
+];
+const number = new Intl.NumberFormat(LOCALE_META[lang].intl, { numberingSystem: 'latn' });
 const action = (name: string) => `/api/admin/${name}?lang=${lang}`;
 const cell = 'p-3 text-start align-middle';
 ---
@@ -53,7 +79,7 @@ const cell = 'p-3 text-start align-middle';
       role="status"
       class:list={[
         'mb-6 rounded-xl p-4 text-sm ring-1',
-        doneKey === 'invalid'
+        isError
           ? 'bg-sakura-soft text-vermilion-dark ring-sakura'
           : 'bg-[#eef6f0] text-success ring-[#cfe5d6]',
       ]}
@@ -62,30 +88,66 @@ const cell = 'p-3 text-start align-middle';
     </p>
   )}
 
+  <!-- Overview (real counts from the database) -->
+  <section aria-labelledby="overview-title" class="mb-12">
+    <h2 id="overview-title" class="sr-only">
+      {t('admin.overview')}
+    </h2>
+    <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+      {statCards.map((card) => (
+        <div class="rounded-card bg-surface-raised p-4 ring-1 ring-line" data-testid="admin-stat">
+          <dt class="text-sm text-fg-muted">{card.label}</dt>
+          <dd class="mt-1 text-2xl font-bold tabular-nums">{number.format(card.value)}</dd>
+          {card.detail && <dd class="mt-1 text-xs text-fg-muted">{card.detail}</dd>}
+        </div>
+      ))}
+    </dl>
+  </section>
+
   <!-- Students & subscriptions -->
   <section aria-labelledby="users-title" class="mb-12">
     <h2 id="users-title" class="text-xl font-bold">
       {t('admin.usersTitle')}
     </h2>
     <p class="mt-1 text-sm text-fg-muted">{t('admin.manualNote')}</p>
-    <form method="get" class="mt-4 flex max-w-lg gap-2" role="search">
-      <label for="admin-q" class="sr-only">
-        {t('admin.search')}
-      </label>
-      <input
-        id="admin-q"
-        name="q"
-        type="search"
-        value={q}
-        placeholder={t('admin.search')}
-        class={inputClass}
-      />
-      <button type="submit" class={buttonClass('secondary', 'md', 'shrink-0')}>
-        {t('admin.searchButton')}
-      </button>
-    </form>
+    <nav aria-label={t('admin.filtersLabel')} class="mt-4 flex flex-wrap gap-2">
+      {USER_FILTERS.map((f) => (
+        <a
+          href={filterHref(f)}
+          aria-current={f === filter ? 'page' : undefined}
+          class:list={[
+            'rounded-full px-3.5 py-1.5 text-sm font-medium ring-1 transition-colors',
+            f === filter ? 'bg-ink text-washi ring-ink' : 'bg-surface-raised ring-line hover:bg-stone-50',
+          ]}
+        >
+          {t(`admin.filters.${f}`)}
+        </a>
+      ))}
+    </nav>
+    <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <form method="get" class="flex w-full max-w-lg gap-2" role="search">
+        {filter !== 'all' && <input type="hidden" name="filter" value={filter} />}
+        <label for="admin-q" class="sr-only">
+          {t('admin.search')}
+        </label>
+        <input
+          id="admin-q"
+          name="q"
+          type="search"
+          value={q}
+          placeholder={t('admin.search')}
+          class={inputClass}
+        />
+        <button type="submit" class={buttonClass('secondary', 'md', 'shrink-0')}>
+          {t('admin.searchButton')}
+        </button>
+      </form>
+      <a href={`/api/admin/export?lang=${lang}`} class={buttonClass('secondary', 'md')} download>
+        {t('admin.exportCsv')}
+      </a>
+    </div>
 
-    <div class="mt-4 overflow-x-auto rounded-card bg-surface-raised ring-1 ring-line">
+    <div class="relative mt-4 overflow-x-auto rounded-card bg-surface-raised ring-1 ring-line">
       <table class="w-full min-w-[56rem] text-sm">
         <thead class="border-b border-line text-fg-muted">
           <tr>
@@ -119,7 +181,14 @@ const cell = 'p-3 text-start align-middle';
           )}
           {users.map((u) => (
             <tr data-testid="admin-user-row" data-email={u.email}>
-              <td class:list={[cell, 'font-medium']}>{u.fullName}</td>
+              <td class:list={[cell, 'font-medium']}>
+                <a href={routes.adminUser(lang, u.id)} class="hover:text-primary hover:underline">
+                  {u.fullName}
+                </a>
+                {u.suspended && (
+                  <span class:list={[badgeClass('primary'), 'ms-2']}>{t('admin.suspendedBadge')}</span>
+                )}
+              </td>
               <td class={cell} dir="ltr">
                 {u.email}
               </td>
@@ -144,42 +213,50 @@ const cell = 'p-3 text-start align-middle';
               </td>
               <td class={cell}>
                 <div class="flex flex-wrap items-center gap-2">
-                  <form method="post" action={action('subscription')} class="flex items-center gap-1.5">
-                    <input type="hidden" name="userId" value={u.id} />
-                    <label class="sr-only" for={`plan-${u.id}`}>
-                      {t('admin.plan')}
-                    </label>
-                    <select
-                      id={`plan-${u.id}`}
-                      name="plan"
-                      class="rounded-lg border border-line bg-surface-raised px-2 py-1.5"
-                    >
-                      {plans.map((p) => (
-                        <option value={p.id} selected={p.id === (u.plan ?? 'premium')}>
-                          {p.name[lang]}
-                        </option>
-                      ))}
-                    </select>
-                    <label class="sr-only" for={`months-${u.id}`}>
-                      {t('admin.months')}
-                    </label>
-                    <input
-                      id={`months-${u.id}`}
-                      name="months"
-                      type="number"
-                      min="1"
-                      max="24"
-                      value="1"
-                      class="w-16 rounded-lg border border-line bg-surface-raised px-2 py-1.5"
-                    />
-                    <span class="text-fg-muted" aria-hidden="true">
-                      {t('admin.months')}
-                    </span>
-                    <button type="submit" class={buttonClass('primary', 'sm')}>
-                      {t('admin.activate')}
-                    </button>
-                  </form>
-                  {u.plan && (
+                  <a
+                    href={routes.adminUser(lang, u.id)}
+                    class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}
+                  >
+                    {t('admin.details')}
+                  </a>
+                  {!u.suspended && (
+                    <form method="post" action={action('subscription')} class="flex items-center gap-1.5">
+                      <input type="hidden" name="userId" value={u.id} />
+                      <label class="sr-only" for={`plan-${u.id}`}>
+                        {t('admin.plan')}
+                      </label>
+                      <select
+                        id={`plan-${u.id}`}
+                        name="plan"
+                        class="rounded-lg border border-line bg-surface-raised px-2 py-1.5"
+                      >
+                        {plans.map((p) => (
+                          <option value={p.id} selected={p.id === (u.plan ?? 'premium')}>
+                            {p.name[lang]}
+                          </option>
+                        ))}
+                      </select>
+                      <label class="sr-only" for={`months-${u.id}`}>
+                        {t('admin.months')}
+                      </label>
+                      <input
+                        id={`months-${u.id}`}
+                        name="months"
+                        type="number"
+                        min="1"
+                        max="24"
+                        value="1"
+                        class="w-16 rounded-lg border border-line bg-surface-raised px-2 py-1.5"
+                      />
+                      <span class="text-fg-muted" aria-hidden="true">
+                        {t('admin.months')}
+                      </span>
+                      <button type="submit" class={buttonClass('primary', 'sm')}>
+                        {t('admin.activate')}
+                      </button>
+                    </form>
+                  )}
+                  {u.plan && !u.suspended && (
                     <form method="post" action={action('cancel')}>
                       <input type="hidden" name="userId" value={u.id} />
                       <button type="submit" class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}>

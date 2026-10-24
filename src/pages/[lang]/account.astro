@@ -86,7 +86,11 @@ const row =
           </button>
         </form>
       )}
-      {user.roles.includes('admin') && <p class="mt-6 text-sm text-fg-muted">{t('account.adminNote')}</p>}
+      {user.roles.includes('admin') && (
+        <a href={routes.admin(lang)} class={buttonClass('secondary', 'sm', 'mt-6')}>
+          {t('account.adminNote')}
+        </a>
+      )}
     </section>
 
     <div class="space-y-6">

@@ -98,9 +98,66 @@ test('no plan → admin activates Premium → course, lesson progress and live c
   await expect(student).toHaveURL(/\/en\/dashboard\/$/);
 });
 
+test('admin tools: overview, user page, roles, verify email, suspend/restore, CSV export', async ({
+  browser,
+  request,
+}) => {
+  const email = `tools-${Date.now()}@nihongo.test`;
+  await register(request, email);
+  const student = await (await browser.newContext()).newPage();
+  await login(student, email, PASSWORD);
+
+  const admin = await (await browser.newContext()).newPage();
+  await login(admin, ADMIN_EMAIL, ADMIN_PASSWORD);
+  await admin.goto(`/en/admin/?q=${encodeURIComponent(email)}`);
+  await expect(admin.getByTestId('admin-stat')).toHaveCount(6);
+
+  // Open the student's page from the list.
+  const row = admin.locator(`[data-testid="admin-user-row"][data-email="${email}"]`);
+  await row.getByRole('link', { name: 'Details' }).click();
+  await expect(admin.getByRole('heading', { level: 1 })).toHaveText('Student Space');
+  await expect(admin.getByText('Not verified')).toBeVisible();
+
+  // Make them a teacher, verify the email manually.
+  await admin.getByRole('checkbox', { name: 'Teacher' }).check();
+  await admin.getByRole('button', { name: 'Save roles' }).click();
+  await expect(admin.getByRole('status')).toHaveText('Roles updated.');
+  await expect(admin.getByRole('checkbox', { name: 'Teacher' })).toBeChecked();
+  await admin.getByRole('button', { name: 'Mark email as verified' }).click();
+  await expect(admin.getByRole('status')).toHaveText('Email marked as verified.');
+  await expect(admin.getByText('Verified', { exact: true })).toBeVisible();
+
+  // Suspend: the student is signed out at once and can no longer sign in.
+  admin.once('dialog', (dialog) => dialog.accept());
+  await admin.getByRole('button', { name: 'Suspend account' }).click();
+  await expect(admin.getByRole('status')).toHaveText('Account suspended and signed out everywhere.');
+  await student.goto('/en/dashboard/');
+  await expect(student).toHaveURL(/\/en\/login\//);
+  const denied = await request.post('/api/auth/login', { data: { email, password: PASSWORD } });
+  expect(denied.status()).toBe(401);
+
+  // It shows under the "Suspended" filter, then gets restored.
+  await admin.goto('/en/admin/?filter=suspended');
+  await expect(admin.locator(`[data-testid="admin-user-row"][data-email="${email}"]`)).toBeVisible();
+  await admin.goto(`/en/admin/?q=${encodeURIComponent(email)}&filter=suspended`);
+  await admin.getByRole('link', { name: 'Details' }).click();
+  await admin.getByRole('button', { name: 'Restore account' }).click();
+  await expect(admin.getByRole('status')).toHaveText('Account restored.');
+  const allowed = await request.post('/api/auth/login', { data: { email, password: PASSWORD } });
+  expect(allowed.status()).toBe(200);
+
+  // CSV export (admin session cookies).
+  const csv = await admin.request.get('/api/admin/export');
+  expect(csv.status()).toBe(200);
+  expect(csv.headers()['content-type']).toContain('text/csv');
+  expect(await csv.text()).toContain(`"${email}"`);
+});
+
 test('admin API refuses non-admins', async ({ request }) => {
   const res = await request.post('/api/admin/subscription', {
     form: { userId: 'x', plan: 'private', months: '12' },
   });
   expect(res.status()).toBe(403);
+  expect((await request.get('/api/admin/export')).status()).toBe(403);
+  expect((await request.post('/api/admin/suspend', { form: { userId: 'x' } })).status()).toBe(403);
 });

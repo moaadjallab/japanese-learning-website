@@ -1,6 +1,13 @@
 # Admin area
 
-Built (minimal): `src/pages/[lang]/admin.astro` + `src/pages/api/admin/[action].ts` — activate/end plans
-manually and schedule live classes. Guarded by `AREA_ROLES.admin`.
+Guarded by `AREA_ROLES.admin`; forms post to `src/pages/api/admin/[action].ts`.
 
-Next: manage roles and teachers, edit course/lesson content, subscriptions overview once payments exist.
+- `src/pages/[lang]/admin.astro` — overview counts (accounts, new this week, active plans per plan,
+  upcoming classes, lessons completed, suspended), account list with filters and search, CSV export
+  (`GET /api/admin/export`), manual plan activation, live-class scheduling.
+- `src/pages/[lang]/admin/users/[id].astro` — one account: profile, roles (teacher/admin), plan and
+  subscription history, course progress, mark email verified, sign out of all devices, suspend/restore.
+- Queries: `src/lib/admin/server.ts`; pure rules (role normalisation, no self-demotion/suspension,
+  CSV escaping): `src/lib/admin/helpers.ts`.
+
+Next: edit course/lesson content, teacher-facing pages, payments overview once a provider is connected.
