@@ -24,7 +24,7 @@ const dict = getDictionary(lang);
 
 const [courses, lessons, plans, enrollments, completed] = await Promise.all([
   getCourses(db),
-  getLessons(),
+  getLessons(db),
   getPlans(),
   getEnrollments(db, user.id),
   getCompletedLessons(db, user.id),

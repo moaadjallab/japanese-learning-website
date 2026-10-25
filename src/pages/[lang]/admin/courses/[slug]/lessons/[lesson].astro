@@ -1,0 +1,386 @@
+---
+/**
+ * Lesson editor. /admin/courses/<course>/lessons/new/ adds a lesson; /…/lessons/<lesson>/ edits one
+ * (built-in lessons are edited as a copy stored in D1 and can be reset to lessons.json).
+ * Video links from YouTube, Vimeo or Cloudflare Stream are converted to embeddable URLs.
+ */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import AdminNav from '@/components/admin/AdminNav.astro';
+import {
+  badgeClass,
+  buttonClass,
+  cardClass,
+  hintClass,
+  inputClass,
+  labelClass,
+} from '@/components/ui/styles';
+import { getDictionary, useTranslations } from '@/i18n';
+import { loadStudentContext } from '@/lib/learning/page';
+import { AREA_ROLES } from '@/lib/auth/guard';
+import { LESSON_TYPES } from '@/lib/domain/types';
+import { formatItems } from '@/lib/courses/lessons';
+import { getAdminCourses } from '@/lib/repositories/courses';
+import { getAdminLessons } from '@/lib/repositories/lessons';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro, AREA_ROLES.admin);
+if (ctx instanceof Response) return ctx;
+const { lang, user, db } = ctx;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+
+const courseSlug = String(Astro.params.slug ?? '');
+const lessonParam = String(Astro.params.lesson ?? '');
+const isNew = lessonParam === 'new';
+const [courses, allLessons] = await Promise.all([getAdminCourses(db), getAdminLessons(db)]);
+const course = courses.find((c) => c.slug === courseSlug && !c.deleted);
+if (!course) return Astro.redirect(routes.adminCourses(lang));
+const siblings = allLessons.filter((l) => l.course === course.slug);
+const lesson = isNew ? undefined : siblings.find((l) => l.slug === lessonParam && !l.deleted);
+if (!isNew && !lesson) return Astro.redirect(`${routes.adminCourse(lang, course.slug)}#lessons`);
+
+const doneParam = Astro.url.searchParams.get('done') ?? '';
+const doneKey = Object.hasOwn(dict.admin.lessons.done, doneParam)
+  ? (doneParam as keyof typeof dict.admin.lessons.done)
+  : undefined;
+const isError =
+  doneKey === 'invalid' || doneKey === 'slugTaken' || doneKey === 'badVideo' || doneKey === 'badItems';
+const badLines = (Astro.url.searchParams.get('lines') ?? '').replace(/[^0-9,]/g, '').replaceAll(',', ', ');
+const action = (name: string) => `/api/admin/${name}?lang=${lang}`;
+const nextOrder = Math.max(0, ...siblings.map((l) => l.order)) + 1;
+const takenSlugs = siblings.map((l) => l.slug).concat('new');
+const heading = lesson ? lesson.title[lang] : t('admin.lessons.new');
+const studentHref = lesson && !lesson.hidden ? routes.dashboardLesson(lang, course.slug, lesson.slug) : null;
+---
+
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={`${heading} · ${t('admin.meta.title')}`}
+  heading={heading}
+  subtitle={course.title[lang]}
+  active="admin"
+>
+  <AdminNav lang={lang} active="courses" />
+  <a
+    href={`${routes.adminCourse(lang, course.slug)}#lessons`}
+    class="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+  >
+    <span class="flip-rtl" aria-hidden="true">
+      ←
+    </span>
+    {t('admin.lessons.back', { course: course.title[lang] })}
+  </a>
+
+  {doneKey && (
+    <p
+      role="status"
+      class:list={[
+        'mb-6 rounded-xl p-4 text-sm ring-1',
+        isError
+          ? 'bg-sakura-soft text-vermilion-dark ring-sakura'
+          : 'bg-[#eef6f0] text-success ring-[#cfe5d6]',
+      ]}
+    >
+      {dict.admin.lessons.done[doneKey]}
+      {doneKey === 'badItems' && badLines && ` (${t('admin.lessons.lines', { lines: badLines })})`}
+    </p>
+  )}
+
+  {lesson && (
+    <div class="mb-6 flex flex-wrap items-center gap-2">
+      <span class={badgeClass(lesson.hidden ? 'neutral' : 'accent')}>
+        {lesson.hidden ? t('admin.courses.hidden') : t('admin.courses.visible')}
+      </span>
+      {lesson.source === 'custom' && <span class={badgeClass('ink')}>{t('admin.courses.custom')}</span>}
+      {lesson.modified && <span class={badgeClass('neutral')}>{t('admin.courses.modified')}</span>}
+      {studentHref && (
+        <a href={studentHref} class="ms-2 text-sm font-medium text-primary hover:underline">
+          {t('admin.lessons.viewAsStudent')}
+        </a>
+      )}
+    </div>
+  )}
+
+  <form
+    method="post"
+    action={action('lesson-save')}
+    class="space-y-6"
+    data-lesson-form
+    data-taken={JSON.stringify(takenSlugs)}
+  >
+    <input type="hidden" name="mode" value={isNew ? 'create' : 'update'} />
+    <input type="hidden" name="course" value={course.slug} />
+    {!isNew && <input type="hidden" name="slug" value={lesson!.slug} />}
+
+    <section class:list={[cardClass, 'space-y-5 p-6']} aria-labelledby="lesson-basics">
+      <h2 id="lesson-basics" class="text-lg font-bold">
+        {t('admin.courses.sections.basics')}
+      </h2>
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {isNew && (
+          <div class="space-y-2 sm:col-span-2">
+            <label for="lesson-slug" class={labelClass}>
+              {t('admin.courses.fields.slug')}
+            </label>
+            <input
+              id="lesson-slug"
+              name="slug"
+              required
+              minlength="2"
+              maxlength="60"
+              pattern="[a-z0-9]+(-[a-z0-9]+)*"
+              dir="ltr"
+              class={inputClass}
+              aria-describedby="lesson-slug-hint"
+              data-slug-input
+            />
+            <p id="lesson-slug-hint" class={hintClass}>
+              {t('admin.lessons.slugHint')}
+            </p>
+          </div>
+        )}
+        <div class="space-y-2">
+          <label for="lesson-order" class={labelClass}>
+            {t('admin.lessons.order')}
+          </label>
+          <input
+            id="lesson-order"
+            name="order"
+            type="number"
+            min="0"
+            max="9999"
+            required
+            value={lesson?.order ?? nextOrder}
+            class={inputClass}
+          />
+        </div>
+        <div class="space-y-2">
+          <label for="lesson-type" class={labelClass}>
+            {t('admin.lessons.type')}
+          </label>
+          <select id="lesson-type" name="type" class={inputClass}>
+            {LESSON_TYPES.map((type) => (
+              <option value={type} selected={type === (lesson?.type ?? 'video')}>
+                {dict.dashboard.lesson.types[type]}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label for="lesson-duration" class={labelClass}>
+            {t('admin.lessons.duration')}
+          </label>
+          <input
+            id="lesson-duration"
+            name="durationMin"
+            type="number"
+            min="1"
+            max="600"
+            required
+            value={lesson?.durationMin ?? 15}
+            class={inputClass}
+          />
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label for="lesson-video" class={labelClass}>
+          {t('admin.lessons.video')}
+        </label>
+        <input
+          id="lesson-video"
+          name="videoUrl"
+          type="url"
+          maxlength="500"
+          dir="ltr"
+          value={lesson?.videoUrl ?? ''}
+          class={inputClass}
+          aria-describedby="lesson-video-hint"
+        />
+        <p id="lesson-video-hint" class={hintClass}>
+          {t('admin.lessons.videoHint')}
+        </p>
+      </div>
+    </section>
+
+    <section class:list={[cardClass, 'space-y-5 p-6']} aria-labelledby="lesson-texts">
+      <h2 id="lesson-texts" class="text-lg font-bold">
+        {t('admin.courses.sections.texts')}
+      </h2>
+      <p class={hintClass}>{t('admin.courses.bothLanguages')}</p>
+      <div class="grid gap-5 lg:grid-cols-2">
+        {(['en', 'ar'] as const).map((l) => (
+          <div class="space-y-2">
+            <label for={`lesson-title-${l}`} class={labelClass}>
+              {t('admin.courses.fields.title')} ({l === 'en' ? 'English' : 'العربية'})
+            </label>
+            <input
+              id={`lesson-title-${l}`}
+              name={`title${l === 'en' ? 'En' : 'Ar'}`}
+              required
+              maxlength="150"
+              dir={l === 'ar' ? 'rtl' : 'ltr'}
+              lang={l}
+              value={lesson?.title[l] ?? ''}
+              class={inputClass}
+            />
+          </div>
+        ))}
+        {(['en', 'ar'] as const).map((l) => (
+          <div class="space-y-2">
+            <label for={`lesson-summary-${l}`} class={labelClass}>
+              {t('admin.lessons.summary')} ({l === 'en' ? 'English' : 'العربية'})
+            </label>
+            <textarea
+              id={`lesson-summary-${l}`}
+              name={`summary${l === 'en' ? 'En' : 'Ar'}`}
+              required
+              maxlength="3000"
+              rows="6"
+              dir={l === 'ar' ? 'rtl' : 'ltr'}
+              lang={l}
+              class={inputClass}
+            >{lesson?.summary[l] ?? ''}</textarea>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class:list={[cardClass, 'space-y-3 p-6']} aria-labelledby="lesson-items">
+      <h2 id="lesson-items" class="text-lg font-bold">
+        {t('admin.lessons.items')}
+      </h2>
+      <p id="lesson-items-hint" class={hintClass}>
+        {t('admin.lessons.itemsHint')}
+      </p>
+      <label for="lesson-items-input" class="sr-only">
+        {t('admin.lessons.items')}
+      </label>
+      <textarea
+        id="lesson-items-input"
+        name="items"
+        rows="10"
+        dir="ltr"
+        class:list={[inputClass, 'text-sm leading-relaxed']}
+        aria-describedby="lesson-items-hint"
+        placeholder="ひらがな | hiragana | hiragana | الهيراغانا"
+      >{lesson ? formatItems(lesson.items) : ''}</textarea>
+    </section>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <label class="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm ring-1 ring-line">
+        <input
+          type="checkbox"
+          name="hidden"
+          value="1"
+          checked={lesson ? lesson.hidden : true}
+          class="size-4"
+        />
+        {t('admin.lessons.hiddenField')}
+      </label>
+      <button type="submit" class={buttonClass('primary', 'lg')}>
+        {isNew ? t('admin.lessons.create') : t('admin.courses.save')}
+      </button>
+    </div>
+  </form>
+
+  {lesson && (
+    <section class:list={[cardClass, 'mt-8 p-6']} aria-labelledby="lesson-manage">
+      <h2 id="lesson-manage" class="text-lg font-bold">
+        {t('admin.lessons.manage')}
+      </h2>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <form method="post" action={action(lesson.hidden ? 'lesson-show' : 'lesson-hide')}>
+          <input type="hidden" name="course" value={course.slug} />
+          <input type="hidden" name="slug" value={lesson.slug} />
+          <input type="hidden" name="from" value="editor" />
+          <button type="submit" class={buttonClass('secondary', 'sm')}>
+            {lesson.hidden ? t('admin.courses.show') : t('admin.courses.hide')}
+          </button>
+        </form>
+        {lesson.modified && (
+          <form method="post" action={action('lesson-reset')} data-confirm={t('admin.lessons.confirmReset')}>
+            <input type="hidden" name="course" value={course.slug} />
+            <input type="hidden" name="slug" value={lesson.slug} />
+            <input type="hidden" name="from" value="editor" />
+            <button type="submit" class={buttonClass('secondary', 'sm')}>
+              {t('admin.courses.reset')}
+            </button>
+          </form>
+        )}
+        <form
+          method="post"
+          action={action('lesson-delete')}
+          data-confirm={
+            lesson.source === 'custom'
+              ? t('admin.lessons.confirmDeleteCustom')
+              : t('admin.lessons.confirmDelete')
+          }
+        >
+          <input type="hidden" name="course" value={course.slug} />
+          <input type="hidden" name="slug" value={lesson.slug} />
+          <button
+            type="submit"
+            class={buttonClass('ghost', 'sm', 'text-vermilion-dark ring-1 ring-sakura hover:bg-sakura-soft')}
+          >
+            {t('admin.delete')}
+          </button>
+        </form>
+      </div>
+    </section>
+  )}
+</DashboardLayout>
+
+<script>
+  // Confirm destructive actions, and check the address, video link and vocabulary in the browser
+  // (same rules as the server) so a typo never loses what was typed.
+  import { normalizeVideoUrl, parseItems } from '@/lib/courses/lesson-format';
+
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      if (!window.confirm(form.dataset.confirm ?? '')) event.preventDefault();
+    });
+  });
+  const form = document.querySelector<HTMLFormElement>('[data-lesson-form]');
+  if (form) {
+    const ar = document.documentElement.lang === 'ar';
+    const slug = form.querySelector<HTMLInputElement>('[data-slug-input]');
+    const video = form.querySelector<HTMLInputElement>('[name="videoUrl"]');
+    const items = form.querySelector<HTMLTextAreaElement>('[name="items"]');
+    const taken = new Set<string>(JSON.parse(form.dataset.taken ?? '[]'));
+    const validate = () => {
+      slug?.setCustomValidity(
+        slug && taken.has(slug.value.trim())
+          ? ar
+            ? 'هذا المعرّف مستخدم بالفعل.'
+            : 'This address is already used.'
+          : '',
+      );
+      video?.setCustomValidity(
+        video.value.trim() && !normalizeVideoUrl(video.value)
+          ? ar
+            ? 'استخدم رابط YouTube أو Vimeo أو Cloudflare Stream.'
+            : 'Use a YouTube, Vimeo or Cloudflare Stream link.'
+          : '',
+      );
+      const bad = items ? parseItems(items.value).badLines : [];
+      items?.setCustomValidity(
+        bad.length
+          ? ar
+            ? `تحقّق من الأسطر: ${bad.join('، ')} (4 أجزاء مفصولة بـ |).`
+            : `Check line(s) ${bad.join(', ')}: 4 parts separated by |.`
+          : '',
+      );
+    };
+    form.addEventListener('input', validate);
+    form.addEventListener('submit', (event) => {
+      validate();
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        form.reportValidity();
+      }
+    });
+  }
+</script>

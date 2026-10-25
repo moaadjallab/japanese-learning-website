@@ -126,8 +126,10 @@ same file; comparison row labels are in `src/i18n/*.ts` → `pricingPage.compari
 **From the website (no code):** administrators open **Admin → Courses** (`/en/admin/courses/`) to create a
 course, view and edit it (English + Arabic), hide/show it, delete it (built-in courses can be restored) or undo
 edits. Changes are stored in D1 (`course_overrides`, migration `0003`) and appear on the home page, catalog and
-course pages immediately — those pages render on demand for that reason. Lessons are still edited in
-`src/content/lessons.json`. Courses created from the admin are not in the sitemap and their Japanese characters
+course pages immediately — those pages render on demand for that reason. Each course's page in the admin
+also manages its **lessons** (add, edit, reorder, hide, delete/restore, undo edits; video link from
+YouTube/Vimeo/Cloudflare Stream; vocabulary one word per line), stored in D1 `lesson_overrides` (migration
+`0004`) over `src/content/lessons.json`. Courses created from the admin are not in the sitemap and their Japanese characters
 use the system font (the bundled font subset only covers characters present at build time).
 
 **In the code:** `src/content/courses.json` holds the 14 built-in courses (the defaults the admin edits

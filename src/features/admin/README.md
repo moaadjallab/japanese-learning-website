@@ -14,4 +14,8 @@ Guarded by `AREA_ROLES.admin`; forms post to `src/pages/api/admin/[action].ts`.
   edits), stored in D1 `course_overrides` and merged over `src/content/courses.json` by
   `src/lib/repositories/courses.ts` (rules in `src/lib/courses/editor.ts`).
 
-Next: edit lesson content, teacher-facing pages, payments overview once a provider is connected.
+- `src/pages/[lang]/admin/courses/[slug]/lessons/[lesson].astro` — lesson editor; lessons are listed and
+  managed on the course editor. Stored in D1 `lesson_overrides`, merged over `src/content/lessons.json` by
+  `src/lib/repositories/lessons.ts` (rules in `src/lib/courses/lessons.ts`, formats in `lesson-format.ts`).
+
+Next: teacher-facing pages, payments overview once a provider is connected.

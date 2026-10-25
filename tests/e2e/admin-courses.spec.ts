@@ -65,6 +65,52 @@ test('admin creates, edits, hides and deletes a course', async ({ browser }) => 
   await visitor.goto(`/en/courses/${slug}/`);
   await expect(visitor.getByRole('heading', { level: 1 })).toHaveText('Japanese for Children');
 
+  // Lessons: add one with a YouTube link (converted) and vocabulary, then see it as a student.
+  const courseEditor = admin.url();
+  await admin.getByRole('link', { name: 'Add a lesson' }).click();
+  await admin.getByLabel('Web address (identifier)').fill('greetings');
+  await admin.getByLabel('Duration (minutes)').fill('12');
+  await admin.getByLabel('Video link (optional)').fill('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+  await admin.getByLabel('Title (English)').fill('Greetings');
+  await admin.getByLabel('Title (العربية)').fill('التحيات');
+  await admin.getByLabel('Lesson text (English)').fill('Say hello and thank you.');
+  await admin.getByLabel('Lesson text (العربية)').fill('قل مرحبًا وشكرًا.');
+  await admin
+    .getByRole('textbox', { name: 'Vocabulary' })
+    .fill('こんにちは | konnichiwa | hello | مرحبًا\nありがとう | arigatō | thank you | شكرًا');
+  await admin.getByRole('checkbox', { name: 'Hidden (not shown to students)' }).uncheck();
+  await admin.getByRole('button', { name: 'Add the lesson' }).click();
+  await expect(admin.getByRole('status')).toHaveText('Lesson added.');
+  await expect(admin.getByLabel('Video link (optional)')).toHaveValue(
+    'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ',
+  );
+
+  // The admin gives themself the Private plan to open the course as a student.
+  await admin.goto(`/en/admin/?q=${encodeURIComponent(ADMIN_EMAIL)}`);
+  const me = admin.locator(`[data-testid="admin-user-row"][data-email="${ADMIN_EMAIL}"]`);
+  await me.getByLabel('Plan').selectOption('private');
+  await me.getByRole('button', { name: 'Activate' }).click();
+  await admin.goto(`/en/dashboard/courses/${slug}/greetings/`);
+  await expect(admin.getByRole('heading', { level: 1 })).toHaveText('Greetings');
+  await expect(admin.locator('iframe')).toHaveAttribute(
+    'src',
+    'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ',
+  );
+  await expect(admin.getByRole('cell', { name: 'ありがとう' })).toBeVisible();
+
+  // Hide the lesson: students no longer see it; then delete it.
+  await admin.goto(courseEditor);
+  const row = admin.locator('[data-testid="admin-lesson-row"][data-slug="greetings"]');
+  await row.getByRole('button', { name: 'Hide' }).click();
+  await expect(admin.getByRole('status')).toHaveText('Lesson hidden from students.');
+  await admin.goto(`/en/dashboard/courses/${slug}/`);
+  await expect(admin.getByText('Lessons for this course are being prepared')).toBeVisible();
+  await admin.goto(courseEditor);
+  admin.once('dialog', (dialog) => dialog.accept());
+  await row.getByRole('button', { name: 'Delete' }).click();
+  await expect(admin.getByRole('status')).toHaveText('Lesson deleted.');
+  await expect(row).toHaveCount(0);
+
   // Hide: gone from the site (detail redirects to the catalog), still listed in the admin.
   await admin.getByRole('button', { name: 'Hide' }).click();
   await expect(admin.getByRole('status')).toHaveText('Course hidden.');

@@ -31,7 +31,7 @@ const userId = String(Astro.params.id ?? '').slice(0, 100);
 const [target, courses, lessons, plans] = await Promise.all([
   getUserDetailForAdmin(db, userId),
   getAdminCourses(db),
-  getLessons(),
+  getLessons(db),
   getPlans(),
 ]);
 if (!target) Astro.response.status = 404;

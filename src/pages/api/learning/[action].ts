@@ -51,7 +51,7 @@ export const POST: APIRoute = async (ctx) => {
     const parsed = progressSchema.safeParse(form);
     if (!parsed.success) return jsonError(400, 'validation_error', 'Invalid input.');
     const { course: courseSlug, lesson: lessonSlug, completed } = parsed.data;
-    const [course, lesson] = await Promise.all([getCourse(courseSlug, db), getLesson(courseSlug, lessonSlug)]);
+    const [course, lesson] = await Promise.all([getCourse(courseSlug, db), getLesson(courseSlug, lessonSlug, db)]);
     if (!course || !lesson) return jsonError(404, 'bad_request', 'Unknown lesson.');
     if (!canAccessCourse(subscription?.plan ?? null, course.plans)) {
       return jsonError(403, 'forbidden', 'Your plan does not include this course.');

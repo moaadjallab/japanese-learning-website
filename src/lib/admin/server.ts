@@ -7,6 +7,7 @@ import { isPlanId, type PlanId } from '@/lib/domain/types';
 import type { JapaneseLevel, PreferredLanguage, Role } from '@/lib/auth/types';
 import { normalizeRoles, type UserFilter } from './helpers';
 import type { CourseData } from '@/lib/courses/editor';
+import type { LessonData } from '@/lib/courses/lessons';
 
 const nowIso = () => new Date().toISOString();
 
@@ -398,4 +399,80 @@ export const countEnrollmentsByCourse = async (db: D1Database): Promise<Record<s
     .prepare('SELECT course_id, COUNT(*) AS n FROM enrollments GROUP BY course_id')
     .all<{ course_id: string; n: number }>();
   return Object.fromEntries(results.map((r) => [r.course_id, Number(r.n)]));
+};
+
+/* ------------------------------------------------------------------- lessons */
+
+/** Create or replace a lesson's content (built-in lesson → edited copy; new id → created lesson). */
+export const saveLesson = async (
+  db: D1Database,
+  course: string,
+  id: string,
+  data: LessonData,
+  hidden: boolean,
+  by: string,
+) => {
+  await db
+    .prepare(
+      `INSERT INTO lesson_overrides (id, course_id, data, hidden, deleted, updated_at, updated_by)
+       VALUES (?1, ?2, ?3, ?4, 0, ?5, ?6)
+       ON CONFLICT (id) DO UPDATE SET data = ?3, hidden = ?4, updated_at = ?5, updated_by = ?6`,
+    )
+    .bind(id, course, JSON.stringify(data), hidden ? 1 : 0, nowIso(), by)
+    .run();
+};
+
+/** Show or hide a lesson (keeps its content). */
+export const setLessonHidden = async (
+  db: D1Database,
+  course: string,
+  id: string,
+  hidden: boolean,
+  by: string,
+) => {
+  await db
+    .prepare(
+      `INSERT INTO lesson_overrides (id, course_id, data, hidden, deleted, updated_at, updated_by)
+       VALUES (?1, ?2, NULL, ?3, 0, ?4, ?5)
+       ON CONFLICT (id) DO UPDATE SET hidden = ?3, updated_at = ?4, updated_by = ?5`,
+    )
+    .bind(id, course, hidden ? 1 : 0, nowIso(), by)
+    .run();
+};
+
+/** Built-in lesson: mark as deleted (restorable). Created lesson: remove it for good. */
+export const deleteLesson = async (
+  db: D1Database,
+  course: string,
+  id: string,
+  builtin: boolean,
+  by: string,
+) => {
+  if (!builtin) {
+    await db.prepare('DELETE FROM lesson_overrides WHERE id = ?1').bind(id).run();
+    return;
+  }
+  await db
+    .prepare(
+      `INSERT INTO lesson_overrides (id, course_id, data, hidden, deleted, updated_at, updated_by)
+       VALUES (?1, ?2, NULL, 0, 1, ?3, ?4)
+       ON CONFLICT (id) DO UPDATE SET deleted = 1, updated_at = ?3, updated_by = ?4`,
+    )
+    .bind(id, course, nowIso(), by)
+    .run();
+};
+
+export const restoreLesson = async (db: D1Database, id: string, by: string) => {
+  await db
+    .prepare('UPDATE lesson_overrides SET deleted = 0, updated_at = ?2, updated_by = ?3 WHERE id = ?1')
+    .bind(id, nowIso(), by)
+    .run();
+};
+
+/** Drop the edits of a built-in lesson (back to lessons.json), keeping its visibility. */
+export const resetLesson = async (db: D1Database, id: string, by: string) => {
+  await db
+    .prepare('UPDATE lesson_overrides SET data = NULL, updated_at = ?2, updated_by = ?3 WHERE id = ?1')
+    .bind(id, nowIso(), by)
+    .run();
 };

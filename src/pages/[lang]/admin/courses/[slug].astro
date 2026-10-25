@@ -2,7 +2,8 @@
 /**
  * Course editor. /admin/courses/new/ creates a course; /admin/courses/<slug>/ shows and edits one
  * (built-in courses are edited as a copy stored in D1 and can be reset to courses.json).
- * Every text has an English and an Arabic version. Lessons stay in src/content/lessons.json.
+ * Every text has an English and an Arabic version. The course's lessons are listed (and managed)
+ * at the bottom; each one opens in admin/courses/[slug]/lessons/[lesson].astro.
  */
 import DashboardLayout from '@/layouts/DashboardLayout.astro';
 import AdminNav from '@/components/admin/AdminNav.astro';
@@ -20,7 +21,7 @@ import { AREA_ROLES } from '@/lib/auth/guard';
 import { CATEGORY_IDS, LEVEL_IDS } from '@/lib/domain/types';
 import { DEFAULT_COURSE_IMAGE } from '@/lib/courses/editor';
 import { getAdminCourses, getBuiltinCourses } from '@/lib/repositories/courses';
-import { getCourseLessons } from '@/lib/repositories/lessons';
+import { getAdminLessons } from '@/lib/repositories/lessons';
 import { getPlans } from '@/lib/repositories/plans';
 import { routes } from '@/lib/routes';
 
@@ -37,7 +38,9 @@ const isNew = slugParam === 'new';
 const [all, builtin, plans] = await Promise.all([getAdminCourses(db), getBuiltinCourses(), getPlans()]);
 const course = isNew ? undefined : all.find((c) => c.slug === slugParam);
 if (!isNew && !course) return Astro.redirect(routes.adminCourses(lang));
-const lessons = course ? await getCourseLessons(course.slug) : [];
+const courseLessons = course ? (await getAdminLessons(db)).filter((l) => l.course === course.slug) : [];
+const activeLessons = courseLessons.filter((l) => !l.deleted);
+const deletedLessons = courseLessons.filter((l) => l.deleted);
 const images = [
   ...new Set([DEFAULT_COURSE_IMAGE, ...builtin.map((c) => c.image), ...(course ? [course.image] : [])]),
 ];
@@ -432,17 +435,115 @@ const check = 'inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm ring-
 
   {course && (
     <>
-      <section class:list={[cardClass, 'mt-8 p-6']} aria-labelledby="lessons-title">
-        <h2 id="lessons-title" class="text-lg font-bold">
-          {t('admin.courses.lessons')} ({lessons.length})
-        </h2>
-        <p class:list={[hintClass, 'mt-1']}>{t('admin.courses.lessonsNote')}</p>
-        {lessons.length > 0 && (
-          <ol class="mt-4 list-decimal space-y-1 ps-6 text-sm">
-            {lessons.map((lesson) => (
-              <li>{lesson.title[lang]}</li>
+      <section id="lessons" class:list={[cardClass, 'mt-8 p-6']} aria-labelledby="lessons-title">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 id="lessons-title" class="text-lg font-bold">
+              {t('admin.courses.lessons')} ({activeLessons.length})
+            </h2>
+            <p class:list={[hintClass, 'mt-1']}>{t('admin.lessons.note')}</p>
+          </div>
+          <a href={routes.adminLesson(lang, course.slug)} class={buttonClass('primary', 'sm')}>
+            {t('admin.lessons.new')}
+          </a>
+        </div>
+        {activeLessons.length === 0 ? (
+          <p class="mt-4 text-sm text-fg-muted">{t('admin.lessons.none')}</p>
+        ) : (
+          <ul class="mt-4 divide-y divide-line rounded-xl ring-1 ring-line">
+            {activeLessons.map((lesson) => (
+              <li
+                data-testid="admin-lesson-row"
+                data-slug={lesson.slug}
+                class:list={['flex flex-wrap items-center gap-3 p-3', lesson.hidden && 'bg-stone-50']}
+              >
+                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-stone-100 text-xs font-semibold tabular-nums">
+                  {lesson.order}
+                </span>
+                <div class="min-w-0 flex-1">
+                  <a
+                    href={routes.adminLesson(lang, course.slug, lesson.slug)}
+                    class="font-semibold hover:text-primary hover:underline"
+                  >
+                    {lesson.title[lang]}
+                  </a>
+                  <p class="text-xs text-fg-muted">
+                    {dict.dashboard.lesson.types[lesson.type]} ·{' '}
+                    {t('dashboard.lesson.minutes', { count: lesson.durationMin })}
+                    {lesson.videoUrl && ` · ${t('admin.lessons.hasVideo')}`}
+                  </p>
+                </div>
+                <span class="flex flex-wrap gap-1">
+                  {lesson.hidden && <span class={badgeClass('neutral')}>{t('admin.courses.hidden')}</span>}
+                  {lesson.source === 'custom' && (
+                    <span class={badgeClass('ink')}>{t('admin.courses.custom')}</span>
+                  )}
+                  {lesson.modified && (
+                    <span class={badgeClass('neutral')}>{t('admin.courses.modified')}</span>
+                  )}
+                </span>
+                <div class="flex flex-wrap gap-2">
+                  <a
+                    href={routes.adminLesson(lang, course.slug, lesson.slug)}
+                    class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}
+                  >
+                    {t('admin.courses.edit')}
+                  </a>
+                  <form method="post" action={action(lesson.hidden ? 'lesson-show' : 'lesson-hide')}>
+                    <input type="hidden" name="course" value={course.slug} />
+                    <input type="hidden" name="slug" value={lesson.slug} />
+                    <button type="submit" class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}>
+                      {lesson.hidden ? t('admin.courses.show') : t('admin.courses.hide')}
+                    </button>
+                  </form>
+                  <form
+                    method="post"
+                    action={action('lesson-delete')}
+                    data-confirm={
+                      lesson.source === 'custom'
+                        ? t('admin.lessons.confirmDeleteCustom')
+                        : t('admin.lessons.confirmDelete')
+                    }
+                  >
+                    <input type="hidden" name="course" value={course.slug} />
+                    <input type="hidden" name="slug" value={lesson.slug} />
+                    <button
+                      type="submit"
+                      class={buttonClass(
+                        'ghost',
+                        'sm',
+                        'text-vermilion-dark ring-1 ring-sakura hover:bg-sakura-soft',
+                      )}
+                    >
+                      {t('admin.delete')}
+                    </button>
+                  </form>
+                </div>
+              </li>
             ))}
-          </ol>
+          </ul>
+        )}
+        {deletedLessons.length > 0 && (
+          <div class="mt-6">
+            <h3 class="font-semibold">{t('admin.lessons.deletedTitle')}</h3>
+            <ul class="mt-2 space-y-2">
+              {deletedLessons.map((lesson) => (
+                <li
+                  data-testid="admin-deleted-lesson"
+                  class="flex flex-wrap items-center justify-between gap-3 rounded-xl p-3 ring-1 ring-line"
+                >
+                  <span class="text-sm">{lesson.title[lang]}</span>
+                  <form method="post" action={action('lesson-restore')}>
+                    <input type="hidden" name="course" value={course.slug} />
+                    <input type="hidden" name="slug" value={lesson.slug} />
+                    <button type="submit" class={buttonClass('secondary', 'sm')}>
+                      {t('admin.courses.restore')}
+                    </button>
+                  </form>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </section>
 

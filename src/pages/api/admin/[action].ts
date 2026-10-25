@@ -12,8 +12,10 @@
  *   GET  export                                → users.csv
  *   POST course-save    mode (create|update), slug, course fields (see parseCourseForm), hidden?
  *   POST course-hide | course-show | course-delete | course-restore | course-reset    slug
+ *   POST lesson-save    mode (create|update), course, slug, lesson fields (see parseLessonForm), hidden?
+ *   POST lesson-hide | lesson-show | lesson-delete | lesson-restore | lesson-reset    course, slug
  * User actions accept `from=user` to return to that user's admin page instead of the list;
- * course actions accept `from=editor` to return to the course editor.
+ * course and lesson actions accept `from=editor` to return to their editor.
  */
 import type { APIRoute } from 'astro';
 import { z } from 'zod';
@@ -37,9 +39,16 @@ import {
   deleteCourse,
   restoreCourse,
   resetCourse,
+  saveLesson,
+  setLessonHidden,
+  deleteLesson,
+  restoreLesson,
+  resetLesson,
 } from '@/lib/admin/server';
 import { getAdminCourses, getCourse } from '@/lib/repositories/courses';
 import { parseCourseForm, slugSchema } from '@/lib/courses/editor';
+import { lessonId, parseLessonForm } from '@/lib/courses/lessons';
+import { getAdminLessons } from '@/lib/repositories/lessons';
 import { routes } from '@/lib/routes';
 
 export const prerender = false;
@@ -187,6 +196,75 @@ const handleCourseAction = async (
   return toList('invalid');
 };
 
+const LESSON_ACTIONS = [
+  'lesson-save',
+  'lesson-hide',
+  'lesson-show',
+  'lesson-delete',
+  'lesson-restore',
+  'lesson-reset',
+];
+
+/** Lesson editor actions; results go back to the course editor (or the lesson editor). */
+const handleLessonAction = async (
+  ctx: Parameters<APIRoute>[0],
+  db: D1Database,
+  lang: Locale,
+  form: FormData,
+  actorId: string,
+) => {
+  const action = String(ctx.params.action);
+  const course = slugSchema.safeParse(form.get('course'));
+  const slug = slugSchema.safeParse(form.get('slug'));
+  if (!course.success) return ctx.redirect(`${routes.adminCourses(lang)}?done=invalid`, 303);
+  const toCourse = (status: string) =>
+    ctx.redirect(`${routes.adminCourse(lang, course.data)}?done=${status}#lessons`, 303);
+  const toEditor = (lessonSlug: string | null, status: string, extra = '') =>
+    ctx.redirect(
+      `${routes.adminLesson(lang, course.data, lessonSlug ?? undefined)}?done=${status}${extra}`,
+      303,
+    );
+  const owner = (await getAdminCourses(db)).find((c) => c.slug === course.data && !c.deleted);
+  if (!owner || !slug.success) return toCourse('lessonInvalid');
+  const id = lessonId(course.data, slug.data);
+  const existing = (await getAdminLessons(db)).find((l) => l.id === id);
+  const back = (status: string) =>
+    form.get('from') === 'editor' ? toEditor(slug.data, status) : toCourse(status);
+
+  if (action === 'lesson-save') {
+    const creating = form.get('mode') === 'create';
+    if (creating && (existing || slug.data === 'new')) return toEditor(null, 'slugTaken');
+    if (!creating && !existing) return toCourse('lessonInvalid');
+    const parsed = parseLessonForm(form);
+    const target = creating ? null : slug.data;
+    if (!parsed.success) {
+      if (parsed.badVideo) return toEditor(target, 'badVideo');
+      if (parsed.badLines.length) return toEditor(target, 'badItems', `&lines=${parsed.badLines.join(',')}`);
+      return toEditor(target, 'invalid');
+    }
+    await saveLesson(db, course.data, id, parsed.data, form.get('hidden') === '1', actorId);
+    return toEditor(slug.data, creating ? 'created' : 'saved');
+  }
+  if (!existing) return toCourse('lessonInvalid');
+  switch (action) {
+    case 'lesson-hide':
+    case 'lesson-show':
+      await setLessonHidden(db, course.data, id, action === 'lesson-hide', actorId);
+      return back(action === 'lesson-hide' ? 'lessonHidden' : 'lessonShown');
+    case 'lesson-delete':
+      await deleteLesson(db, course.data, id, existing.source === 'builtin', actorId);
+      return toCourse('lessonDeleted');
+    case 'lesson-restore':
+      await restoreLesson(db, id, actorId);
+      return toCourse('lessonRestored');
+    case 'lesson-reset':
+      if (existing.source !== 'builtin') return back('lessonInvalid');
+      await resetLesson(db, id, actorId);
+      return back('lessonReset');
+  }
+  return toCourse('lessonInvalid');
+};
+
 export const POST: APIRoute = async (ctx) => {
   const db = getDb(ctx.locals);
   if (!db) return jsonError(501, 'not_implemented', 'Database not configured.');
@@ -198,6 +276,9 @@ export const POST: APIRoute = async (ctx) => {
   const form = await ctx.request.formData();
   if (COURSE_ACTIONS.includes(String(ctx.params.action))) {
     return handleCourseAction(ctx, db, lang, form, session!.userId);
+  }
+  if (LESSON_ACTIONS.includes(String(ctx.params.action))) {
+    return handleLessonAction(ctx, db, lang, form, session!.userId);
   }
   const action = ctx.params.action as Action;
   const schema = schemas[action];

@@ -26,7 +26,7 @@ if (!course) return Astro.redirect(routes.dashboardCourses(lang));
 if (!canAccessCourse(subscription?.plan ?? null, course.plans))
   return Astro.redirect(routes.dashboardCourses(lang));
 
-const lessons = await getCourseLessons(course.slug);
+const lessons = await getCourseLessons(course.slug, db);
 const completed = await getCompletedLessons(db, user.id, course.slug);
 const done = lessons.filter((l) => completed.has(l.id)).length;
 const percent = progressPercent(done, lessons.length);

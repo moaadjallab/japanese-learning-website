@@ -49,6 +49,12 @@ export const routes = {
   /** Course editor; `slug` omitted = create a new course. */
   adminCourse: (lang: Locale, slug?: string) =>
     withLocale(lang, `/admin/courses/${slug ? encodeURIComponent(slug) : 'new'}/`),
+  /** Lesson editor; `lesson` omitted = add a lesson to the course. */
+  adminLesson: (lang: Locale, course: string, lesson?: string) =>
+    withLocale(
+      lang,
+      `/admin/courses/${encodeURIComponent(course)}/lessons/${lesson ? encodeURIComponent(lesson) : 'new'}/`,
+    ),
 } as const;
 
 /** Strip the locale prefix: "/ar/courses/kanji/" → "/courses/kanji/". */

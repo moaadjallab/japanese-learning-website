@@ -23,7 +23,7 @@ const t = useTranslations(lang);
 
 const [courses, lessons, plans, enrollments, completed, live] = await Promise.all([
   getCourses(db),
-  getLessons(),
+  getLessons(db),
   getPlans(),
   getEnrollments(db, user.id),
   getCompletedLessons(db, user.id),

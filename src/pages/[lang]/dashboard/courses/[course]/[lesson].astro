@@ -23,7 +23,7 @@ const course = await getCourse(String(Astro.params.course), db);
 if (!course || !canAccessCourse(subscription?.plan ?? null, course.plans)) {
   return Astro.redirect(routes.dashboardCourses(lang));
 }
-const lessons = await getCourseLessons(course.slug);
+const lessons = await getCourseLessons(course.slug, db);
 const lesson = lessons.find((l) => l.slug === Astro.params.lesson);
 if (!lesson) return Astro.redirect(routes.dashboardCourse(lang, course.slug));
 
