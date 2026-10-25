@@ -19,7 +19,7 @@ if (ctx instanceof Response) return ctx;
 const { lang, user, db, subscription } = ctx;
 const t = useTranslations(lang);
 
-const [sessions, courses, plans] = await Promise.all([getUpcomingLiveSessions(db), getCourses(), getPlans()]);
+const [sessions, courses, plans] = await Promise.all([getUpcomingLiveSessions(db), getCourses(db), getPlans()]);
 const now = Date.now();
 const isLive = (startsAt: string, minutes: number) => {
   const start = new Date(startsAt).getTime();

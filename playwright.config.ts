@@ -43,13 +43,20 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      testIgnore: /screenshots\.spec\.ts/,
+      testIgnore: /(screenshots|admin-courses)\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'screenshots',
       testMatch: /screenshots\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], reducedMotion: 'reduce' },
+    },
+    {
+      // Creates a public course for a moment: runs after the others so they keep seeing 14 courses.
+      name: 'admin-courses',
+      testMatch: /admin-courses\.spec\.ts/,
+      dependencies: ['chromium', 'screenshots'],
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
 });

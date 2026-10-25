@@ -1,0 +1,233 @@
+---
+/**
+ * Admin course list: every course (built-in from courses.json and created here) with its state,
+ * lesson and student counts, and quick actions (edit, show/hide, delete, restore).
+ * Changes are stored in D1 (`course_overrides`) and visible on the site immediately.
+ */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import AdminNav from '@/components/admin/AdminNav.astro';
+import { badgeClass, buttonClass } from '@/components/ui/styles';
+import { getDictionary, useTranslations } from '@/i18n';
+import { loadStudentContext } from '@/lib/learning/page';
+import { countEnrollmentsByCourse } from '@/lib/admin/server';
+import { AREA_ROLES } from '@/lib/auth/guard';
+import { levelRangeLabel } from '@/lib/catalog/filter';
+import { getAdminCourses } from '@/lib/repositories/courses';
+import { getLessons } from '@/lib/repositories/lessons';
+import { getPlans } from '@/lib/repositories/plans';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro, AREA_ROLES.admin);
+if (ctx instanceof Response) return ctx;
+const { lang, user, db } = ctx;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+
+const [all, lessons, plans, enrolled] = await Promise.all([
+  getAdminCourses(db),
+  getLessons(),
+  getPlans(),
+  countEnrollmentsByCourse(db),
+]);
+const active = all.filter((c) => !c.deleted);
+const deleted = all.filter((c) => c.deleted);
+const lessonCount = (slug: string) => lessons.filter((l) => l.course === slug).length;
+
+const doneParam = Astro.url.searchParams.get('done') ?? '';
+const doneKey = Object.hasOwn(dict.admin.courses.done, doneParam)
+  ? (doneParam as keyof typeof dict.admin.courses.done)
+  : undefined;
+const action = (name: string) => `/api/admin/${name}?lang=${lang}`;
+const cell = 'p-3 text-start align-middle';
+---
+
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={`${t('admin.courses.title')} · ${t('admin.meta.title')}`}
+  heading={t('admin.title')}
+  subtitle={t('admin.courses.subtitle')}
+  active="admin"
+>
+  <AdminNav lang={lang} active="courses" />
+
+  {doneKey && (
+    <p
+      role="status"
+      class:list={[
+        'mb-6 rounded-xl p-4 text-sm ring-1',
+        doneKey === 'invalid'
+          ? 'bg-sakura-soft text-vermilion-dark ring-sakura'
+          : 'bg-[#eef6f0] text-success ring-[#cfe5d6]',
+      ]}
+    >
+      {dict.admin.courses.done[doneKey]}
+    </p>
+  )}
+
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <h2 class="text-xl font-bold">{t('admin.courses.title')}</h2>
+      <p class="mt-1 text-sm text-fg-muted">{t('admin.courses.note')}</p>
+    </div>
+    <a href={routes.adminCourse(lang)} class={buttonClass('primary', 'md')}>
+      {t('admin.courses.new')}
+    </a>
+  </div>
+
+  <div class="relative mt-6 overflow-x-auto rounded-card bg-surface-raised ring-1 ring-line">
+    <table class="w-full min-w-[60rem] text-sm">
+      <thead class="border-b border-line text-fg-muted">
+        <tr>
+          <th scope="col" class={cell}>
+            {t('admin.courses.course')}
+          </th>
+          <th scope="col" class={cell}>
+            {t('admin.courses.level')}
+          </th>
+          <th scope="col" class={cell}>
+            {t('admin.courses.plans')}
+          </th>
+          <th scope="col" class={cell}>
+            {t('admin.courses.lessons')}
+          </th>
+          <th scope="col" class={cell}>
+            {t('admin.courses.students')}
+          </th>
+          <th scope="col" class={cell}>
+            {t('admin.courses.status')}
+          </th>
+          <th scope="col" class={cell}>
+            {t('admin.actions')}
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-line">
+        {active.map((c) => (
+          <tr data-testid="admin-course-row" data-slug={c.slug} class:list={[c.hidden && 'bg-stone-50']}>
+            <td class={cell}>
+              <div class="flex items-center gap-3">
+                <span
+                  lang="ja"
+                  dir="ltr"
+                  class="grid size-11 shrink-0 place-items-center rounded-xl bg-sakura-soft font-jp text-lg text-vermilion-dark"
+                  aria-hidden="true"
+                >
+                  {c.glyph.slice(0, 2)}
+                </span>
+                <div class="min-w-0">
+                  <a
+                    href={routes.adminCourse(lang, c.slug)}
+                    class="font-semibold hover:text-primary hover:underline"
+                  >
+                    {c.title[lang]}
+                  </a>
+                  <p class="text-xs text-fg-muted" dir="ltr">
+                    {c.slug}
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td class={cell}>{levelRangeLabel(c.levels, dict.levels)}</td>
+            <td class={cell}>
+              {plans
+                .filter((p) => c.plans.includes(p.id))
+                .map((p) => p.name[lang])
+                .join(', ')}
+            </td>
+            <td class:list={[cell, 'tabular-nums']}>{lessonCount(c.slug)}</td>
+            <td class:list={[cell, 'tabular-nums']}>{enrolled[c.slug] ?? 0}</td>
+            <td class={cell}>
+              <span class="flex flex-wrap gap-1">
+                <span class={badgeClass(c.hidden ? 'neutral' : 'accent')}>
+                  {c.hidden ? t('admin.courses.hidden') : t('admin.courses.visible')}
+                </span>
+                {c.source === 'custom' && <span class={badgeClass('ink')}>{t('admin.courses.custom')}</span>}
+                {c.modified && <span class={badgeClass('neutral')}>{t('admin.courses.modified')}</span>}
+              </span>
+            </td>
+            <td class={cell}>
+              <div class="flex flex-wrap items-center gap-2">
+                <a
+                  href={routes.adminCourse(lang, c.slug)}
+                  class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}
+                >
+                  {t('admin.courses.edit')}
+                </a>
+                <form method="post" action={action(c.hidden ? 'course-show' : 'course-hide')}>
+                  <input type="hidden" name="slug" value={c.slug} />
+                  <button type="submit" class={buttonClass('ghost', 'sm', 'ring-1 ring-line')}>
+                    {c.hidden ? t('admin.courses.show') : t('admin.courses.hide')}
+                  </button>
+                </form>
+                <form
+                  method="post"
+                  action={action('course-delete')}
+                  data-confirm={
+                    c.source === 'custom'
+                      ? t('admin.courses.confirmDeleteCustom')
+                      : t('admin.courses.confirmDelete')
+                  }
+                >
+                  <input type="hidden" name="slug" value={c.slug} />
+                  <button
+                    type="submit"
+                    class={buttonClass(
+                      'ghost',
+                      'sm',
+                      'text-vermilion-dark ring-1 ring-sakura hover:bg-sakura-soft',
+                    )}
+                  >
+                    {t('admin.delete')}
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {deleted.length > 0 && (
+    <section aria-labelledby="deleted-title" class="mt-10">
+      <h2 id="deleted-title" class="text-lg font-bold">
+        {t('admin.courses.deletedTitle')}
+      </h2>
+      <p class="mt-1 text-sm text-fg-muted">{t('admin.courses.deletedNote')}</p>
+      <ul class="mt-4 space-y-2">
+        {deleted.map((c) => (
+          <li
+            data-testid="admin-deleted-course"
+            data-slug={c.slug}
+            class="flex flex-wrap items-center justify-between gap-3 rounded-card bg-surface-raised p-4 ring-1 ring-line"
+          >
+            <span>
+              <span class="font-semibold">{c.title[lang]}</span>{' '}
+              <span class="text-xs text-fg-muted" dir="ltr">
+                {c.slug}
+              </span>
+            </span>
+            <form method="post" action={action('course-restore')}>
+              <input type="hidden" name="slug" value={c.slug} />
+              <button type="submit" class={buttonClass('secondary', 'sm')}>
+                {t('admin.courses.restore')}
+              </button>
+            </form>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</DashboardLayout>
+
+<script>
+  // Ask before deleting (the forms still work without JavaScript).
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      if (!window.confirm(form.dataset.confirm ?? '')) event.preventDefault();
+    });
+  });
+</script>

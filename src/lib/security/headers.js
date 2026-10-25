@@ -36,6 +36,17 @@ export const buildCsp = (scriptHashes = []) =>
     'upgrade-insecure-requests',
   ].join('; ');
 
+const INLINE_SCRIPT = /<script(?![^>]*\ssrc=)(?![^>]*type="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/g;
+
+/**
+ * Bodies of the inline <script> blocks of a page (JSON-LD excluded): they are allowed in the CSP
+ * by SHA-256 hash, at build time for prerendered pages and per response for on-demand pages.
+ * @param {string} html
+ * @returns {string[]}
+ */
+export const inlineScriptBodies = (html) =>
+  [...html.matchAll(INLINE_SCRIPT)].map((match) => match[1] ?? '').filter((body) => body.trim() !== '');
+
 /** @type {Record<string, string>} */
 export const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',

@@ -5,17 +5,20 @@ import PageHeader from '@/components/sections/PageHeader.astro';
 import Container from '@/components/ui/Container.astro';
 import FinalCta from '@/components/sections/FinalCta.astro';
 import CourseExplorer from '@/components/islands/CourseExplorer';
-import { getDictionary, localeStaticPaths, resolveLocale, useTranslations } from '@/i18n';
+import { getDictionary, isLocale, useTranslations } from '@/i18n';
+import { getDb } from '@/lib/auth/server';
 import { CATEGORY_IDS, LEVEL_IDS } from '@/lib/domain/types';
 import { getCourseCards } from '@/lib/repositories/courses';
 import { breadcrumbLd } from '@/lib/seo/jsonld';
 import { routes } from '@/lib/routes';
 
-export const getStaticPaths = localeStaticPaths;
-const lang = resolveLocale(Astro.params.lang);
+// Rendered on demand so courses created, edited or hidden in the admin show up at once.
+export const prerender = false;
+if (!isLocale(Astro.params.lang)) return Astro.rewrite('/404/');
+const lang = Astro.params.lang;
 const t = useTranslations(lang);
 const dict = getDictionary(lang);
-const courses = await getCourseCards(lang);
+const courses = await getCourseCards(lang, getDb(Astro.locals));
 const siteUrl = Astro.site ?? Astro.url.origin;
 const labels = {
   ...dict.coursesPage,

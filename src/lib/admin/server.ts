@@ -6,6 +6,7 @@
 import { isPlanId, type PlanId } from '@/lib/domain/types';
 import type { JapaneseLevel, PreferredLanguage, Role } from '@/lib/auth/types';
 import { normalizeRoles, type UserFilter } from './helpers';
+import type { CourseData } from '@/lib/courses/editor';
 
 const nowIso = () => new Date().toISOString();
 
@@ -325,4 +326,76 @@ export const setUserSuspended = async (db: D1Database, userId: string, suspended
       .bind(now, userId),
     ...(suspended ? [db.prepare('DELETE FROM sessions WHERE user_id = ?1').bind(userId)] : []),
   ]);
+};
+
+/* ------------------------------------------------------------------- courses */
+
+/** Create or replace a course's content (built-in course → edited copy; new id → created course). */
+export const saveCourse = async (
+  db: D1Database,
+  slug: string,
+  data: CourseData,
+  hidden: boolean,
+  by: string,
+) => {
+  await db
+    .prepare(
+      `INSERT INTO course_overrides (id, data, hidden, deleted, updated_at, updated_by)
+       VALUES (?1, ?2, ?3, 0, ?4, ?5)
+       ON CONFLICT (id) DO UPDATE SET data = ?2, hidden = ?3, updated_at = ?4, updated_by = ?5`,
+    )
+    .bind(slug, JSON.stringify(data), hidden ? 1 : 0, nowIso(), by)
+    .run();
+};
+
+/** Show or hide a course (keeps its content). */
+export const setCourseHidden = async (db: D1Database, slug: string, hidden: boolean, by: string) => {
+  await db
+    .prepare(
+      `INSERT INTO course_overrides (id, data, hidden, deleted, updated_at, updated_by)
+       VALUES (?1, NULL, ?2, 0, ?3, ?4)
+       ON CONFLICT (id) DO UPDATE SET hidden = ?2, updated_at = ?3, updated_by = ?4`,
+    )
+    .bind(slug, hidden ? 1 : 0, nowIso(), by)
+    .run();
+};
+
+/** Built-in course: mark as deleted (restorable). Created course: remove it for good. */
+export const deleteCourse = async (db: D1Database, slug: string, builtin: boolean, by: string) => {
+  if (!builtin) {
+    await db.prepare('DELETE FROM course_overrides WHERE id = ?1').bind(slug).run();
+    return;
+  }
+  await db
+    .prepare(
+      `INSERT INTO course_overrides (id, data, hidden, deleted, updated_at, updated_by)
+       VALUES (?1, NULL, 0, 1, ?2, ?3)
+       ON CONFLICT (id) DO UPDATE SET deleted = 1, updated_at = ?2, updated_by = ?3`,
+    )
+    .bind(slug, nowIso(), by)
+    .run();
+};
+
+/** Bring back a deleted built-in course (with its edits, if any). */
+export const restoreCourse = async (db: D1Database, slug: string, by: string) => {
+  await db
+    .prepare('UPDATE course_overrides SET deleted = 0, updated_at = ?2, updated_by = ?3 WHERE id = ?1')
+    .bind(slug, nowIso(), by)
+    .run();
+};
+
+/** Drop the edits of a built-in course (back to courses.json), keeping its visibility. */
+export const resetCourse = async (db: D1Database, slug: string, by: string) => {
+  await db
+    .prepare('UPDATE course_overrides SET data = NULL, updated_at = ?2, updated_by = ?3 WHERE id = ?1')
+    .bind(slug, nowIso(), by)
+    .run();
+};
+
+/** Students enrolled per course (for the course list). */
+export const countEnrollmentsByCourse = async (db: D1Database): Promise<Record<string, number>> => {
+  const { results } = await db
+    .prepare('SELECT course_id, COUNT(*) AS n FROM enrollments GROUP BY course_id')
+    .all<{ course_id: string; n: number }>();
+  return Object.fromEntries(results.map((r) => [r.course_id, Number(r.n)]));
 };

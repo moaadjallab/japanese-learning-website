@@ -4,12 +4,25 @@ import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import { readFileSync } from 'node:fs';
 
 // Public production URL. Override with SITE_URL at build time (see .env.example).
 const SITE_URL = process.env.SITE_URL || 'https://www.example.com';
 
 // Paths (without locale prefix) that must never appear in the sitemap (noindex pages).
 const NOINDEX_SEGMENTS = ['/login', '/register', '/forgot-password', '/checkout', '/legal/', '/_styleguide'];
+
+// Home, catalog and course pages render on demand (they follow the admin course editor), so the
+// sitemap integration can't discover them: list them here (built-in courses from courses.json).
+/** @type {string[]} */
+const courseSlugs = JSON.parse(
+  readFileSync(new URL('./src/content/courses.json', import.meta.url), 'utf8'),
+).map((/** @type {{ id: string }} */ course) => course.id);
+const ON_DEMAND_PAGES = ['en', 'ar'].flatMap((lang) =>
+  ['/', '/courses/', ...courseSlugs.map((slug) => `/courses/${slug}/`)].map(
+    (path) => new URL(`/${lang}${path}`, SITE_URL).href,
+  ),
+);
 
 export default defineConfig({
   site: SITE_URL,
@@ -34,6 +47,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
+      customPages: ON_DEMAND_PAGES,
       filter: (page) => !NOINDEX_SEGMENTS.some((seg) => new URL(page).pathname.includes(seg)),
       i18n: { defaultLocale: 'en', locales: { en: 'en', ar: 'ar' } },
     }),

@@ -5,6 +5,7 @@
  * Forms post to /api/admin/* with from=user so the admin comes back here.
  */
 import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import AdminNav from '@/components/admin/AdminNav.astro';
 import LocalTime from '@/components/learning/LocalTime.astro';
 import { badgeClass, buttonClass, cardClass } from '@/components/ui/styles';
 import { getDictionary, useTranslations } from '@/i18n';
@@ -13,7 +14,7 @@ import { getUserDetailForAdmin } from '@/lib/admin/server';
 import { percent } from '@/lib/admin/helpers';
 import { AREA_ROLES } from '@/lib/auth/guard';
 import { ROLES } from '@/lib/auth/types';
-import { getCourses } from '@/lib/repositories/courses';
+import { getAdminCourses } from '@/lib/repositories/courses';
 import { getLessons } from '@/lib/repositories/lessons';
 import { getPlans } from '@/lib/repositories/plans';
 import { routes } from '@/lib/routes';
@@ -29,7 +30,7 @@ const dict = getDictionary(lang);
 const userId = String(Astro.params.id ?? '').slice(0, 100);
 const [target, courses, lessons, plans] = await Promise.all([
   getUserDetailForAdmin(db, userId),
-  getCourses(),
+  getAdminCourses(db),
   getLessons(),
   getPlans(),
 ]);
@@ -57,6 +58,7 @@ const cell = 'p-3 text-start align-middle';
   subtitle={target?.email}
   active="admin"
 >
+  <AdminNav lang={lang} active="people" />
   <a
     href={routes.admin(lang)}
     class="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"

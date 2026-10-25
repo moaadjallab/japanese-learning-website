@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildCsp, SECURITY_HEADERS } from '../src/lib/security/headers.js';
+import { buildCsp, inlineScriptBodies, SECURITY_HEADERS } from '../src/lib/security/headers.js';
 
 const DIST = new URL('../dist/', import.meta.url);
 
@@ -20,12 +20,9 @@ async function* htmlFiles(dir) {
 }
 
 const hashes = new Set();
-const inlineScript = /<script(?![^>]*\bsrc=)(?![^>]*type="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/g;
 for await (const file of htmlFiles(fileURLToPath(DIST))) {
   const html = await readFile(file, 'utf8');
-  for (const match of html.matchAll(inlineScript)) {
-    const body = match[1];
-    if (!body.trim()) continue;
+  for (const body of inlineScriptBodies(html)) {
     hashes.add(`'sha256-${createHash('sha256').update(body, 'utf8').digest('base64')}'`);
   }
 }

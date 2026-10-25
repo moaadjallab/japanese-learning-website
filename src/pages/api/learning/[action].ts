@@ -38,7 +38,7 @@ export const POST: APIRoute = async (ctx) => {
   if (ctx.params.action === 'enroll') {
     const parsed = enrollSchema.safeParse(form);
     if (!parsed.success) return jsonError(400, 'validation_error', 'Invalid input.');
-    const course = await getCourse(parsed.data.course);
+    const course = await getCourse(parsed.data.course, db);
     if (!course) return jsonError(404, 'bad_request', 'Unknown course.');
     if (!canAccessCourse(subscription?.plan ?? null, course.plans)) {
       return ctx.redirect(routes.dashboardCourse(lang, course.slug), 303);
@@ -51,7 +51,7 @@ export const POST: APIRoute = async (ctx) => {
     const parsed = progressSchema.safeParse(form);
     if (!parsed.success) return jsonError(400, 'validation_error', 'Invalid input.');
     const { course: courseSlug, lesson: lessonSlug, completed } = parsed.data;
-    const [course, lesson] = await Promise.all([getCourse(courseSlug), getLesson(courseSlug, lessonSlug)]);
+    const [course, lesson] = await Promise.all([getCourse(courseSlug, db), getLesson(courseSlug, lessonSlug)]);
     if (!course || !lesson) return jsonError(404, 'bad_request', 'Unknown lesson.');
     if (!canAccessCourse(subscription?.plan ?? null, course.plans)) {
       return jsonError(403, 'forbidden', 'Your plan does not include this course.');

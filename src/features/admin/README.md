@@ -10,4 +10,8 @@ Guarded by `AREA_ROLES.admin`; forms post to `src/pages/api/admin/[action].ts`.
 - Queries: `src/lib/admin/server.ts`; pure rules (role normalisation, no self-demotion/suspension,
   CSV escaping): `src/lib/admin/helpers.ts`.
 
-Next: edit course/lesson content, teacher-facing pages, payments overview once a provider is connected.
+- `src/pages/[lang]/admin/courses/` — course list and editor (create / edit / hide / delete / restore / undo
+  edits), stored in D1 `course_overrides` and merged over `src/content/courses.json` by
+  `src/lib/repositories/courses.ts` (rules in `src/lib/courses/editor.ts`).
+
+Next: edit lesson content, teacher-facing pages, payments overview once a provider is connected.

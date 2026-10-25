@@ -19,7 +19,7 @@ const { lang, user, db, subscription } = ctx;
 const t = useTranslations(lang);
 const dict = getDictionary(lang);
 
-const course = await getCourse(String(Astro.params.course));
+const course = await getCourse(String(Astro.params.course), db);
 if (!course || !canAccessCourse(subscription?.plan ?? null, course.plans)) {
   return Astro.redirect(routes.dashboardCourses(lang));
 }

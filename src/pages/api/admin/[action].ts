@@ -10,7 +10,10 @@
  *   POST live-create    titleEn, titleAr, startsAt (UTC ISO), durationMin, meetingUrl?, courseId?, minPlan
  *   POST live-delete    id
  *   GET  export                                → users.csv
- * User actions accept `from=user` to return to that user's admin page instead of the list.
+ *   POST course-save    mode (create|update), slug, course fields (see parseCourseForm), hidden?
+ *   POST course-hide | course-show | course-delete | course-restore | course-reset    slug
+ * User actions accept `from=user` to return to that user's admin page instead of the list;
+ * course actions accept `from=editor` to return to the course editor.
  */
 import type { APIRoute } from 'astro';
 import { z } from 'zod';
@@ -29,8 +32,14 @@ import {
   listAllUsersForExport,
   setUserRoles,
   setUserSuspended,
+  saveCourse,
+  setCourseHidden,
+  deleteCourse,
+  restoreCourse,
+  resetCourse,
 } from '@/lib/admin/server';
-import { getCourse } from '@/lib/repositories/courses';
+import { getAdminCourses, getCourse } from '@/lib/repositories/courses';
+import { parseCourseForm, slugSchema } from '@/lib/courses/editor';
 import { routes } from '@/lib/routes';
 
 export const prerender = false;
@@ -122,6 +131,62 @@ export const GET: APIRoute = async (ctx) => {
   });
 };
 
+const COURSE_ACTIONS = [
+  'course-save',
+  'course-hide',
+  'course-show',
+  'course-delete',
+  'course-restore',
+  'course-reset',
+];
+
+/** Course editor actions (create / edit / hide / show / delete / restore / reset). */
+const handleCourseAction = async (
+  ctx: Parameters<APIRoute>[0],
+  db: D1Database,
+  lang: Locale,
+  form: FormData,
+  actorId: string,
+) => {
+  const action = String(ctx.params.action);
+  const slug = slugSchema.safeParse(form.get('slug'));
+  const toList = (status: string) => ctx.redirect(`${routes.adminCourses(lang)}?done=${status}`, 303);
+  const toEditor = (courseSlug: string, status: string) =>
+    ctx.redirect(`${routes.adminCourse(lang, courseSlug)}?done=${status}`, 303);
+  if (!slug.success) return toList('invalid');
+  const existing = (await getAdminCourses(db)).find((c) => c.slug === slug.data);
+  const back = (status: string) =>
+    form.get('from') === 'editor' ? toEditor(slug.data, status) : toList(status);
+
+  if (action === 'course-save') {
+    const creating = form.get('mode') === 'create';
+    if (creating && (existing || slug.data === 'new')) return toList('slugTaken');
+    if (!creating && !existing) return toList('invalid');
+    const data = parseCourseForm(form);
+    if (!data.success) return creating ? toList('invalid') : toEditor(slug.data, 'invalid');
+    await saveCourse(db, slug.data, data.data, form.get('hidden') === '1', actorId);
+    return toEditor(slug.data, creating ? 'created' : 'saved');
+  }
+  if (!existing) return toList('invalid');
+  switch (action) {
+    case 'course-hide':
+    case 'course-show':
+      await setCourseHidden(db, slug.data, action === 'course-hide', actorId);
+      return back(action === 'course-hide' ? 'hidden' : 'shown');
+    case 'course-delete':
+      await deleteCourse(db, slug.data, existing.source === 'builtin', actorId);
+      return toList('deleted');
+    case 'course-restore':
+      await restoreCourse(db, slug.data, actorId);
+      return toList('restored');
+    case 'course-reset':
+      if (existing.source !== 'builtin') return back('invalid');
+      await resetCourse(db, slug.data, actorId);
+      return back('reset');
+  }
+  return toList('invalid');
+};
+
 export const POST: APIRoute = async (ctx) => {
   const db = getDb(ctx.locals);
   if (!db) return jsonError(501, 'not_implemented', 'Database not configured.');
@@ -130,10 +195,13 @@ export const POST: APIRoute = async (ctx) => {
   const session = await loadSession(ctx);
   if (!hasAnyRole(session, ['admin'])) return jsonError(403, 'forbidden', 'Administrators only.');
 
+  const form = await ctx.request.formData();
+  if (COURSE_ACTIONS.includes(String(ctx.params.action))) {
+    return handleCourseAction(ctx, db, lang, form, session!.userId);
+  }
   const action = ctx.params.action as Action;
   const schema = schemas[action];
   if (!schema) return jsonError(404, 'bad_request', 'Unknown action.');
-  const form = await ctx.request.formData();
   const parsed = schema.safeParse({ ...Object.fromEntries(form), roles: form.getAll('roles') });
 
   const userId = typeof form.get('userId') === 'string' ? String(form.get('userId')) : '';
@@ -181,7 +249,7 @@ export const POST: APIRoute = async (ctx) => {
     }
     case 'live-create': {
       const data = parsed.data as Data<'live-create'>;
-      if (data.courseId && !(await getCourse(data.courseId))) return back('invalid');
+      if (data.courseId && !(await getCourse(data.courseId, db))) return back('invalid');
       await createLiveSession(db, data, actorId);
       return back('liveCreate');
     }

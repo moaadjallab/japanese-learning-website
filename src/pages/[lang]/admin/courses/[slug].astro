@@ -1,0 +1,537 @@
+---
+/**
+ * Course editor. /admin/courses/new/ creates a course; /admin/courses/<slug>/ shows and edits one
+ * (built-in courses are edited as a copy stored in D1 and can be reset to courses.json).
+ * Every text has an English and an Arabic version. Lessons stay in src/content/lessons.json.
+ */
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import AdminNav from '@/components/admin/AdminNav.astro';
+import {
+  badgeClass,
+  buttonClass,
+  cardClass,
+  inputClass,
+  labelClass,
+  hintClass,
+} from '@/components/ui/styles';
+import { getDictionary, useTranslations } from '@/i18n';
+import { loadStudentContext } from '@/lib/learning/page';
+import { AREA_ROLES } from '@/lib/auth/guard';
+import { CATEGORY_IDS, LEVEL_IDS } from '@/lib/domain/types';
+import { DEFAULT_COURSE_IMAGE } from '@/lib/courses/editor';
+import { getAdminCourses, getBuiltinCourses } from '@/lib/repositories/courses';
+import { getCourseLessons } from '@/lib/repositories/lessons';
+import { getPlans } from '@/lib/repositories/plans';
+import { routes } from '@/lib/routes';
+
+export const prerender = false;
+
+const ctx = await loadStudentContext(Astro, AREA_ROLES.admin);
+if (ctx instanceof Response) return ctx;
+const { lang, user, db } = ctx;
+const t = useTranslations(lang);
+const dict = getDictionary(lang);
+
+const slugParam = String(Astro.params.slug ?? '');
+const isNew = slugParam === 'new';
+const [all, builtin, plans] = await Promise.all([getAdminCourses(db), getBuiltinCourses(), getPlans()]);
+const course = isNew ? undefined : all.find((c) => c.slug === slugParam);
+if (!isNew && !course) return Astro.redirect(routes.adminCourses(lang));
+const lessons = course ? await getCourseLessons(course.slug) : [];
+const images = [
+  ...new Set([DEFAULT_COURSE_IMAGE, ...builtin.map((c) => c.image), ...(course ? [course.image] : [])]),
+];
+const nextOrder = Math.max(0, ...all.map((c) => c.order)) + 1;
+const takenSlugs = all.map((c) => c.slug).concat('new');
+
+const doneParam = Astro.url.searchParams.get('done') ?? '';
+const doneKey = Object.hasOwn(dict.admin.courses.done, doneParam)
+  ? (doneParam as keyof typeof dict.admin.courses.done)
+  : undefined;
+const isError = doneKey === 'invalid' || doneKey === 'slugTaken';
+const action = (name: string) => `/api/admin/${name}?lang=${lang}`;
+const v = {
+  order: course?.order ?? nextOrder,
+  levels: course?.levels ?? [],
+  categories: course?.categories ?? [],
+  plans: course?.plans ?? plans.map((p) => p.id),
+  glyph: course?.glyph ?? '',
+  glyphReading: course?.glyphReading ?? '',
+  image: course?.image ?? DEFAULT_COURSE_IMAGE,
+};
+const heading = course ? course.title[lang] : t('admin.courses.new');
+const textFields = [
+  { key: 'title', label: t('admin.courses.fields.title'), max: 120, rows: 0 },
+  { key: 'description', label: t('admin.courses.fields.description'), max: 300, rows: 3 },
+  { key: 'overview', label: t('admin.courses.fields.overview'), max: 2000, rows: 5 },
+] as const;
+const check = 'inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm ring-1 ring-line';
+---
+
+<DashboardLayout
+  lang={lang}
+  user={user}
+  title={`${heading} · ${t('admin.meta.title')}`}
+  heading={heading}
+  subtitle={course ? course.slug : t('admin.courses.newHint')}
+  active="admin"
+>
+  <AdminNav lang={lang} active="courses" />
+  <a
+    href={routes.adminCourses(lang)}
+    class="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+  >
+    <span class="flip-rtl" aria-hidden="true">
+      ←
+    </span>
+    {t('admin.courses.back')}
+  </a>
+
+  {doneKey && (
+    <p
+      role="status"
+      class:list={[
+        'mb-6 rounded-xl p-4 text-sm ring-1',
+        isError
+          ? 'bg-sakura-soft text-vermilion-dark ring-sakura'
+          : 'bg-[#eef6f0] text-success ring-[#cfe5d6]',
+      ]}
+    >
+      {dict.admin.courses.done[doneKey]}
+    </p>
+  )}
+
+  {course && (
+    <div class="mb-6 flex flex-wrap items-center gap-2">
+      <span class={badgeClass(course.hidden ? 'neutral' : 'accent')}>
+        {course.hidden ? t('admin.courses.hidden') : t('admin.courses.visible')}
+      </span>
+      {course.source === 'custom' && <span class={badgeClass('ink')}>{t('admin.courses.custom')}</span>}
+      {course.modified && <span class={badgeClass('neutral')}>{t('admin.courses.modified')}</span>}
+      {!course.hidden && !course.deleted && (
+        <a
+          href={routes.course(lang, course.slug)}
+          class="ms-2 text-sm font-medium text-primary hover:underline"
+        >
+          {t('admin.courses.viewOnSite')}
+        </a>
+      )}
+    </div>
+  )}
+
+  <form
+    method="post"
+    action={action('course-save')}
+    class="space-y-6"
+    data-course-form
+    data-taken={JSON.stringify(takenSlugs)}
+  >
+    <input type="hidden" name="mode" value={isNew ? 'create' : 'update'} />
+    {!isNew && <input type="hidden" name="slug" value={course!.slug} />}
+
+    <!-- Basics -->
+    <section class:list={[cardClass, 'space-y-5 p-6']} aria-labelledby="basics-title">
+      <h2 id="basics-title" class="text-lg font-bold">
+        {t('admin.courses.sections.basics')}
+      </h2>
+      <div class="grid gap-5 sm:grid-cols-3">
+        {isNew && (
+          <div class="space-y-2 sm:col-span-2">
+            <label for="course-slug" class={labelClass}>
+              {t('admin.courses.fields.slug')}
+            </label>
+            <input
+              id="course-slug"
+              name="slug"
+              required
+              minlength="2"
+              maxlength="60"
+              pattern="[a-z0-9]+(-[a-z0-9]+)*"
+              dir="ltr"
+              class={inputClass}
+              aria-describedby="course-slug-hint"
+              data-slug-input
+            />
+            <p id="course-slug-hint" class={hintClass}>
+              {t('admin.courses.fields.slugHint')}
+            </p>
+          </div>
+        )}
+        <div class="space-y-2">
+          <label for="course-order" class={labelClass}>
+            {t('admin.courses.fields.order')}
+          </label>
+          <input
+            id="course-order"
+            name="order"
+            type="number"
+            min="0"
+            max="9999"
+            required
+            value={v.order}
+            class={inputClass}
+          />
+        </div>
+      </div>
+
+      <fieldset data-group="levels">
+        <legend class={labelClass}>{t('admin.courses.fields.levels')}</legend>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {LEVEL_IDS.map((id) => (
+            <label class={check}>
+              <input
+                type="checkbox"
+                name="levels"
+                value={id}
+                checked={v.levels.includes(id)}
+                class="size-4"
+              />
+              {dict.levels[id]}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset data-group="categories">
+        <legend class={labelClass}>{t('admin.courses.fields.categories')}</legend>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {CATEGORY_IDS.map((id) => (
+            <label class={check}>
+              <input
+                type="checkbox"
+                name="categories"
+                value={id}
+                checked={v.categories.includes(id)}
+                class="size-4"
+              />
+              {dict.categories[id]}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset data-group="plans">
+        <legend class={labelClass}>{t('admin.courses.fields.plans')}</legend>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {plans.map((p) => (
+            <label class={check}>
+              <input
+                type="checkbox"
+                name="plans"
+                value={p.id}
+                checked={v.plans.includes(p.id)}
+                class="size-4"
+              />
+              {p.name[lang]}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="grid gap-5 sm:grid-cols-3">
+        <div class="space-y-2">
+          <label for="course-glyph" class={labelClass}>
+            {t('admin.courses.fields.glyph')}
+          </label>
+          <input
+            id="course-glyph"
+            name="glyph"
+            required
+            maxlength="8"
+            lang="ja"
+            dir="ltr"
+            value={v.glyph}
+            class={inputClass}
+            aria-describedby="course-glyph-hint"
+          />
+          <p id="course-glyph-hint" class={hintClass}>
+            {t('admin.courses.fields.glyphHint')}
+          </p>
+        </div>
+        <div class="space-y-2">
+          <label for="course-glyph-reading" class={labelClass}>
+            {t('admin.courses.fields.glyphReading')}
+          </label>
+          <input
+            id="course-glyph-reading"
+            name="glyphReading"
+            maxlength="80"
+            dir="ltr"
+            value={v.glyphReading}
+            class={inputClass}
+          />
+        </div>
+        <div class="space-y-2">
+          <label for="course-image" class={labelClass}>
+            {t('admin.courses.fields.image')}
+          </label>
+          <select id="course-image" name="image" class={inputClass} dir="ltr">
+            {images.map((src) => (
+              <option value={src} selected={src === v.image}>
+                {src.split('/').pop()}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Texts (EN + AR) -->
+    <section class:list={[cardClass, 'space-y-5 p-6']} aria-labelledby="texts-title">
+      <h2 id="texts-title" class="text-lg font-bold">
+        {t('admin.courses.sections.texts')}
+      </h2>
+      <p class={hintClass}>{t('admin.courses.bothLanguages')}</p>
+      {textFields.map((field) => (
+        <div class="grid gap-5 lg:grid-cols-2">
+          {(['en', 'ar'] as const).map((l) => {
+            const id = `course-${field.key}-${l}`;
+            const name = `${field.key}${l === 'en' ? 'En' : 'Ar'}`;
+            const value = course ? course[field.key][l] : '';
+            return (
+              <div class="space-y-2">
+                <label for={id} class={labelClass}>
+                  {field.label} ({l === 'en' ? 'English' : 'العربية'})
+                </label>
+                {field.rows === 0 ? (
+                  <input
+                    id={id}
+                    name={name}
+                    required
+                    maxlength={field.max}
+                    dir={l === 'ar' ? 'rtl' : 'ltr'}
+                    lang={l}
+                    value={value}
+                    class={inputClass}
+                  />
+                ) : (
+                  <textarea
+                    id={id}
+                    name={name}
+                    required
+                    maxlength={field.max}
+                    rows={field.rows}
+                    dir={l === 'ar' ? 'rtl' : 'ltr'}
+                    lang={l}
+                    class={inputClass}
+                  >{value}</textarea>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+      <div class="grid gap-5 lg:grid-cols-2">
+        {(['en', 'ar'] as const).map((l) => (
+          <div class="space-y-2">
+            <label for={`course-outcomes-${l}`} class={labelClass}>
+              {t('admin.courses.fields.outcomes')} ({l === 'en' ? 'English' : 'العربية'})
+            </label>
+            <textarea
+              id={`course-outcomes-${l}`}
+              name={`outcomes${l === 'en' ? 'En' : 'Ar'}`}
+              required
+              rows="5"
+              dir={l === 'ar' ? 'rtl' : 'ltr'}
+              lang={l}
+              class={inputClass}
+              aria-describedby="outcomes-hint"
+            >{course ? course.outcomes[l].join('\n') : ''}</textarea>
+          </div>
+        ))}
+        <p id="outcomes-hint" class:list={[hintClass, 'lg:col-span-2']}>
+          {t('admin.courses.fields.outcomesHint')}
+        </p>
+      </div>
+    </section>
+
+    <!-- Japanese example -->
+    <section class:list={[cardClass, 'space-y-5 p-6']} aria-labelledby="example-title">
+      <h2 id="example-title" class="text-lg font-bold">
+        {t('admin.courses.sections.example')}
+      </h2>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div class="space-y-2">
+          <label for="course-example-ja" class={labelClass}>
+            {t('admin.courses.fields.exampleJa')}
+          </label>
+          <input
+            id="course-example-ja"
+            name="exampleJa"
+            required
+            maxlength="60"
+            lang="ja"
+            dir="ltr"
+            value={course?.example.ja ?? ''}
+            class={inputClass}
+          />
+        </div>
+        <div class="space-y-2">
+          <label for="course-example-romaji" class={labelClass}>
+            {t('admin.courses.fields.exampleRomaji')}
+          </label>
+          <input
+            id="course-example-romaji"
+            name="exampleRomaji"
+            required
+            maxlength="80"
+            dir="ltr"
+            value={course?.example.romaji ?? ''}
+            class={inputClass}
+          />
+        </div>
+        <div class="space-y-2">
+          <label for="course-example-en" class={labelClass}>
+            {t('admin.courses.fields.exampleMeaning')} (English)
+          </label>
+          <input
+            id="course-example-en"
+            name="exampleMeaningEn"
+            required
+            maxlength="120"
+            dir="ltr"
+            lang="en"
+            value={course?.example.meaning.en ?? ''}
+            class={inputClass}
+          />
+        </div>
+        <div class="space-y-2">
+          <label for="course-example-ar" class={labelClass}>
+            {t('admin.courses.fields.exampleMeaning')} (العربية)
+          </label>
+          <input
+            id="course-example-ar"
+            name="exampleMeaningAr"
+            required
+            maxlength="120"
+            dir="rtl"
+            lang="ar"
+            value={course?.example.meaning.ar ?? ''}
+            class={inputClass}
+          />
+        </div>
+      </div>
+    </section>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <label class={check}>
+        <input
+          type="checkbox"
+          name="hidden"
+          value="1"
+          checked={course ? course.hidden : true}
+          class="size-4"
+        />
+        {t('admin.courses.fields.hidden')}
+      </label>
+      <button type="submit" class={buttonClass('primary', 'lg')}>
+        {isNew ? t('admin.courses.create') : t('admin.courses.save')}
+      </button>
+    </div>
+  </form>
+
+  {course && (
+    <>
+      <section class:list={[cardClass, 'mt-8 p-6']} aria-labelledby="lessons-title">
+        <h2 id="lessons-title" class="text-lg font-bold">
+          {t('admin.courses.lessons')} ({lessons.length})
+        </h2>
+        <p class:list={[hintClass, 'mt-1']}>{t('admin.courses.lessonsNote')}</p>
+        {lessons.length > 0 && (
+          <ol class="mt-4 list-decimal space-y-1 ps-6 text-sm">
+            {lessons.map((lesson) => (
+              <li>{lesson.title[lang]}</li>
+            ))}
+          </ol>
+        )}
+      </section>
+
+      <section class:list={[cardClass, 'mt-8 p-6']} aria-labelledby="danger-title">
+        <h2 id="danger-title" class="text-lg font-bold">
+          {t('admin.courses.sections.manage')}
+        </h2>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <form method="post" action={action(course.hidden ? 'course-show' : 'course-hide')}>
+            <input type="hidden" name="slug" value={course.slug} />
+            <input type="hidden" name="from" value="editor" />
+            <button type="submit" class={buttonClass('secondary', 'sm')}>
+              {course.hidden ? t('admin.courses.show') : t('admin.courses.hide')}
+            </button>
+          </form>
+          {course.modified && (
+            <form
+              method="post"
+              action={action('course-reset')}
+              data-confirm={t('admin.courses.confirmReset')}
+            >
+              <input type="hidden" name="slug" value={course.slug} />
+              <input type="hidden" name="from" value="editor" />
+              <button type="submit" class={buttonClass('secondary', 'sm')}>
+                {t('admin.courses.reset')}
+              </button>
+            </form>
+          )}
+          <form
+            method="post"
+            action={action('course-delete')}
+            data-confirm={
+              course.source === 'custom'
+                ? t('admin.courses.confirmDeleteCustom')
+                : t('admin.courses.confirmDelete')
+            }
+          >
+            <input type="hidden" name="slug" value={course.slug} />
+            <button
+              type="submit"
+              class={buttonClass(
+                'ghost',
+                'sm',
+                'text-vermilion-dark ring-1 ring-sakura hover:bg-sakura-soft',
+              )}
+            >
+              {t('admin.delete')}
+            </button>
+          </form>
+        </div>
+      </section>
+    </>
+  )}
+</DashboardLayout>
+
+<script>
+  // Confirm destructive actions; check "at least one" groups and unused slugs before submitting.
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      if (!window.confirm(form.dataset.confirm ?? '')) event.preventDefault();
+    });
+  });
+
+  const form = document.querySelector<HTMLFormElement>('[data-course-form]');
+  if (form) {
+    const groups = [...form.querySelectorAll<HTMLFieldSetElement>('fieldset[data-group]')];
+    const slug = form.querySelector<HTMLInputElement>('[data-slug-input]');
+    const taken = new Set<string>(JSON.parse(form.dataset.taken ?? '[]'));
+    const message =
+      document.documentElement.lang === 'ar'
+        ? 'اختر خيارًا واحدًا على الأقل.'
+        : 'Choose at least one option.';
+    const takenMessage =
+      document.documentElement.lang === 'ar' ? 'هذا المعرّف مستخدم بالفعل.' : 'This address is already used.';
+    const validate = () => {
+      for (const group of groups) {
+        const boxes = [...group.querySelectorAll<HTMLInputElement>('input[type=checkbox]')];
+        boxes[0]?.setCustomValidity(boxes.some((box) => box.checked) ? '' : message);
+      }
+      if (slug) slug.setCustomValidity(taken.has(slug.value.trim()) ? takenMessage : '');
+    };
+    form.addEventListener('change', validate);
+    form.addEventListener('input', validate);
+    form.addEventListener('submit', (event) => {
+      validate();
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        form.reportValidity();
+      }
+    });
+  }
+</script>

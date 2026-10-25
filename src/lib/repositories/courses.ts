@@ -1,30 +1,59 @@
 /**
- * Course repository. V1 reads Astro content collections; V2 can swap the
- * implementation for Cloudflare D1 while keeping these function signatures.
+ * Course repository. Built-in courses come from the `courses` content collection
+ * (src/content/courses.json); changes made in /admin/courses/ live in D1 (`course_overrides`)
+ * and are merged on top at request time. Without a database (build time) only the built-in
+ * courses are returned.
  */
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { getDictionary } from '@/i18n';
 import type { Locale } from '@/i18n/config';
 import { levelRangeLabel } from '@/lib/catalog/filter';
 import type { Course, CourseCardData } from '@/lib/domain/types';
 import { routes } from '@/lib/routes';
+import {
+  mergeCourses,
+  visibleCourses,
+  type AdminCourse,
+  type CourseOverrideRow,
+} from '@/lib/courses/editor';
+
+type Db = D1Database | null | undefined;
 
 const toCourse = (entry: { id: string; data: Omit<Course, 'slug'> }): Course => ({
   slug: entry.id,
   ...entry.data,
 });
 
-export const getCourses = async (): Promise<Course[]> =>
+export const getBuiltinCourses = async (): Promise<Course[]> =>
   (await getCollection('courses')).map(toCourse).sort((a, b) => a.order - b.order);
 
-export const getCourse = async (slug: string): Promise<Course | undefined> => {
-  const entry = await getEntry('courses', slug);
-  return entry ? toCourse(entry) : undefined;
+const getOverrides = async (db: Db): Promise<CourseOverrideRow[]> => {
+  if (!db) return [];
+  try {
+    const { results } = await db
+      .prepare('SELECT id, data, hidden, deleted, updated_at FROM course_overrides')
+      .all<CourseOverrideRow>();
+    return results;
+  } catch (error) {
+    // Table missing (migration 0003 not applied yet): fall back to the built-in courses.
+    console.error('[courses] could not read course_overrides', error);
+    return [];
+  }
 };
 
+/** Every course with its admin state (hidden, deleted, modified, source). */
+export const getAdminCourses = async (db: Db): Promise<AdminCourse[]> =>
+  mergeCourses(await getBuiltinCourses(), await getOverrides(db));
+
+/** Courses visible to visitors and students. */
+export const getCourses = async (db?: Db): Promise<Course[]> => visibleCourses(await getAdminCourses(db));
+
+export const getCourse = async (slug: string, db?: Db): Promise<Course | undefined> =>
+  (await getCourses(db)).find((course) => course.slug === slug);
+
 /** Courses sharing a level or category with `course`, most similar first. */
-export const getRelatedCourses = async (course: Course, limit = 3): Promise<Course[]> => {
-  const all = await getCourses();
+export const getRelatedCourses = async (course: Course, db?: Db, limit = 3): Promise<Course[]> => {
+  const all = await getCourses(db);
   const score = (c: Course) =>
     c.categories.filter((x) => course.categories.includes(x)).length * 2 +
     c.levels.filter((x) => course.levels.includes(x)).length;
@@ -55,5 +84,5 @@ export const toCourseCard = (course: Course, lang: Locale): CourseCardData => {
   };
 };
 
-export const getCourseCards = async (lang: Locale): Promise<CourseCardData[]> =>
-  (await getCourses()).map((course) => toCourseCard(course, lang));
+export const getCourseCards = async (lang: Locale, db?: Db): Promise<CourseCardData[]> =>
+  (await getCourses(db)).map((course) => toCourseCard(course, lang));

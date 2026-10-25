@@ -1,6 +1,6 @@
 ---
 /**
- * Home SECTION 3 — Explore Our Courses. All 14 course cards (SPEC), plus quick filters by
+ * Home SECTION 3 — Explore Our Courses. Every visible course card (SPEC: 14 by default; admin-created courses included), plus quick filters by
  * level and category that open the full catalog with the filter applied.
  * Mobile: horizontal scroll-snap row (direction-aware, works in RTL); md+: grid.
  */
@@ -12,6 +12,7 @@ import { getDictionary, useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n/config';
 import { CATEGORY_IDS, LEVEL_IDS } from '@/lib/domain/types';
 import { getCourseCards } from '@/lib/repositories/courses';
+import { getDb } from '@/lib/auth/server';
 import { routes } from '@/lib/routes';
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const dict = getDictionary(lang);
-const courses = await getCourseCards(lang);
+const courses = await getCourseCards(lang, getDb(Astro.locals));
 const chip =
   'inline-flex items-center rounded-full bg-surface-raised px-3.5 py-1.5 text-sm font-medium text-fg ring-1 ring-line transition-colors hover:bg-sakura-soft hover:ring-sakura';
 ---

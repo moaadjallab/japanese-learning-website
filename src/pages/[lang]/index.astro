@@ -12,12 +12,14 @@ import Testimonials from '@/components/sections/Testimonials.astro';
 import FaqPreview from '@/components/sections/FaqPreview.astro';
 import FinalCta from '@/components/sections/FinalCta.astro';
 import Icon from '@/components/icons/Icon.astro';
-import { localeStaticPaths, resolveLocale, useTranslations } from '@/i18n';
+import { isLocale, useTranslations } from '@/i18n';
 import { organizationLd, websiteLd } from '@/lib/seo/jsonld';
 import { routes } from '@/lib/routes';
 
-export const getStaticPaths = localeStaticPaths;
-const lang = resolveLocale(Astro.params.lang);
+// Rendered on demand: the course section reflects the admin course editor at once.
+export const prerender = false;
+if (!isLocale(Astro.params.lang)) return Astro.rewrite('/404/');
+const lang = Astro.params.lang;
 const t = useTranslations(lang);
 const siteUrl = Astro.site ?? Astro.url.origin;
 ---

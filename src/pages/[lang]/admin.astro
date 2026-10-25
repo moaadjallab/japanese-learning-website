@@ -6,6 +6,7 @@
  * Forms post to /api/admin/*.
  */
 import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import AdminNav from '@/components/admin/AdminNav.astro';
 import LocalTime from '@/components/learning/LocalTime.astro';
 import { badgeClass, buttonClass, inputClass, labelClass } from '@/components/ui/styles';
 import { getDictionary, useTranslations } from '@/i18n';
@@ -15,7 +16,7 @@ import { getAdminStats, listUsersForAdmin } from '@/lib/admin/server';
 import { USER_FILTERS, parseUserFilter } from '@/lib/admin/helpers';
 import { routes } from '@/lib/routes';
 import { getUpcomingLiveSessions } from '@/lib/learning/server';
-import { getCourses } from '@/lib/repositories/courses';
+import { getAdminCourses } from '@/lib/repositories/courses';
 import { getPlans } from '@/lib/repositories/plans';
 import { AREA_ROLES } from '@/lib/auth/guard';
 
@@ -33,7 +34,7 @@ const [stats, users, sessions, courses, plans] = await Promise.all([
   getAdminStats(db),
   listUsersForAdmin(db, { search: q, filter }),
   getUpcomingLiveSessions(db),
-  getCourses(),
+  getAdminCourses(db),
   getPlans(),
 ]);
 const doneParam = Astro.url.searchParams.get('done') ?? '';
@@ -74,6 +75,7 @@ const cell = 'p-3 text-start align-middle';
   subtitle={t('admin.subtitle')}
   active="admin"
 >
+  <AdminNav lang={lang} active="people" />
   {doneKey && (
     <p
       role="status"
@@ -358,7 +360,7 @@ const cell = 'p-3 text-start align-middle';
             </label>
             <select id="live-course" name="courseId" class={inputClass}>
               <option value="">{t('admin.noCourse')}</option>
-              {courses.map((c) => (
+              {courses.filter((c) => !c.deleted && !c.hidden).map((c) => (
                 <option value={c.slug}>{c.title[lang]}</option>
               ))}
             </select>
